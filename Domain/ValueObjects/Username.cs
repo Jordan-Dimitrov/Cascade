@@ -1,0 +1,46 @@
+﻿using Domain.Exceptions;
+using Domain.Primitives;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Domain.ValueObjects
+{
+    public sealed class Username : ValueObject
+    {
+        private const int _MinLength = 4;
+        private const int _MaxLength = 50;
+        private string _Value = null!;
+        public Username(string value)
+        {
+            Value = value;
+        }
+        public string Value 
+        {
+            get 
+            {
+                return _Value;
+            }
+            private set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new DomainValidationException("Cannot be null or empty.");
+                }
+
+                if (value.Length < _MinLength || value.Length > _MaxLength)
+                {
+                    throw new DomainValidationException($"Must be in between {_MinLength} and {_MaxLength} characters.");
+                }
+
+            }
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return _Value;
+        }
+    }
+}
