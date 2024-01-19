@@ -13,10 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\Persistence\Persistence.csproj" />
-    <ProjectReference Include="..\Presentation\Presentation.csproj" />
+    <ProjectReference Include="..\Core\Application\Application.csproj" />
+    <ProjectReference Include="..\External\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\External\Persistence\Persistence.csproj" />
+    <ProjectReference Include="..\External\Presentation\Presentation.csproj" />
   </ItemGroup>
 
 </Project>
