@@ -4,8 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Aggregates.UserAggregate;
+using Domain.Primitives;
 
-namespace Domain.Aggregates.UserAggregate
+namespace Domain.Abstractions
 {
     public interface IUserRepository : IRepository<User>
     {

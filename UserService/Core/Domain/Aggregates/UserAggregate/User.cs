@@ -1,4 +1,5 @@
-﻿using Domain.Aggregates.RefreshTokenAggregate;
+﻿using Domain.Entities;
+using Domain.Events;
 using Domain.Exceptions;
 using Domain.Primitives;
 using Domain.ValueObjects;
@@ -19,17 +20,20 @@ namespace Domain.Aggregates.UserAggregate
     }
     public sealed class User : AggregateRoot
     {
+        private const string _HiddenUsername = "Hidden";
+        private byte[] _HiddenPassword = new byte[4];
+
         private Username _Username;
-        private Guid _RefreshTokenId;
-        internal User(Username username,
+        private RefreshToken _RefreshToken;
+        public User(Username username,
             byte[] passwordHash, byte[] passwordSalt,
-            Guid refreshTokenId, UserRole permissionType)
+            RefreshToken refreshToken, UserRole permissionType)
         {
             Id = Guid.NewGuid();
             Username = username;
             PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
-            RefreshTokenId = refreshTokenId;
+            RefreshToken = refreshToken;
             PermissionType = permissionType;
         }
 
@@ -50,23 +54,36 @@ namespace Domain.Aggregates.UserAggregate
                 _Username = value ?? throw new DomainValidationException("The name cannot be null");
             }
         }
+
+        public User HideUserDetails()
+        {
+            _Username = new Username(_HiddenUsername);
+            PasswordHash = _HiddenPassword;
+            PasswordSalt = _HiddenPassword;
+            _RefreshToken.Invalidate();
+
+            RaiseDomainEvent(new UserHiddenDomainEvent(Id));
+
+            return this;
+        }
+
         public byte[] PasswordHash { get; private set; } = null!;
         public byte[] PasswordSalt { get; private set; } = null!;
-        public Guid RefreshTokenId 
-        { 
-            get 
+        public RefreshToken RefreshToken
+        {
+            get
             {
-                return _RefreshTokenId;
+                return _RefreshToken;
             }
-            private set 
+            private set
             {
-                if(value == Guid.Empty)
+                if (value is null)
                 {
                     throw new DomainValidationException("The RefreshToken cannot be null");
                 }
 
-                _RefreshTokenId = value;
-            } 
+                RefreshToken = value;
+            }
         }
         public UserRole PermissionType { get; private set; }
     }

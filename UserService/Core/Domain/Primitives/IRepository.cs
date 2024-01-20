@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Aggregates
+namespace Domain.Primitives
 {
-    public interface IRepository <T> where T : class
+    public interface IRepository<T> where T : class
     {
         Task<T> GetByIdAsync(Guid id);
 

@@ -8,13 +8,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Domain.Aggregates.RefreshTokenAggregate
+namespace Domain.Entities
 {
-    public sealed class RefreshToken : AggregateRoot
+    public sealed class RefreshToken : Entity
     {
         private Token _Token;
         private TokenDates _TokenDates;
-        internal RefreshToken(Token token, TokenDates tokenDates)
+        public RefreshToken(Token token, TokenDates tokenDates)
         {
             Id = Guid.NewGuid();
             Token = token;
@@ -26,7 +26,10 @@ namespace Domain.Aggregates.RefreshTokenAggregate
         {
 
         }
-
+        public void Invalidate()
+        {
+            _TokenDates = new TokenDates(DateTime.Today, DateTime.Today);
+        }
         public Token Token
         {
             get
