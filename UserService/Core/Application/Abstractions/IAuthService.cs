@@ -1,6 +1,6 @@
 ﻿using Domain.Aggregates.UserAggregate;
 using Domain.Entities;
-using Domain.ValueObjects;
+using Domain.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,5 @@
 using Application;
+using Domain.Wrappers;
 using Infrastructure;
 using Persistence;
 using Presentation;
@@ -17,10 +18,15 @@ namespace CascadeAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.Configure<JwtTokenSettings>(builder.Configuration.GetSection("JwtTokenSettings"));
+
+            JwtTokenSettings? jwtTokenSettings = builder.Configuration
+                .GetSection("JwtTokenSettings")
+                .Get<JwtTokenSettings>();
 
             builder.Services
                 .AddApplication()
-                .AddInfrastructure()
+                .AddInfrastructure(jwtTokenSettings)
                 .AddPersistence()
                 .AddPresentation();
 

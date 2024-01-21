@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-
+using Domain.Wrappers;
 namespace Persistence
 {
     public static class DependencyInjection
