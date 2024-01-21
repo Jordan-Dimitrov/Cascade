@@ -35,6 +35,8 @@ namespace Domain.ValueObjects
                     throw new DomainValidationException($"Must be in between {_MinLength} and {_MaxLength} characters.");
                 }
 
+                _Value = value;
+
             }
         }
 

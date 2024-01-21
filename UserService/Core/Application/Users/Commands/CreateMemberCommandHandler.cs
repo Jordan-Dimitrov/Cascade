@@ -7,6 +7,7 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,13 +18,16 @@ namespace Application.Users.Commands
         private readonly IUserRepository _UserRepository;
         private readonly IUnitOfWork _UnitOfWork;
         private readonly IAuthService _AuthService;
+        private readonly IRefreshTokenRepository _RefreshTokenRepository;
         public CreateMemberCommandHandler(IUserRepository userRepository,
             IUnitOfWork unitOfWork,
-            IAuthService authService)
+            IAuthService authService,
+            IRefreshTokenRepository refreshTokenRepository)
         {
             _UserRepository = userRepository;
             _UnitOfWork = unitOfWork;
             _AuthService = authService;
+            _RefreshTokenRepository = refreshTokenRepository;
         }
         public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -31,12 +35,14 @@ namespace Application.Users.Commands
             UserPassword pass = _AuthService.CreatePasswordHash(request.Password);
             Token token = new Token(_AuthService.CreateRandomToken());
             TokenDates dates = new TokenDates(DateTime.UtcNow, DateTime.UtcNow.AddDays(3));
-
+            RefreshToken refreshToken = new RefreshToken(token, dates);
             User user = new User(new Username(request.Username), pass.PasswordHash, pass.PasswordSalt,
-                new RefreshToken(token, dates), request.PermissionType);
+                refreshToken, UserRole.User);
+
+            await _RefreshTokenRepository.InsertAsync(refreshToken);
+            await _UnitOfWork.SaveChangesAsync();
 
             await _UserRepository.InsertAsync(user);
-
             await _UnitOfWork.SaveChangesAsync();
         }
     }

@@ -24,19 +24,19 @@ namespace Application.Users.Queries
         }
         public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            const string sql = @"SELECT * FROM ""Users"" WHERE ""Id"" = @UserId";
+            const string sql = @"SELECT * FROM dbo.[User] WHERE Id = @UserId";
 
-            User user = await _DbConnection
-                .QueryFirstOrDefaultAsync<User>(
+            UserDto user = await _DbConnection
+                .QueryFirstOrDefaultAsync<UserDto>(
                 sql,
                 new {request.UserId});
 
             if(user is null)
             {
-                throw new EntityNotFoundException(user.GetType());
+                throw new EntityNotFoundException(typeof(User));
             }
 
-            return _Mapper.Map<UserDto>(user);
+            return user;
 
         }
     }

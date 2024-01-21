@@ -9,14 +9,10 @@ namespace Domain.Primitives
 {
     public interface IRepository<T> where T : class
     {
-        Task<T> GetByIdAsync(Guid id);
+        Task<bool> InsertAsync(T value);
 
-        Task<bool> ExistsAsync(Expression<Func<T, bool>> condition);
+        Task<bool> UpdateAsync(T value);
 
-        Task InsertAsync(T value);
-
-        Task UpdateAsync(T value);
-
-        Task DeleteAsync(T value);
+        Task<bool> DeleteAsync(T value);
     }
 }

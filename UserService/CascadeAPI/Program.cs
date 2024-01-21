@@ -1,6 +1,7 @@
 using Application;
 using Domain.Wrappers;
 using Infrastructure;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Persistence;
 using Presentation;
 using Serilog;
@@ -14,7 +15,6 @@ namespace CascadeAPI
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -27,11 +27,12 @@ namespace CascadeAPI
             builder.Services
                 .AddApplication()
                 .AddInfrastructure(jwtTokenSettings)
-                .AddPersistence()
+                .AddPersistence(builder.Configuration.GetConnectionString("SDR"))
                 .AddPresentation();
 
             builder.Host.UseSerilog((context, configuration) =>
-                configuration.ReadFrom.Configuration(context.Configuration));
+                configuration.ReadFrom.Configuration(context.Configuration)
+                .WriteTo.Console());
 
             var app = builder.Build();
 

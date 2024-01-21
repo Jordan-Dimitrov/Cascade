@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class AuthService : IAuthService
+    internal class AuthService : IAuthService
     {
         private readonly JwtTokenSettings _JwtTokenSettings;
         private readonly RefreshTokenSettings _RefreshTokenSettings;
@@ -56,7 +56,7 @@ namespace Infrastructure.Services
 
         public string CreateRandomToken()
         {
-            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
         }
 
         public RefreshToken GenerateRefreshToken()

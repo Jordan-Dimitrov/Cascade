@@ -1,7 +1,4 @@
 ﻿using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.ValueObjects;
-using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Dtos
 {
-    public class UserDto
+    public class CreateUserDto
     {
         public string Username { get; set; }
-        public UserRole PermissionType { get; set; }
+        public string Password { get; set; }
     }
 }

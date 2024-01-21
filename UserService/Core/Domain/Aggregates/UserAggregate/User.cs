@@ -55,6 +55,18 @@ namespace Domain.Aggregates.UserAggregate
             }
         }
 
+        public Guid RefreshTokenId
+        {
+            get
+            {
+                return _RefreshToken.Id;
+            }
+            private set
+            {
+                _RefreshTokenId = value;
+            }
+        }
+        private Guid _RefreshTokenId;
         public User HideUserDetails()
         {
             _Username = new Username(_HiddenUsername);
@@ -82,7 +94,7 @@ namespace Domain.Aggregates.UserAggregate
                     throw new DomainValidationException("The RefreshToken cannot be null");
                 }
 
-                RefreshToken = value;
+                _RefreshToken = value;
             }
         }
         public UserRole PermissionType { get; private set; }

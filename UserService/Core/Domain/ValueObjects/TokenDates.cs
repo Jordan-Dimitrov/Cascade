@@ -30,6 +30,7 @@ namespace Domain.ValueObjects
                 {
                     throw new DomainValidationException("Cannot expire before current day ");
                 }
+                _TokenExpires = value;
 
             }
         }
@@ -41,11 +42,7 @@ namespace Domain.ValueObjects
             }
             private set
             {
-                if (value < _MinDate)
-                {
-                    throw new DomainValidationException("Cannot be created before current day ");
-                }
-
+                _TokenCreated = value;
             }
         }
 

@@ -34,6 +34,8 @@ namespace Domain.ValueObjects
                     throw new DomainValidationException($"Must be {_Length} characters.");
                 }
 
+                _Value = value;
+
             }
         }
 

@@ -13,6 +13,8 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             JwtTokenSettings settings)
         {
+            services.AddHttpContextAccessor();
+
             var assembly = typeof(DependencyInjection).Assembly;
 
             services.AddAuthentication(x =>
