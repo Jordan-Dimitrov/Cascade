@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Abstractions
 {
-    public interface IRefreshTokenRepository : IRepository<RefreshToken>
+    public interface IRefreshTokenQueryRepository : IQueryRepository<RefreshToken>
     {
     }
 }

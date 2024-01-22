@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
+using MediatR;
 namespace Application
 {
     public static class DependencyInjection

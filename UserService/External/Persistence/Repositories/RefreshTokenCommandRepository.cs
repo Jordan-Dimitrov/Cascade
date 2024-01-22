@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    public sealed class RefreshTokenRepository : IRefreshTokenRepository
+    public sealed class RefreshTokenCommandRepository : IRefreshTokenCommandRepository
     {
         private readonly ApplicationDbContext _Context;
         private readonly IUnitOfWork _UnitOfWork;
-        public RefreshTokenRepository(ApplicationDbContext context, IUnitOfWork unitOfWork)
+        public RefreshTokenCommandRepository(ApplicationDbContext context, IUnitOfWork unitOfWork)
         {
             _Context = context;
             _UnitOfWork = unitOfWork;

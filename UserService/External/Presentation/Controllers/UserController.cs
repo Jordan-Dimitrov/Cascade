@@ -30,12 +30,24 @@ namespace Presentation.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateUser([FromBody]CreateUserDto user, CancellationToken cancellationToken)
+        public async Task<IActionResult> Register([FromBody]CreateUserDto user, CancellationToken cancellationToken)
         {
             var command = new CreateUserCommand(user.Username, user.Password, UserRole.User);
+
+            Guid id = await _Sender.Send(command, cancellationToken);
+
+            return Ok(id);
+        }
+
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Login([FromBody] CreateUserDto user, CancellationToken cancellationToken)
+        {
+            var command = new GetUserByUsernameQuery(user.Username);
 
             await _Sender.Send(command, cancellationToken);
 

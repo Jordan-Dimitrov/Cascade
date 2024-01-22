@@ -9,7 +9,7 @@ using Domain.Primitives;
 
 namespace Domain.Abstractions
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserCommandRepository : ICommandRepository<User>
     {
 
     }

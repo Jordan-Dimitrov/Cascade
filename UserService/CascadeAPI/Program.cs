@@ -19,14 +19,20 @@ namespace CascadeAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<JwtTokenSettings>(builder.Configuration.GetSection("JwtTokenSettings"));
+            builder.Services.Configure<RefreshTokenSettings>(builder.Configuration
+                .GetSection("RefreshTokenSettings"));
 
             JwtTokenSettings? jwtTokenSettings = builder.Configuration
                 .GetSection("JwtTokenSettings")
                 .Get<JwtTokenSettings>();
 
+            RefreshTokenSettings? refreshTokenSettings = builder.Configuration
+                .GetSection("RefreshTokenSettings")
+                .Get<RefreshTokenSettings>();
+
             builder.Services
                 .AddApplication()
-                .AddInfrastructure(jwtTokenSettings)
+                .AddInfrastructure(jwtTokenSettings, refreshTokenSettings)
                 .AddPersistence(builder.Configuration.GetConnectionString("SDR"))
                 .AddPresentation();
 

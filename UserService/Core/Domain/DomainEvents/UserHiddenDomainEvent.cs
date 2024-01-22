@@ -7,8 +7,5 @@ using System.Threading.Tasks;
 
 namespace Domain.Events
 {
-    public sealed record UserHiddenDomainEvent(Guid UserId) : IDomainEvent
-    {
-
-    }
+    public sealed record UserHiddenDomainEvent(Guid UserId) : IDomainEvent;
 }

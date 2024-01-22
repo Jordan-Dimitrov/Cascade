@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    public sealed class UserRepository : IUserRepository
+    public sealed class UserCommandRepository : IUserCommandRepository
     {
         private readonly ApplicationDbContext _Context;
         private readonly IUnitOfWork _UnitOfWork;
-        public UserRepository(ApplicationDbContext context, IUnitOfWork unitOfWork) 
+        public UserCommandRepository(ApplicationDbContext context, IUnitOfWork unitOfWork) 
         {
             _Context = context;
             _UnitOfWork = unitOfWork;

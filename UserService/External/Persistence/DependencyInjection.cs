@@ -6,6 +6,7 @@ using Persistence.Repositories;
 using Microsoft.Data.SqlClient;
 using System.Globalization;
 using System.Data;
+using Dapper.FluentMap;
 namespace Persistence
 {
     public static class DependencyInjection
@@ -19,17 +20,10 @@ namespace Persistence
                 options.UseSqlServer(connectionString);
             });
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-
-            services.AddScoped<IDbConnection>(sp =>
-            {
-                var connection = new System.Data.SqlClient.SqlConnection(connectionString);
-
-                connection.Open();
-
-                return connection;
-            });
+            services.AddScoped<IUserCommandRepository, UserCommandRepository>();
+            services.AddScoped<IRefreshTokenCommandRepository, RefreshTokenCommandRepository>();
+            services.AddScoped<IUserQueryRepository, UserQueryRepository>();
+            services.AddScoped<IRefreshTokenQueryRepository, RefreshTokenqQueryRepository>();
 
             return services;
         }

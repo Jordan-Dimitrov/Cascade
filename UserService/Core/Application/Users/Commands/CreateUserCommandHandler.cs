@@ -13,23 +13,21 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands
 {
-    internal sealed class CreateMemberCommandHandler : IRequestHandler<CreateUserCommand>
+    internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     {
-        private readonly IUserRepository _UserRepository;
-        private readonly IUnitOfWork _UnitOfWork;
+        private readonly IUserCommandRepository _UserRepository;
         private readonly IAuthService _AuthService;
-        private readonly IRefreshTokenRepository _RefreshTokenRepository;
-        public CreateMemberCommandHandler(IUserRepository userRepository,
+        private readonly IRefreshTokenCommandRepository _RefreshTokenRepository;
+        public CreateUserCommandHandler(IUserCommandRepository userRepository,
             IUnitOfWork unitOfWork,
             IAuthService authService,
-            IRefreshTokenRepository refreshTokenRepository)
+            IRefreshTokenCommandRepository refreshTokenRepository)
         {
             _UserRepository = userRepository;
-            _UnitOfWork = unitOfWork;
             _AuthService = authService;
             _RefreshTokenRepository = refreshTokenRepository;
         }
-        public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             Username username = new Username(request.Username);
             UserPassword pass = _AuthService.CreatePasswordHash(request.Password);
@@ -39,11 +37,12 @@ namespace Application.Users.Commands
             User user = new User(new Username(request.Username), pass.PasswordHash, pass.PasswordSalt,
                 refreshToken, UserRole.User);
 
-            await _RefreshTokenRepository.InsertAsync(refreshToken);
-            await _UnitOfWork.SaveChangesAsync();
+            if(!await _RefreshTokenRepository.InsertAsync(refreshToken) || !await _UserRepository.InsertAsync(user))
+            {
+                throw new ApplicationException("Unexpected error");
+            }
 
-            await _UserRepository.InsertAsync(user);
-            await _UnitOfWork.SaveChangesAsync();
+            return user.Id;
         }
     }
 }

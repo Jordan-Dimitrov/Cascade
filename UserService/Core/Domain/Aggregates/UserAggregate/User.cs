@@ -87,7 +87,7 @@ namespace Domain.Aggregates.UserAggregate
             {
                 return _RefreshToken;
             }
-            private set
+            set
             {
                 if (value is null)
                 {

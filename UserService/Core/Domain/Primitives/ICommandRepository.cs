@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Primitives
 {
-    public interface IRepository<T> where T : class
+    public interface ICommandRepository<T> where T : class
     {
         Task<bool> InsertAsync(T value);
 

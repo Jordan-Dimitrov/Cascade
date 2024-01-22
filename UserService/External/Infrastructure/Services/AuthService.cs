@@ -61,8 +61,8 @@ namespace Infrastructure.Services
 
         public RefreshToken GenerateRefreshToken()
         {
-            RefreshToken refreshToken = new RefreshToken(new Token(Convert.ToBase64String(RandomNumberGenerator.GetBytes(64))),
-                new TokenDates(DateTime.UtcNow.AddDays(_RefreshTokenSettings.DaysExpiry), DateTime.UtcNow));
+            RefreshToken refreshToken = new RefreshToken(new Token(Convert.ToHexString(RandomNumberGenerator.GetBytes(32))),
+                new TokenDates(DateTime.UtcNow, DateTime.UtcNow.AddDays(_RefreshTokenSettings.DaysExpiry)));
 
             return refreshToken;
         }

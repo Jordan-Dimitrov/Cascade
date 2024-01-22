@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.ValueObjects
@@ -16,6 +17,11 @@ namespace Domain.ValueObjects
         public Username(string value)
         {
             Value = value;
+        }
+        [JsonConstructor]
+        private Username()
+        {
+
         }
         public string Value 
         {

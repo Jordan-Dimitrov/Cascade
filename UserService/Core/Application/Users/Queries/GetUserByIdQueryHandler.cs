@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using AutoMapper;
 using Dapper;
+using Domain.Abstractions;
 using Domain.Aggregates.UserAggregate;
 using Domain.Exceptions;
 using MediatR;
@@ -15,21 +16,17 @@ namespace Application.Users.Queries
 {
     internal sealed class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto>
     {
-        private readonly IDbConnection _DbConnection;
+        private readonly IUserQueryRepository _UserQueryRepository;
         private readonly IMapper _Mapper;
-        public GetUserByIdQueryHandler(IDbConnection dbConnection, IMapper mapper)
+        public GetUserByIdQueryHandler(IUserQueryRepository userQueryRepository, IMapper mapper)
         {
-            _DbConnection = dbConnection;
+            _UserQueryRepository = userQueryRepository;
             _Mapper = mapper;
         }
         public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            const string sql = @"SELECT * FROM dbo.[User] WHERE Id = @UserId";
-
-            UserDto user = await _DbConnection
-                .QueryFirstOrDefaultAsync<UserDto>(
-                sql,
-                new {request.UserId});
+            UserDto? user = _Mapper.Map<UserDto>(await _UserQueryRepository.
+                GetByIdAsync(request.UserId));
 
             if(user is null)
             {
