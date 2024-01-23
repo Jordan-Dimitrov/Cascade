@@ -1,5 +1,6 @@
 ﻿using Domain.Abstractions;
 using Domain.Aggregates.UserAggregate;
+using Domain.Entities;
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,7 +36,16 @@ namespace Persistence.Repositories
 
         public async Task<User?> GetUserByNameAsync(string username)
         {
-            return await _Context.Users.FirstOrDefaultAsync(x => x.Username.Value == username);
+            User? user = await _Context.Users.FromSql
+                ($"SELECT * FROM Users WHERE Username = {username}")
+                .FirstOrDefaultAsync();
+
+            if(user is not null)
+            {
+                await _Context.Entry(user).Reference(u => u.RefreshToken).LoadAsync();
+            }
+
+            return user;
         }
     }
 }

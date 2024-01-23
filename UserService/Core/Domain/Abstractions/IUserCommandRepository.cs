@@ -11,6 +11,6 @@ namespace Domain.Abstractions
 {
     public interface IUserCommandRepository : ICommandRepository<User>
     {
-
+        Task<bool> UpdateRefreshTokenAsync(User user);
     }
 }

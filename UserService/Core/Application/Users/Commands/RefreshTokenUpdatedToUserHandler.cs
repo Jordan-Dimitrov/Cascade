@@ -25,7 +25,17 @@ namespace Application.Users.Commands
         }
         public async Task Handle(RefreshTokenUpdatedToUser notification, CancellationToken cancellationToken)
         {
-            if (!await _UserRepository.UpdateAsync(notification.User))
+
+            RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
+
+            if(!await _RefreshTokenRepository.InsertAsync(refreshToken))
+            {
+                throw new ApplicationException("Unexpected error");
+            }
+
+            notification.User.RefreshToken = refreshToken;
+
+            if (!await _UserRepository.UpdateRefreshTokenAsync(notification.User))
             {
                 throw new ApplicationException("Unexpected error");
             }

@@ -21,7 +21,7 @@ namespace Persistence.Repositories
 
         public async Task<bool> DeleteAsync(RefreshToken value)
         {
-            await Task.Run(() => _Context.Remove(value));
+            _Context.Remove(value);
 
             return await _UnitOfWork.SaveChangesAsync() > 0;
         }
@@ -35,7 +35,7 @@ namespace Persistence.Repositories
 
         public async Task<bool> UpdateAsync(RefreshToken value)
         {
-            await Task.Run(() => _Context.Update(value));
+            _Context.Update(value);
 
             return await _UnitOfWork.SaveChangesAsync() > 0;
         }

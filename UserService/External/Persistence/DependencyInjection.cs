@@ -13,12 +13,12 @@ namespace Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, string connectionString)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(connectionString);
             });
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IUserCommandRepository, UserCommandRepository>();
             services.AddScoped<IRefreshTokenCommandRepository, RefreshTokenCommandRepository>();

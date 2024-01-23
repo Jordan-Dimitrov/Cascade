@@ -43,9 +43,6 @@ namespace Application.Users.Queries
             }
 
             string token = _AuthService.GenerateJwtToken(user);
-            RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
-
-            user.RefreshToken = refreshToken;
 
             await _Mediator.Publish(new RefreshTokenUpdatedToUser(user, token));
         }
