@@ -10,7 +10,6 @@ namespace Domain.ValueObjects
 {
     public sealed class TokenDates : ValueObject
     {
-        private DateTime _MinDate = DateTime.UtcNow;
         private DateTime _TokenCreated;
         private DateTime _TokenExpires;
         public TokenDates(DateTime tokenCreated, DateTime tokenExpires)
@@ -26,12 +25,7 @@ namespace Domain.ValueObjects
             }
             private set
             {
-                if (value < _MinDate)
-                {
-                    throw new DomainValidationException("Cannot expire before current day ");
-                }
                 _TokenExpires = value;
-
             }
         }
         public DateTime TokenCreated

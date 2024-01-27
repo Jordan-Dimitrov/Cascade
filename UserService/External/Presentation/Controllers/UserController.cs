@@ -47,7 +47,7 @@ namespace Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] CreateUserDto user, CancellationToken cancellationToken)
         {
-            var command = new GetUserByUsernameQuery(user.Username);
+            var command = new LoginUserCommand(user.Username, user.Password);
 
             await _Sender.Send(command, cancellationToken);
 

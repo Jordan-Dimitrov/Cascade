@@ -78,7 +78,6 @@ namespace Domain.Aggregates.UserAggregate
 
             return this;
         }
-
         public byte[] PasswordHash { get; private set; } = null!;
         public byte[] PasswordSalt { get; private set; } = null!;
         public RefreshToken RefreshToken

@@ -16,37 +16,25 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Queries
 {
-    internal sealed class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery>
+    internal sealed class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery, User>
     {
         private readonly IUserQueryRepository _UserQueryRepository;
-        private readonly IAuthService _AuthService;
         private readonly IMapper _Mapper;
-        private readonly IMediator _Mediator;
         public GetUserByUsernameQueryHandler(IUserQueryRepository userQueryRepository,
             IAuthService authService,
             IMapper mapper,
             IMediator mediator)
         {
             _UserQueryRepository = userQueryRepository;
-            _AuthService = authService;
             _Mapper = mapper;
-            _Mediator = mediator;
         }
 
-        public async Task Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
+        public async Task<User> Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
         {
-            User? user = await _UserQueryRepository.GetUserByNameAsync(request.Username);
-                
-            if (user is null)
-            {
-                throw new EntityNotFoundException(typeof(User));
-            }
-
-            string token = _AuthService.GenerateJwtToken(user);
-
-            user.HideUserDetails();
-
-            await _Mediator.Publish(new RefreshTokenUpdatedToUser(user, token));
+            User? user = _Mapper.Map<User>
+                (await _UserQueryRepository.GetUserByNameAsync(request.Username));
+               
+            return user;
         }
     }
 }

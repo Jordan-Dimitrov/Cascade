@@ -10,5 +10,5 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Queries
 {
-    public sealed record GetUserByUsernameQuery(string Username) : IRequest;
+    public sealed record GetUserByUsernameQuery(string Username) : IRequest<User>;
 }

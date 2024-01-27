@@ -1,6 +1,8 @@
-﻿using Domain.Abstractions;
+﻿using Application.Users.Queries;
+using Domain.Abstractions;
 using Domain.Aggregates.UserAggregate;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.ValueObjects;
 using Domain.Wrappers;
 using MediatR;
@@ -18,26 +20,36 @@ namespace Application.Users.Commands
         private readonly IUserCommandRepository _UserRepository;
         private readonly IAuthService _AuthService;
         private readonly IRefreshTokenCommandRepository _RefreshTokenRepository;
+        private readonly ISender _Sender;
         public CreateUserCommandHandler(IUserCommandRepository userRepository,
-            IUnitOfWork unitOfWork,
+            ISender sender,
             IAuthService authService,
             IRefreshTokenCommandRepository refreshTokenRepository)
         {
             _UserRepository = userRepository;
             _AuthService = authService;
             _RefreshTokenRepository = refreshTokenRepository;
+            _Sender = sender;
         }
         public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            Username username = new Username(request.Username);
+            User user = await _Sender.Send(new GetUserByUsernameQuery(request.Username));
+
+            if(user is not null)
+            {
+                throw new ApplicationException("Username already exists");
+            }
+
             UserPassword pass = _AuthService.CreatePasswordHash(request.Password);
             Token token = new Token(_AuthService.CreateRandomToken());
             TokenDates dates = new TokenDates(DateTime.UtcNow, DateTime.UtcNow.AddDays(3));
+
             RefreshToken refreshToken = new RefreshToken(token, dates);
-            User user = new User(new Username(request.Username), pass.PasswordHash, pass.PasswordSalt,
+            user = new User(new Username(request.Username), pass.PasswordHash, pass.PasswordSalt,
                 refreshToken, UserRole.User);
 
-            if(!await _RefreshTokenRepository.InsertAsync(refreshToken) || !await _UserRepository.InsertAsync(user))
+            if(!await _RefreshTokenRepository.InsertAsync(refreshToken) 
+                || !await _UserRepository.InsertAsync(user))
             {
                 throw new ApplicationException("Unexpected error");
             }
