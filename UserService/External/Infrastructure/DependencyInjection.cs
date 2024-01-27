@@ -1,9 +1,11 @@
 ﻿using Domain.Abstractions;
 using Domain.Wrappers;
+using Infrastructure.BackgroundJobs;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Quartz;
 using System.Text;
 
 namespace Infrastructure
@@ -58,6 +60,20 @@ namespace Infrastructure
             });
 
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddQuartz(configure =>
+            {
+                var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+
+                configure.AddJob<ProcessOutboxMessagesJob>(jobKey)
+                    .AddTrigger(trigger => trigger.ForJob(jobKey)
+                    .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10)
+                    .RepeatForever()));
+
+                configure.UseMicrosoftDependencyInjectionJobFactory();
+            });
+
+            services.AddQuartzHostedService();
 
             return services;
         }

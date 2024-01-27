@@ -44,6 +44,8 @@ namespace Application.Users.Queries
 
             string token = _AuthService.GenerateJwtToken(user);
 
+            user.HideUserDetails();
+
             await _Mediator.Publish(new RefreshTokenUpdatedToUser(user, token));
         }
     }

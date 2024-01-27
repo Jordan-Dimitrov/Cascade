@@ -28,7 +28,7 @@ namespace Domain.Entities
         }
         public void Invalidate()
         {
-            _TokenDates = new TokenDates(DateTime.Today, DateTime.Today);
+            
         }
         public Token Token
         {

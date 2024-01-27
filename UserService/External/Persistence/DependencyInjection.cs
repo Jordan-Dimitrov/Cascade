@@ -7,16 +7,23 @@ using Microsoft.Data.SqlClient;
 using System.Globalization;
 using System.Data;
 using Dapper.FluentMap;
+using Persistence.Interceptors;
 namespace Persistence
 {
     public static class DependencyInjection
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString);
-            });
+            services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+
+            services.AddDbContext<ApplicationDbContext>(
+                (sp, options) =>
+                {
+                    var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
+
+                    options.UseSqlServer(connectionString)
+                    .AddInterceptors(interceptor);
+                });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
