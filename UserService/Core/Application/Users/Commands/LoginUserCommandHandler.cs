@@ -18,13 +18,17 @@ namespace Application.Users.Commands
         private readonly ISender _Sender;
         private readonly IAuthService _AuthService;
         private readonly IRefreshTokenCommandRepository _RefreshTokenCommandRepository;
+        private readonly IUnitOfWork _UnitOfWork;
         public LoginUserCommandHandler(ISender sender, IAuthService authService,
-            IUserCommandRepository userCommandRepository, IRefreshTokenCommandRepository refreshTokenCommandRepository)
+            IUserCommandRepository userCommandRepository,
+            IRefreshTokenCommandRepository refreshTokenCommandRepository,
+            IUnitOfWork unitOfWork)
         {
             _Sender = sender;
             _AuthService = authService;
             _UserCommandRepository = userCommandRepository;
             _RefreshTokenCommandRepository = refreshTokenCommandRepository;
+            _UnitOfWork = unitOfWork;
         }
         public async Task Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
@@ -42,21 +46,15 @@ namespace Application.Users.Commands
 
             RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
 
-            if (!await _RefreshTokenCommandRepository.InsertAsync(refreshToken))
-            {
-                throw new ApplicationException("Unexpected error");
-            }
+            await _RefreshTokenCommandRepository.InsertAsync(refreshToken);
 
             RefreshToken token = user.RefreshToken;
-
             user.RefreshToken = refreshToken;
 
-            if (!await _UserCommandRepository.UpdateRefreshTokenAsync(user))
-            {
-                throw new ApplicationException("Unexpected error");
-            }
+            await _UserCommandRepository.UpdateRefreshTokenAsync(user);
+            await _RefreshTokenCommandRepository.DeleteAsync(token);
 
-            if (!await _RefreshTokenCommandRepository.DeleteAsync(token))
+            if (await _UnitOfWork.SaveChangesAsync() <= 0)
             {
                 throw new ApplicationException("Unexpected error");
             }

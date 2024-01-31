@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.ValueObjects
@@ -15,7 +16,23 @@ namespace Domain.ValueObjects
         public TokenDates(DateTime tokenCreated, DateTime tokenExpires)
         {
             TokenCreated = tokenCreated;
-            TokenExpires = tokenExpires;
+            SetTokenExpires(tokenExpires);
+        }
+
+        private void SetTokenExpires(DateTime expires)
+        {
+            if (expires < DateTime.UtcNow)
+            {
+                throw new DomainValidationException("Cannot expire before current day");
+            }
+
+            _TokenExpires = expires;
+        }
+
+        [JsonConstructor]
+        public TokenDates()
+        {
+
         }
         public DateTime TokenExpires
         {

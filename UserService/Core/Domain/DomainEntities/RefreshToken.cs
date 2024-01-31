@@ -49,7 +49,7 @@ namespace Domain.Entities
             }
             private set
             {
-                _TokenDates = value ?? throw new DomainValidationException("The name cannot be null");
+                _TokenDates = value ?? throw new DomainValidationException("The dates cannot be null");
             }
         }
     }

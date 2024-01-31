@@ -9,10 +9,10 @@ namespace Domain.Primitives
 {
     public interface ICommandRepository<T> where T : class
     {
-        Task<bool> InsertAsync(T value);
+        Task InsertAsync(T value);
 
-        Task<bool> UpdateAsync(T value);
+        Task UpdateAsync(T value);
 
-        Task<bool> DeleteAsync(T value);
+        Task DeleteAsync(T value);
     }
 }

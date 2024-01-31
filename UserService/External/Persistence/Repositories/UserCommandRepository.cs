@@ -21,30 +21,24 @@ namespace Persistence.Repositories
             _UnitOfWork = unitOfWork;
         }
 
-        public async Task<bool> DeleteAsync(User value)
+        public async Task DeleteAsync(User value)
         {
-            _Context.Remove(value);
-
-            return await _UnitOfWork.SaveChangesAsync() > 0;
+            await Task.Run(() => _Context.Remove(value));
         }
 
-        public async Task<bool> InsertAsync(User value)
+        public async Task InsertAsync(User value)
         {
             await _Context.AddAsync(value);
-
-            return await _UnitOfWork.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> UpdateAsync(User value)
+        public async Task UpdateAsync(User value)
         {
-            _Context.Update(value);
-
-            return await _UnitOfWork.SaveChangesAsync() > 0;
+            await Task.Run(() => _Context.Update(value));
         }
-        public async Task<bool> UpdateRefreshTokenAsync(User value)
+        public async Task UpdateRefreshTokenAsync(User value)
         {
-            _Context.Users.FromSql($"UPDATE Users SET RefreshTokenId = {value.RefreshTokenId} WHERE Id = {value.Id};");
-            return await _UnitOfWork.SaveChangesAsync() > 0;
+            await Task.Run(() => _Context.Users
+                .FromSql($"UPDATE Users SET RefreshTokenId = {value.RefreshTokenId} WHERE Id = {value.Id};"));
         }
     }
 }

@@ -21,7 +21,8 @@ namespace Application
 
             CreateMap<UserDto, User>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => new Username(src.Username)))
-                .ForMember(dest => dest.PermissionType, opt => opt.MapFrom(src => src.PermissionType));
+                .ForMember(dest => dest.PermissionType, opt => opt.MapFrom(src => src.PermissionType))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

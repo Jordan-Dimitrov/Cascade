@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Persistence;
 using Persistence.Outbox;
+using Polly;
+using Polly.Retry;
 using Quartz;
 using System;
 using System.Collections.Generic;
@@ -41,8 +43,16 @@ namespace Infrastructure.BackgroundJobs
                     continue;
                 }
 
-                await _Publisher.Publish(domainEvent, context.CancellationToken);
+                AsyncRetryPolicy policy = Policy
+                    .Handle<Exception>()
+                    .RetryAsync(3);
 
+                PolicyResult result = await policy.ExecuteAndCaptureAsync(() =>
+                    _Publisher
+                    .Publish(domainEvent,
+                    context.CancellationToken));
+
+                message.Error = result.FinalException?.ToString();
                 message.ProcessedOnUtc = DateTime.UtcNow;
             }
 

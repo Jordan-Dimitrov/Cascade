@@ -21,15 +21,18 @@ namespace Application.Users.Commands
         private readonly IAuthService _AuthService;
         private readonly IRefreshTokenCommandRepository _RefreshTokenRepository;
         private readonly ISender _Sender;
+        private readonly IUnitOfWork _UnitOfWork;
         public CreateUserCommandHandler(IUserCommandRepository userRepository,
             ISender sender,
             IAuthService authService,
-            IRefreshTokenCommandRepository refreshTokenRepository)
+            IRefreshTokenCommandRepository refreshTokenRepository,
+            IUnitOfWork unitOfWork)
         {
             _UserRepository = userRepository;
             _AuthService = authService;
             _RefreshTokenRepository = refreshTokenRepository;
             _Sender = sender;
+            _UnitOfWork = unitOfWork;
         }
         public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -48,8 +51,10 @@ namespace Application.Users.Commands
             user = new User(new Username(request.Username), pass.PasswordHash, pass.PasswordSalt,
                 refreshToken, UserRole.User);
 
-            if(!await _RefreshTokenRepository.InsertAsync(refreshToken) 
-                || !await _UserRepository.InsertAsync(user))
+            await _RefreshTokenRepository.InsertAsync(refreshToken);
+            await _UserRepository.InsertAsync(user);
+
+            if (await _UnitOfWork.SaveChangesAsync() <= 0)
             {
                 throw new ApplicationException("Unexpected error");
             }
