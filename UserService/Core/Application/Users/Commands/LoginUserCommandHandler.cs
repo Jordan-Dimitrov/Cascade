@@ -17,17 +17,14 @@ namespace Application.Users.Commands
         private readonly IUserCommandRepository _UserCommandRepository;
         private readonly ISender _Sender;
         private readonly IAuthService _AuthService;
-        private readonly IRefreshTokenCommandRepository _RefreshTokenCommandRepository;
         private readonly IUnitOfWork _UnitOfWork;
         public LoginUserCommandHandler(ISender sender, IAuthService authService,
             IUserCommandRepository userCommandRepository,
-            IRefreshTokenCommandRepository refreshTokenCommandRepository,
             IUnitOfWork unitOfWork)
         {
             _Sender = sender;
             _AuthService = authService;
             _UserCommandRepository = userCommandRepository;
-            _RefreshTokenCommandRepository = refreshTokenCommandRepository;
             _UnitOfWork = unitOfWork;
         }
         public async Task Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -46,13 +43,11 @@ namespace Application.Users.Commands
 
             RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
 
-            await _RefreshTokenCommandRepository.InsertAsync(refreshToken);
-
             RefreshToken token = user.RefreshToken;
             user.RefreshToken = refreshToken;
 
             await _UserCommandRepository.UpdateRefreshTokenAsync(user);
-            await _RefreshTokenCommandRepository.DeleteAsync(token);
+            await _UserCommandRepository.RemoveOldRefreshTokenAsync(token);
 
             if (await _UnitOfWork.SaveChangesAsync() <= 0)
             {

@@ -28,9 +28,7 @@ namespace Persistence
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IUserCommandRepository, UserCommandRepository>();
-            services.AddScoped<IRefreshTokenCommandRepository, RefreshTokenCommandRepository>();
             services.AddScoped<IUserQueryRepository, UserQueryRepository>();
-            services.AddScoped<IRefreshTokenQueryRepository, RefreshTokenqQueryRepository>();
 
             return services;
         }

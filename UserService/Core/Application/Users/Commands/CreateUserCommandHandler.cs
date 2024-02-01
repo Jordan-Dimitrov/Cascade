@@ -19,18 +19,15 @@ namespace Application.Users.Commands
     {
         private readonly IUserCommandRepository _UserRepository;
         private readonly IAuthService _AuthService;
-        private readonly IRefreshTokenCommandRepository _RefreshTokenRepository;
         private readonly ISender _Sender;
         private readonly IUnitOfWork _UnitOfWork;
         public CreateUserCommandHandler(IUserCommandRepository userRepository,
             ISender sender,
             IAuthService authService,
-            IRefreshTokenCommandRepository refreshTokenRepository,
             IUnitOfWork unitOfWork)
         {
             _UserRepository = userRepository;
             _AuthService = authService;
-            _RefreshTokenRepository = refreshTokenRepository;
             _Sender = sender;
             _UnitOfWork = unitOfWork;
         }
@@ -47,11 +44,9 @@ namespace Application.Users.Commands
             Token token = new Token(_AuthService.CreateRandomToken());
             TokenDates dates = new TokenDates(DateTime.UtcNow, DateTime.UtcNow.AddDays(3));
 
-            RefreshToken refreshToken = new RefreshToken(token, dates);
-            user = new User(new Username(request.Username), pass.PasswordHash, pass.PasswordSalt,
-                refreshToken, UserRole.User);
+            user = User.CreateUser(request.Username, pass.PasswordHash, pass.PasswordSalt,
+                new RefreshToken(token, dates), UserRole.User);
 
-            await _RefreshTokenRepository.InsertAsync(refreshToken);
             await _UserRepository.InsertAsync(user);
 
             if (await _UnitOfWork.SaveChangesAsync() <= 0)

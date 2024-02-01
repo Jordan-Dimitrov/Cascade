@@ -1,5 +1,6 @@
 ﻿using Domain.Abstractions;
 using Domain.Aggregates.UserAggregate;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;
@@ -37,8 +38,14 @@ namespace Persistence.Repositories
         }
         public async Task UpdateRefreshTokenAsync(User value)
         {
+            await _Context.RefreshTokens.AddAsync(value.RefreshToken);
             await Task.Run(() => _Context.Users
                 .FromSql($"UPDATE Users SET RefreshTokenId = {value.RefreshTokenId} WHERE Id = {value.Id};"));
+        }
+
+        public async Task RemoveOldRefreshTokenAsync(RefreshToken refreshToken)
+        {
+            await Task.Run(() => _Context.RefreshTokens.Remove(refreshToken));
         }
     }
 }

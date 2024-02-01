@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using Domain.Abstractions;
+using Domain.DomainEvents;
+using Domain.Entities;
 using Domain.Events;
 using Domain.Exceptions;
 using Domain.Primitives;
@@ -22,10 +24,9 @@ namespace Domain.Aggregates.UserAggregate
     {
         private const string _HiddenUsername = "Hidden";
         private byte[] _HiddenPassword = new byte[4];
-
         private Username _Username;
         private RefreshToken _RefreshToken;
-        public User(Username username,
+        private User(Username username,
             byte[] passwordHash, byte[] passwordSalt,
             RefreshToken refreshToken, UserRole permissionType)
         {
@@ -43,6 +44,18 @@ namespace Domain.Aggregates.UserAggregate
 
         }
 
+        public static User CreateUser(string username,
+            byte[] passwordHash,
+            byte[] passwordSalt,
+            RefreshToken refreshToken,
+            UserRole userRole)
+        {
+            User user = new User(new Username(username), passwordHash, passwordSalt, refreshToken, userRole);
+
+            user.RaiseDomainEvent(new UserCreatedDomainEvent(user));
+
+            return user;
+        }
         public Username Username
         {
             get
