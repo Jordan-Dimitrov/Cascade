@@ -1,6 +1,7 @@
 ﻿using Domain.Abstractions;
 using Domain.Aggregates.UserAggregate;
 using Domain.Entities;
+using Domain.RequestFeatures;
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,15 +25,21 @@ namespace Persistence.Repositories
             return await _Context.Users.AnyAsync(condition);
         }
 
-        public async Task<ICollection<User>> GetAllAsync()
+        public async Task<ICollection<User>> GetAllAsync(bool trackChanges)
         {
-            return await _Context.Users.ToListAsync();
+            var query = _Context.Users;
+
+            return await (trackChanges ? query.ToListAsync() : query.AsNoTracking().ToListAsync());
         }
 
-        public async Task<User?> GetByIdAsync(Guid id)
+
+        public async Task<User?> GetByIdAsync(Guid id, bool trackChanges)
         {
-            return await _Context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var query = _Context.Users.Where(x => x.Id == id);
+
+            return await (trackChanges ? query.FirstOrDefaultAsync() : query.AsNoTracking().FirstOrDefaultAsync());
         }
+
 
         public async Task<User?> GetUserByNameAsync(string username)
         {
@@ -47,5 +54,15 @@ namespace Persistence.Repositories
 
             return user;
         }
+
+        public async Task<ICollection<User>> GetUsersWithPaginationAsync(RequestParameters userParameters, bool trackChanges)
+        {
+            var query = _Context.Users.OrderBy(x => x.Username)
+                    .Skip((userParameters.PageNumber - 1) * userParameters.PageSize)
+                    .Take(userParameters.PageSize);
+
+            return await (trackChanges ? query.ToListAsync() : query.AsNoTracking().ToListAsync());
+        }
+
     }
 }

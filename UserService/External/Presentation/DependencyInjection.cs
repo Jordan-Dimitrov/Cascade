@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
+﻿using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 namespace Presentation
 {
@@ -8,8 +10,41 @@ namespace Presentation
         {
             var assembly = typeof(DependencyInjection).Assembly;
 
-            services.AddControllers()
-                .PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
+            services.AddControllers(options =>
+            {
+                options.CacheProfiles.Add("Default",
+                    new CacheProfile()
+                    {
+                        Duration = 10
+                    });
+                options.RespectBrowserAcceptHeader = true;
+                options.ReturnHttpNotAcceptable = true;
+
+            }).PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
+
+            services.AddMemoryCache();
+
+            var rateLimitRules = new List<RateLimitRule>
+                {
+                new RateLimitRule
+                    {
+                        Endpoint = "*",
+                        Limit = 3,
+                        Period = "5m"
+                    }
+                };
+
+            services.Configure<IpRateLimitOptions>(opt => {
+                opt.GeneralRules = rateLimitRules;
+            });
+            services.AddSingleton<IRateLimitCounterStore,
+            MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+
+            services.AddHttpContextAccessor();
+
             return services;
         }
     }

@@ -9,9 +9,9 @@ namespace Domain.Primitives
 {
     public interface IQueryRepository<T> where T : class
     {
-        Task<T?> GetByIdAsync(Guid id);
+        Task<T?> GetByIdAsync(Guid id, bool trackChanges);
 
         Task<bool> ExistsAsync(Expression<Func<T, bool>> condition);
-        Task<ICollection<T>> GetAllAsync();
+        Task<ICollection<T>> GetAllAsync(bool trackChanges);
     }
 }

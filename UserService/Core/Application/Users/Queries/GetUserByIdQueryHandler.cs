@@ -26,7 +26,7 @@ namespace Application.Users.Queries
         public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             UserDto? user = _Mapper.Map<UserDto>(await _UserQueryRepository.
-                GetByIdAsync(request.UserId));
+                GetByIdAsync(request.UserId, true));
 
             if(user is null)
             {

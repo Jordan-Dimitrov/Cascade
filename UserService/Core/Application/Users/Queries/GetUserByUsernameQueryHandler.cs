@@ -21,9 +21,7 @@ namespace Application.Users.Queries
         private readonly IUserQueryRepository _UserQueryRepository;
         private readonly IMapper _Mapper;
         public GetUserByUsernameQueryHandler(IUserQueryRepository userQueryRepository,
-            IAuthService authService,
-            IMapper mapper,
-            IMediator mediator)
+            IMapper mapper)
         {
             _UserQueryRepository = userQueryRepository;
             _Mapper = mapper;

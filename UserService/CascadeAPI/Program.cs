@@ -1,6 +1,10 @@
 using Application;
+using AspNetCoreRateLimit;
+using CascadeAPI.Middlewares;
 using Domain.Wrappers;
+using HealthChecks.UI.Client;
 using Infrastructure;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Persistence;
 using Presentation;
@@ -36,11 +40,32 @@ namespace CascadeAPI
                 .AddPersistence(builder.Configuration.GetConnectionString("SDR"))
                 .AddPresentation();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin", builder =>
+                {
+                    builder.WithOrigins("http://localhost:5173")
+                           .AllowAnyHeader()
+                           .AllowCredentials()
+                           .AllowAnyMethod();
+                });
+            });
+
+            builder.Services.AddHealthChecks();
+
+            builder.Services.AddResponseCaching(options =>
+            {
+                options.MaximumBodySize = 1024;
+                options.UseCaseSensitivePaths = true;
+            });
+
             builder.Host.UseSerilog((context, configuration) =>
                 configuration.ReadFrom.Configuration(context.Configuration)
                 .WriteTo.Console());
 
             var app = builder.Build();
+
+            app.MapHealthChecks("/health");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -53,8 +78,13 @@ namespace CascadeAPI
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseResponseCaching();
 
+            app.UseIpRateLimiting();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            app.UseAuthorization();
 
             app.MapControllers();
 
