@@ -30,12 +30,10 @@ namespace Persistence.Migrations
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(2147483647)
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
-                        .HasMaxLength(2147483647)
                         .HasColumnType("varbinary(max)");
 
                     b.Property<int>("PermissionType")

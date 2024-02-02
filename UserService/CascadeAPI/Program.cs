@@ -47,7 +47,8 @@ namespace CascadeAPI
                     builder.WithOrigins("http://localhost:5173")
                            .AllowAnyHeader()
                            .AllowCredentials()
-                           .AllowAnyMethod();
+                           .AllowAnyMethod()
+                           .WithExposedHeaders("X-Pagination");
                 });
             });
 
@@ -82,7 +83,7 @@ namespace CascadeAPI
 
             app.UseIpRateLimiting();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthorization();
 

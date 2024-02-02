@@ -12,6 +12,7 @@ namespace Domain.Abstractions
     public interface IUserQueryRepository : IQueryRepository<User>
     {
         Task<User?> GetUserByNameAsync(string username);
-        Task<ICollection<User>> GetUsersWithPaginationAsync(RequestParameters userParameters, bool trackChanges);
+        Task<PagedList<User>> GetUsersWithPaginationAsync(UserParameters userParameters, bool trackChanges);
+        Task<User?> GetUserByRefreshTokenAsync(string refreshToken);
     }
 }

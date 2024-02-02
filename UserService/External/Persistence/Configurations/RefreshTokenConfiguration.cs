@@ -15,10 +15,6 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
-            builder.HasKey(x => x.Id);
-
-            builder.Property(x => x.Id);
-
             builder.Property(x => x.Token).HasConversion(
             x => x.Value,
             value => new Token(value));

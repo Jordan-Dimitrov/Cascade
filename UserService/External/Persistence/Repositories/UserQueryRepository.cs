@@ -55,13 +55,30 @@ namespace Persistence.Repositories
             return user;
         }
 
-        public async Task<ICollection<User>> GetUsersWithPaginationAsync(RequestParameters userParameters, bool trackChanges)
+        public async Task<User?> GetUserByRefreshTokenAsync(string refreshToken)
         {
-            var query = _Context.Users.OrderBy(x => x.Username)
-                    .Skip((userParameters.PageNumber - 1) * userParameters.PageSize)
-                    .Take(userParameters.PageSize);
+            if (refreshToken is null)
+            {
+                return null;
+            }
 
-            return await (trackChanges ? query.ToListAsync() : query.AsNoTracking().ToListAsync());
+            User? user = await _Context.Users.Where(x => x.RefreshToken.Token == new Token(refreshToken)).FirstOrDefaultAsync();
+
+            if (user is not null)
+            {
+                await _Context.Entry(user).Reference(u => u.RefreshToken).LoadAsync();
+            }
+
+            return user;
+        }
+
+        public async Task<PagedList<User>> GetUsersWithPaginationAsync(UserParameters userParameters, bool trackChanges)
+        {
+            var query = _Context.Users.OrderBy(x => x.Username);
+
+            var users = await (trackChanges ? query.ToListAsync() : query.AsNoTracking().ToListAsync());
+
+            return PagedList<User>.ToPagedList(users, userParameters.PageNumber, userParameters.PageSize);
         }
 
     }

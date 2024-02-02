@@ -17,20 +17,9 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(x => x.Id);
-
-            builder.Property(x => x.Id);
-
             builder.Property(x => x.Username).HasConversion(
                 username => username.Value,
                 value => new Username(value));
-            
-            builder.Property(x => x.PasswordHash).HasMaxLength(int.MaxValue);
-            builder.Property(x => x.PasswordSalt).HasMaxLength(int.MaxValue);
-
-            builder.Property(x => x.PermissionType)
-            .HasConversion<int>()
-            .IsRequired();
         }
     }
 }

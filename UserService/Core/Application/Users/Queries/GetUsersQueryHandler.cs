@@ -1,6 +1,8 @@
 ﻿using Application.Dtos;
 using AutoMapper;
 using Domain.Abstractions;
+using Domain.Aggregates.UserAggregate;
+using Domain.RequestFeatures;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Queries
 {
-    internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, List<UserDto>>
+    internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, (IEnumerable<UserDto> users, MetaData metaData)>
     {
         private readonly IUserQueryRepository _UserQueryRepository;
         private readonly IMapper _Mapper;
@@ -20,12 +22,15 @@ namespace Application.Users.Queries
             _UserQueryRepository = userQueryRepository;
             _Mapper = mapper;
         }
-        public async Task<List<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
-        {
-            List<UserDto> users = _Mapper.Map<List<UserDto>>(await _UserQueryRepository
-                .GetUsersWithPaginationAsync(request.RequestParameters, false));
 
-            return users;
+        public async Task<(IEnumerable<UserDto> users, MetaData metaData)> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+        {
+            PagedList<User> users = await _UserQueryRepository
+                .GetUsersWithPaginationAsync(request.RequestParameters, false);
+
+            IEnumerable<UserDto> usersDto = _Mapper.Map<IEnumerable<UserDto>>(users);
+
+            return (users: usersDto, metaData: users.MetaData);
         }
     }
 }

@@ -17,8 +17,6 @@ namespace Presentation
                     {
                         Duration = 10
                     });
-                options.RespectBrowserAcceptHeader = true;
-                options.ReturnHttpNotAcceptable = true;
 
             }).PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
 
@@ -29,8 +27,8 @@ namespace Presentation
                 new RateLimitRule
                     {
                         Endpoint = "*",
-                        Limit = 3,
-                        Period = "5m"
+                        Limit = 30,
+                        Period = "1m"
                     }
                 };
 

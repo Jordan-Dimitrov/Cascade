@@ -16,21 +16,18 @@ namespace Domain.ValueObjects
         public TokenDates(DateTime tokenCreated, DateTime tokenExpires)
         {
             TokenCreated = tokenCreated;
-            SetTokenExpires(tokenExpires);
+            TokenExpires = tokenExpires;
         }
-
-        private void SetTokenExpires(DateTime expires)
+        public void CheckTokenDates()
         {
-            if (expires < DateTime.UtcNow)
+            if (_TokenExpires < DateTime.UtcNow)
             {
                 throw new DomainValidationException("Cannot expire before current day");
             }
-
-            _TokenExpires = expires;
         }
 
         [JsonConstructor]
-        public TokenDates()
+        private TokenDates()
         {
 
         }

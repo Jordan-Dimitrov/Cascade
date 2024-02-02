@@ -39,8 +39,7 @@ namespace Persistence.Repositories
         public async Task UpdateRefreshTokenAsync(User value)
         {
             await _Context.RefreshTokens.AddAsync(value.RefreshToken);
-            await Task.Run(() => _Context.Users
-                .FromSql($"UPDATE Users SET RefreshTokenId = {value.RefreshTokenId} WHERE Id = {value.Id};"));
+            await Task.Run(() => _Context.Users.Update(value));
         }
 
         public async Task RemoveOldRefreshTokenAsync(RefreshToken refreshToken)

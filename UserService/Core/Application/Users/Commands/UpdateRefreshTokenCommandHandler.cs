@@ -1,8 +1,6 @@
-﻿using Application.Users.Queries;
-using Domain.Abstractions;
+﻿using Domain.Abstractions;
 using Domain.Aggregates.UserAggregate;
 using Domain.Entities;
-using Domain.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,34 +10,32 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands
 {
-    internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand>
+    internal sealed class UpdateRefreshTokenCommandHandler : IRequestHandler<UpdateRefreshTokenCommand>
     {
         private readonly IUserCommandRepository _UserCommandRepository;
+        private readonly IUserQueryRepository _UserQueryRepository;
         private readonly IAuthService _AuthService;
         private readonly IUnitOfWork _UnitOfWork;
-        private readonly IUserQueryRepository _UserQueryRepository;
-        public LoginUserCommandHandler(ISender sender, IAuthService authService,
+        public UpdateRefreshTokenCommandHandler(IUserQueryRepository userQueryRepository,
             IUserCommandRepository userCommandRepository,
-            IUnitOfWork unitOfWork, IUserQueryRepository userQueryRepository)
+            IAuthService authService,
+            IUnitOfWork unitOfWork)
         {
-            _AuthService = authService;
-            _UserCommandRepository = userCommandRepository;
-            _UnitOfWork = unitOfWork;
             _UserQueryRepository = userQueryRepository;
+            _UserCommandRepository = userCommandRepository;
+            _AuthService = authService;
+            _UnitOfWork = unitOfWork;
         }
-        public async Task Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateRefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            User? user = await _UserQueryRepository.GetUserByNameAsync(request.Username);
+            User? user = await _UserQueryRepository.GetUserByRefreshTokenAsync(request.RefreshToken);
 
             if (user is null)
             {
-                throw new ApplicationException("User not found");
+                throw new ApplicationException("Invalid Refresh Token.");
             }
 
-            if (!_AuthService.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
-            {
-                throw new ApplicationException("Passwords do not match");
-            }
+            user.RefreshToken.TokenDates.CheckTokenDates();
 
             RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
 

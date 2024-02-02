@@ -19,33 +19,30 @@ namespace Application.Users.Commands
     {
         private readonly IUserCommandRepository _UserRepository;
         private readonly IAuthService _AuthService;
-        private readonly ISender _Sender;
         private readonly IUnitOfWork _UnitOfWork;
+        private readonly IUserQueryRepository _UserQueryRepository;
         public CreateUserCommandHandler(IUserCommandRepository userRepository,
-            ISender sender,
             IAuthService authService,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IUserQueryRepository userQueryRepository)
         {
             _UserRepository = userRepository;
             _AuthService = authService;
-            _Sender = sender;
             _UnitOfWork = unitOfWork;
+            _UserQueryRepository = userQueryRepository;
         }
         public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            User user = await _Sender.Send(new GetUserByUsernameQuery(request.Username));
-
-            if(user is not null)
+            if (await _UserQueryRepository.ExistsAsync(x => x.Username == new Username(request.Username)))
             {
                 throw new ApplicationException("Username already exists");
             }
 
             UserPassword pass = _AuthService.CreatePasswordHash(request.Password);
             Token token = new Token(_AuthService.CreateRandomToken());
-            TokenDates dates = new TokenDates(DateTime.UtcNow, DateTime.UtcNow.AddDays(3));
-
-            user = User.CreateUser(request.Username, pass.PasswordHash, pass.PasswordSalt,
-                new RefreshToken(token, dates), UserRole.User);
+            RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
+            User user = User.CreateUser(request.Username, pass.PasswordHash, pass.PasswordSalt,
+                refreshToken, UserRole.User);
 
             await _UserRepository.InsertAsync(user);
 

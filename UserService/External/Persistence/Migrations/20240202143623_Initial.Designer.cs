@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240121203449_Initial")]
+    [Migration("20240202143623_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -33,12 +33,10 @@ namespace Persistence.Migrations
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(2147483647)
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
-                        .HasMaxLength(2147483647)
                         .HasColumnType("varbinary(max)");
 
                     b.Property<int>("PermissionType")
@@ -55,7 +53,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("RefreshTokenId");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
@@ -70,7 +68,35 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshToken");
+                    b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Persistence.Outbox.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OccuredOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ProcessedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxMessage");
                 });
 
             modelBuilder.Entity("Domain.Aggregates.UserAggregate.User", b =>
@@ -99,7 +125,7 @@ namespace Persistence.Migrations
 
                             b1.HasKey("RefreshTokenId");
 
-                            b1.ToTable("RefreshToken");
+                            b1.ToTable("RefreshTokens");
 
                             b1.WithOwner()
                                 .HasForeignKey("RefreshTokenId");

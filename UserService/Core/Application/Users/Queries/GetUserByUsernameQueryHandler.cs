@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Queries
 {
-    internal sealed class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery, User>
+    internal sealed class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery, UserDto>
     {
         private readonly IUserQueryRepository _UserQueryRepository;
         private readonly IMapper _Mapper;
@@ -27,9 +27,9 @@ namespace Application.Users.Queries
             _Mapper = mapper;
         }
 
-        public async Task<User> Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
         {
-            User? user = _Mapper.Map<User>
+            UserDto? user = _Mapper.Map<UserDto>
                 (await _UserQueryRepository.GetUserByNameAsync(request.Username));
                
             return user;
