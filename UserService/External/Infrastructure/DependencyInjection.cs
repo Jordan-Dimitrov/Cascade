@@ -1,4 +1,5 @@
-﻿using Domain.Abstractions;
+﻿using Application.Dtos;
+using Domain.Abstractions;
 using Domain.Wrappers;
 using Infrastructure.BackgroundJobs;
 using Infrastructure.Services;
@@ -15,6 +16,7 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             JwtTokenSettings settings, RefreshTokenSettings refreshTokenSettings)
         {
+            services.AddScoped<IDataShaper<UserDto>, DataShaper<UserDto>>();
             services.AddHttpContextAccessor();
 
             var assembly = typeof(DependencyInjection).Assembly;

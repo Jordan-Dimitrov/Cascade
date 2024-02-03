@@ -22,5 +22,7 @@ namespace Domain.Abstractions
                 _PageSize = value > maxPageSize ? maxPageSize : value;
             }
         }
+        public string? Fields { get;set; }
+        public string? OrderBy { get;set; }
     }
 }

@@ -62,7 +62,9 @@ namespace Persistence.Repositories
                 return null;
             }
 
-            User? user = await _Context.Users.Where(x => x.RefreshToken.Token == new Token(refreshToken)).FirstOrDefaultAsync();
+            Token token = new Token(refreshToken);
+
+            User? user = await _Context.Users.Where(x => x.RefreshToken.Token == token).FirstOrDefaultAsync();
 
             if (user is not null)
             {
@@ -74,12 +76,14 @@ namespace Persistence.Repositories
 
         public async Task<PagedList<User>> GetUsersWithPaginationAsync(UserParameters userParameters, bool trackChanges)
         {
-            var query = _Context.Users.OrderBy(x => x.Username);
+            var query = _Context.Users
+                .FilterUsers(userParameters.MinRole, userParameters.MaxRole)
+                .Search(userParameters.SearchTerm)
+                .Sort(userParameters.OrderBy);
 
             var users = await (trackChanges ? query.ToListAsync() : query.AsNoTracking().ToListAsync());
 
             return PagedList<User>.ToPagedList(users, userParameters.PageNumber, userParameters.PageSize);
         }
-
     }
 }

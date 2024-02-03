@@ -33,7 +33,9 @@ namespace Application.Users.Commands
         }
         public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            if (await _UserQueryRepository.ExistsAsync(x => x.Username == new Username(request.Username)))
+            Username username = new Username(request.Username);
+
+            if (await _UserQueryRepository.ExistsAsync(x => x.Username == username))
             {
                 throw new ApplicationException("Username already exists");
             }

@@ -23,6 +23,7 @@ namespace Domain.ValueObjects
         {
 
         }
+
         public string Value 
         {
             get 
