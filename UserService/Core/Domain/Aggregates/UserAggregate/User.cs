@@ -85,8 +85,8 @@ namespace Domain.Aggregates.UserAggregate
         {
             _Username = new Username(_HiddenUsername);
             PasswordHash = _HiddenPassword;
+            PermissionType = UserRole.Visitor;
             PasswordSalt = _HiddenPassword;
-            _RefreshToken.Invalidate();
 
             RaiseDomainEvent(new UserHiddenDomainEvent(Id));
 

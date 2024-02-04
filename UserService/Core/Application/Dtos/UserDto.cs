@@ -1,4 +1,5 @@
-﻿using Domain.Aggregates.UserAggregate;
+﻿using Application.Abstractions;
+using Domain.Aggregates.UserAggregate;
 using Domain.Entities;
 using Domain.ValueObjects;
 using MediatR;
@@ -16,5 +17,6 @@ namespace Application.Dtos
         public Guid Id { get; set; }
         public string Username { get; set; }
         public UserRole PermissionType { get; set; }
+        public List<Link> Links { get; set; } = new List<Link>();
     }
 }

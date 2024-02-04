@@ -1,7 +1,9 @@
 ﻿using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 namespace Presentation
 {
     public static class DependencyInjection
@@ -9,6 +11,12 @@ namespace Presentation
         public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
             var assembly = typeof(DependencyInjection).Assembly;
+
+            NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() => 
+                new ServiceCollection().AddLogging().AddMvc().AddNewtonsoftJson()
+                .Services.BuildServiceProvider()
+                .GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters
+                .OfType<NewtonsoftJsonPatchInputFormatter>().First();
 
             services.AddControllers(options =>
             {
@@ -18,7 +26,11 @@ namespace Presentation
                         Duration = 10
                     });
 
-            }).PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
+
+                options.InputFormatters.Add(GetJsonPatchInputFormatter());
+
+            }).AddNewtonsoftJson()
+                .PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
 
             services.AddMemoryCache();
 

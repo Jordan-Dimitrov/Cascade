@@ -15,14 +15,14 @@ namespace Application
     {
         public MappingConfigurations() 
         {
-            CreateMap<User, UserDto>()
-                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username.Value))
-                .ForMember(dest => dest.PermissionType, opt => opt.MapFrom(src => src.PermissionType));
-
             CreateMap<UserDto, User>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => new Username(src.Username)))
                 .ForMember(dest => dest.PermissionType, opt => opt.MapFrom(src => src.PermissionType))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id)).ReverseMap();
+
+            CreateMap<UserPatchDto, User>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => new Username(src.Username)))
+                .ReverseMap();
         }
     }
 }

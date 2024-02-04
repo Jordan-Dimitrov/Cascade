@@ -1,4 +1,5 @@
-﻿using Application.Dtos;
+﻿using Application.Abstractions;
+using Application.Dtos;
 using AutoMapper;
 using Dapper;
 using Domain.Abstractions;
@@ -18,23 +19,37 @@ namespace Application.Users.Queries
     {
         private readonly IUserQueryRepository _UserQueryRepository;
         private readonly IMapper _Mapper;
-        public GetUserByIdQueryHandler(IUserQueryRepository userQueryRepository, IMapper mapper)
+        private readonly ILinkService _LinkService;
+        public GetUserByIdQueryHandler(IUserQueryRepository userQueryRepository,
+            IMapper mapper,
+            ILinkService linkService)
         {
             _UserQueryRepository = userQueryRepository;
             _Mapper = mapper;
+            _LinkService = linkService;
         }
         public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             UserDto? user = _Mapper.Map<UserDto>(await _UserQueryRepository.
-                GetByIdAsync(request.UserId, true));
+                GetByIdAsync(request.UserId, false));
 
             if(user is null)
             {
                 throw new EntityNotFoundException(typeof(User));
             }
 
+            AddLinksForUser(user);
+
             return user;
 
+        }
+        private void AddLinksForUser(UserDto userDto)
+        {
+            userDto.Links.Add(_LinkService
+                .Generate("GetUserRole",
+                new {},
+                "user-role",
+            "GET"));
         }
     }
 }

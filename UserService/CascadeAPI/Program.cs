@@ -89,6 +89,8 @@ namespace CascadeAPI
 
             app.MapControllers();
 
+            //app.MapGet("/", () => "Hello World!").WithName("GetUser");
+
             app.Run();
         }
     }

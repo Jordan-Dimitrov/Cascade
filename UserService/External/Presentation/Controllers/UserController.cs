@@ -1,29 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Application.Dtos;
+﻿using Application.Dtos;
 using Application.Users.Commands;
 using Application.Users.Queries;
 using Domain.Abstractions;
 using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
 using Domain.RequestFeatures;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Presentation.ActionFilters;
+using System.Text.Json;
 namespace Presentation.Controllers
 {
     public sealed class UserController : ApiController
     {
-        public UserController(ISender sender) : base(sender)
+        private readonly IAuthService _AuthService;
+        public UserController(ISender sender, IAuthService authService) : base(sender)
         {
+            _AuthService = authService;
         }
 
-        [HttpGet("{userId:guid}")]
+        [HttpGet("{userId:guid}"), Authorize(Roles = "User,Admin")]
         [ResponseCache(CacheProfileName = "Default")]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -52,6 +51,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("register")]
+        [ValidateModelState]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody]CreateUserDto user, CancellationToken cancellationToken)
@@ -64,6 +64,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("login")]
+        [ValidateModelState]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] CreateUserDto user, CancellationToken cancellationToken)
@@ -76,13 +77,16 @@ namespace Presentation.Controllers
         }
 
         [HttpOptions]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetUsersOptions()
         {
             Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
+
             return Ok();
         }
 
         [HttpGet("role"), Authorize(Roles = "User,Admin")]
+        [EndpointName("GetUserRole")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ResponseCache(CacheProfileName = "Default")]
@@ -97,6 +101,29 @@ namespace Presentation.Controllers
             return Ok(role);
         }
 
+        [HttpPost("logout")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult Logout()
+        {
+            _AuthService.ClearTokens();
+
+            return Ok();
+        }
+
+        [HttpPut("hide/{userId:guid}"), Authorize(Roles = "Admin")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> HideUser(Guid userId, CancellationToken cancellationToken)
+        {
+            HideUserCommand command = new HideUserCommand(userId);
+
+            await _Sender.Send(command, cancellationToken);
+
+            return NoContent();
+        }
+
         [HttpPost("refresh-token")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -109,6 +136,29 @@ namespace Presentation.Controllers
             await _Sender.Send(command, cancellationToken);
 
             return Ok();
+        }
+
+        [HttpPatch("{userId:guid}"), Authorize(Roles = "Admin")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> PatchUser(Guid userId,
+            [FromBody] JsonPatchDocument<UserPatchDto> patchDoc,
+            CancellationToken cancellationToken)
+        {
+            string? jwtToken = Request.Cookies["jwtToken"];
+
+            PatchUserQuery query = new PatchUserQuery(userId);
+            var result = await _Sender.Send(query, cancellationToken);
+
+            patchDoc.ApplyTo(result.UserToPatch);
+
+            SaveChangesForPatchCommand command = new SaveChangesForPatchCommand(result.UserToPatch,
+                result.User);
+
+            await _Sender.Send(command, cancellationToken);
+
+            return NoContent();
         }
     }
 }

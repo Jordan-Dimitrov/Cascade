@@ -26,10 +26,7 @@ namespace Domain.Entities
         {
 
         }
-        public void Invalidate()
-        {
-            
-        }
+
         public Token Token
         {
             get

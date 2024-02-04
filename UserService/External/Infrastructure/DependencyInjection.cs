@@ -1,4 +1,5 @@
-﻿using Application.Dtos;
+﻿using Application.Abstractions;
+using Application.Dtos;
 using Domain.Abstractions;
 using Domain.Wrappers;
 using Infrastructure.BackgroundJobs;
@@ -18,6 +19,7 @@ namespace Infrastructure
         {
             services.AddScoped<IDataShaper<UserDto>, DataShaper<UserDto>>();
             services.AddHttpContextAccessor();
+            services.AddScoped<ILinkService, LinkService>();
 
             var assembly = typeof(DependencyInjection).Assembly;
 
