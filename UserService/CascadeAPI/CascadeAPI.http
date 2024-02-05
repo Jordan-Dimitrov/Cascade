@@ -1,6 +1,0 @@
-@CascadeAPI_HostAddress = http://localhost:5034
-
-GET {{CascadeAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
