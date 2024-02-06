@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Primitives
+namespace Shared.Primitives
 {
     public interface IQueryRepository<T> where T : class
     {

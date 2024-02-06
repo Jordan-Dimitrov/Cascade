@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.Primitives;
+using Shared.Primitives;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.DomainEntities;
 
-namespace Domain.Abstractions
+namespace Users.Domain.Abstractions
 {
     public interface IUserCommandRepository : ICommandRepository<User>
     {

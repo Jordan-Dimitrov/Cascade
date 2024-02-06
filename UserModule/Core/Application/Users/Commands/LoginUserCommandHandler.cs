@@ -1,16 +1,17 @@
-﻿using Application.Users.Queries;
-using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.Exceptions;
+﻿using Users.Application.Users.Queries;
 using MediatR;
+using Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Abstractions;
+using Users.Domain.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.DomainEntities;
 
-namespace Application.Users.Commands
+namespace Users.Application.Users.Commands
 {
     internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand>
     {

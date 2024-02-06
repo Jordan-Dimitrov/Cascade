@@ -1,13 +1,11 @@
-﻿using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.ValueObjects;
-using Domain.Wrappers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.Wrappers;
 
 namespace Persistence
 {

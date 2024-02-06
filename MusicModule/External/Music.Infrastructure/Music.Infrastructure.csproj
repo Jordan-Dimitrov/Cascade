@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Music.Application\Music.Application.csproj" />
+    <ProjectReference Include="..\..\Core\Music.Domain\Music.Domain.csproj" />
+    <ProjectReference Include="..\Music.Persistence\Music.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,9 +1,9 @@
-﻿using Domain.Primitives;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using Newtonsoft.Json;
 using Persistence.Outbox;
+using Shared.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;

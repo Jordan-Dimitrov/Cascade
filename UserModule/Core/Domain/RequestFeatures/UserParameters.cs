@@ -1,12 +1,12 @@
-﻿using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
+﻿using Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Domain.Aggregates.UserAggregate;
 
-namespace Domain.RequestFeatures
+namespace Users.Domain.RequestFeatures
 {
     public class UserParameters : RequestParameters
     {

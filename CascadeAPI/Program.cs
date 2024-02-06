@@ -1,14 +1,18 @@
-using Application;
 using AspNetCoreRateLimit;
 using CascadeAPI.Middlewares;
-using Domain.Wrappers;
 using HealthChecks.UI.Client;
 using Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Music.Application;
+using Music.Infrastructure;
+using Music.Persistence;
+using Music.Presentation;
 using Persistence;
 using Presentation;
 using Serilog;
+using Users.Application;
+using Users.Domain.Wrappers;
 namespace CascadeAPI
 {
     public class Program
@@ -35,10 +39,14 @@ namespace CascadeAPI
                 .Get<RefreshTokenSettings>();
 
             builder.Services
-                .AddApplication()
-                .AddInfrastructure(jwtTokenSettings, refreshTokenSettings)
-                .AddPersistence(builder.Configuration.GetConnectionString("SDR"))
-                .AddPresentation();
+                .AddUserApplication()
+                .AddUserInfrastructure(jwtTokenSettings, refreshTokenSettings)
+                .AddUserPersistence(builder.Configuration.GetConnectionString("SDR"))
+                .AddUserPresentation()
+                .AddMusicApplication()
+                .AddMusicInfrastructure()
+                .AddMusicPersistence()
+                .AddMusicPresentation();
 
             builder.Services.AddCors(options =>
             {

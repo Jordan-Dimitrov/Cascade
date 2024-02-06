@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Abstractions
+namespace Shared.Abstractions
 {
     public abstract class RequestParameters
     {
@@ -22,7 +22,7 @@ namespace Domain.Abstractions
                 _PageSize = value > maxPageSize ? maxPageSize : value;
             }
         }
-        public string? Fields { get;set; }
-        public string? OrderBy { get;set; }
+        public string? Fields { get; set; }
+        public string? OrderBy { get; set; }
     }
 }

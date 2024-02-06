@@ -1,19 +1,19 @@
-﻿using Application.Abstractions;
-using Application.Dtos;
-using AutoMapper;
+﻿using AutoMapper;
 using Dapper;
-using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.Exceptions;
 using MediatR;
+using Shared.Abstractions;
+using Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Dtos;
+using Users.Domain.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
 
-namespace Application.Users.Queries
+namespace Users.Application.Users.Queries
 {
     internal sealed class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto>
     {
@@ -33,7 +33,7 @@ namespace Application.Users.Queries
             UserDto? user = _Mapper.Map<UserDto>(await _UserQueryRepository.
                 GetByIdAsync(request.UserId, false));
 
-            if(user is null)
+            if (user is null)
             {
                 throw new EntityNotFoundException(typeof(User));
             }
@@ -53,7 +53,7 @@ namespace Application.Users.Queries
 
             userDto.Links.Add(_LinkService
                 .Generate("PatchUser",
-                new { userId = userDto.Id},
+                new { userId = userDto.Id },
                 "patch-user",
             "PATCH"));
         }

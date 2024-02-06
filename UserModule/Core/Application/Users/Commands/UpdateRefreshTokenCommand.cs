@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Users.Commands
+namespace Users.Application.Users.Commands
 {
     public sealed record UpdateRefreshTokenCommand(string RefreshToken) : IRequest;
 }

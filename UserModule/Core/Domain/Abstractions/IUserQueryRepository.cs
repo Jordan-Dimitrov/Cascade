@@ -1,13 +1,14 @@
-﻿using Domain.Aggregates.UserAggregate;
-using Domain.Primitives;
-using Domain.RequestFeatures;
+﻿using Shared.Primitives;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.RequestFeatures;
 
-namespace Domain.Abstractions
+namespace Users.Domain.Abstractions
 {
     public interface IUserQueryRepository : IQueryRepository<User>
     {

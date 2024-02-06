@@ -1,13 +1,14 @@
-﻿using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using MediatR;
+﻿using MediatR;
+using Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Domain.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
 
-namespace Application.Users.Commands
+namespace Users.Application.Users.Commands
 {
     internal sealed class HideUserCommandHandler : IRequestHandler<HideUserCommand>
     {

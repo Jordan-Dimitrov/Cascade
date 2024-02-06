@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Abstractions
+namespace Shared.Abstractions
 {
     public interface IDataShaper<T>
     {

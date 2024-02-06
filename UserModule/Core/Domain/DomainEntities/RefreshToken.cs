@@ -1,14 +1,14 @@
-﻿using Domain.Exceptions;
-using Domain.Primitives;
-using Domain.ValueObjects;
+﻿using Shared.Exceptions;
+using Shared.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Users.Domain.ValueObjects;
 
-namespace Domain.Entities
+namespace Users.Domain.DomainEntities
 {
     public sealed class RefreshToken : Entity
     {

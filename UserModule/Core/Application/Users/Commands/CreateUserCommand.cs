@@ -1,14 +1,12 @@
-﻿using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.ValueObjects;
-using MediatR;
+﻿using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Domain.Aggregates.UserAggregate;
 
-namespace Application.Users.Commands
+namespace Users.Application.Users.Commands
 {
     public sealed record CreateUserCommand(string Username,
         string Password,

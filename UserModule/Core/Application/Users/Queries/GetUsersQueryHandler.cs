@@ -1,17 +1,18 @@
-﻿using Application.Dtos;
-using AutoMapper;
-using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.RequestFeatures;
+﻿using AutoMapper;
 using MediatR;
+using Shared.Abstractions;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Dtos;
+using Users.Domain.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
 
-namespace Application.Users.Queries
+namespace Users.Application.Users.Queries
 {
     internal sealed class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, (IEnumerable<ExpandoObject> users, MetaData metaData)>
     {
@@ -29,7 +30,7 @@ namespace Application.Users.Queries
 
         public async Task<(IEnumerable<ExpandoObject> users, MetaData metaData)> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            if(request.RequestParameters.MaxRole < request.RequestParameters.MinRole)
+            if (request.RequestParameters.MaxRole < request.RequestParameters.MinRole)
             {
                 throw new ApplicationException("Invalid range");
             }

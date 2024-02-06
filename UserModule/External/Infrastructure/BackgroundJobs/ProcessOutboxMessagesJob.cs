@@ -1,5 +1,4 @@
-﻿using Domain.Primitives;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Persistence;
@@ -7,6 +6,7 @@ using Persistence.Outbox;
 using Polly;
 using Polly.Retry;
 using Quartz;
+using Shared.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;

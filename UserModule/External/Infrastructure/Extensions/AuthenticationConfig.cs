@@ -1,8 +1,8 @@
-﻿using Domain.Wrappers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Users.Domain.Wrappers;
 namespace Infrastructure.Extensions
 {
     internal class AuthenticationConfig

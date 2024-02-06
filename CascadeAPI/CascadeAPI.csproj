@@ -14,10 +14,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UserModule\Core\Application\Application.csproj" />
-    <ProjectReference Include="..\UserModule\External\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\UserModule\External\Persistence\Persistence.csproj" />
-    <ProjectReference Include="..\UserModule\External\Presentation\Presentation.csproj" />
+    <ProjectReference Include="..\MusicModule\Core\Music.Application\Music.Application.csproj" />
+    <ProjectReference Include="..\MusicModule\External\Music.Infrastructure\Music.Infrastructure.csproj" />
+    <ProjectReference Include="..\MusicModule\External\Music.Persistence\Music.Persistence.csproj" />
+    <ProjectReference Include="..\MusicModule\External\Music.Presentation\Music.Presentation.csproj" />
+    <ProjectReference Include="..\UserModule\Core\Application\Users.Application.csproj" />
+    <ProjectReference Include="..\UserModule\External\Infrastructure\Users.Infrastructure.csproj" />
+    <ProjectReference Include="..\UserModule\External\Persistence\Users.Persistence.csproj" />
+    <ProjectReference Include="..\UserModule\External\Presentation\Users.Presentation.csproj" />
   </ItemGroup>
 
 </Project>

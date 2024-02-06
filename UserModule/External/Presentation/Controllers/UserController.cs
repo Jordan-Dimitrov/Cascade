@@ -1,10 +1,4 @@
-﻿using Application.Dtos;
-using Application.Users.Commands;
-using Application.Users.Queries;
-using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.RequestFeatures;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -12,6 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Presentation.ActionFilters;
 using System.Text.Json;
+using Users.Application.Abstractions;
+using Users.Application.Dtos;
+using Users.Application.Users.Commands;
+using Users.Application.Users.Queries;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.RequestFeatures;
 namespace Presentation.Controllers
 {
     public sealed class UserController : ApiController

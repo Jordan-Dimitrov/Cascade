@@ -1,25 +1,24 @@
-﻿using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Domain.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.DomainEntities;
 
 namespace Persistence.Repositories
 {
-    public sealed class UserCommandRepository : IUserCommandRepository
+    internal sealed class UserCommandRepository : IUserCommandRepository
     {
         private readonly ApplicationDbContext _Context;
-        private readonly IUnitOfWork _UnitOfWork;
         public UserCommandRepository(ApplicationDbContext context, IUnitOfWork unitOfWork) 
         {
             _Context = context;
-            _UnitOfWork = unitOfWork;
         }
 
         public async Task DeleteAsync(User value)

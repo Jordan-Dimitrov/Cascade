@@ -1,5 +1,5 @@
-﻿using Domain.Exceptions;
-using Domain.Primitives;
+﻿using Shared.Exceptions;
+using Shared.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Domain.ValueObjects
+namespace Users.Domain.ValueObjects
 {
     public sealed class Username : ValueObject
     {
@@ -24,9 +24,9 @@ namespace Domain.ValueObjects
 
         }
 
-        public string Value 
+        public string Value
         {
-            get 
+            get
             {
                 return _Value;
             }

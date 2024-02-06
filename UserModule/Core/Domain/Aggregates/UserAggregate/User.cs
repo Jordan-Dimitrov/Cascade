@@ -1,18 +1,16 @@
-﻿using Domain.Abstractions;
-using Domain.DomainEvents;
-using Domain.Entities;
-using Domain.Events;
-using Domain.Exceptions;
-using Domain.Primitives;
-using Domain.ValueObjects;
+﻿using Shared.Exceptions;
+using Shared.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Users.Domain.DomainEntities;
+using Users.Domain.DomainEvents;
+using Users.Domain.ValueObjects;
 
-namespace Domain.Aggregates.UserAggregate
+namespace Users.Domain.Aggregates.UserAggregate
 {
     public enum UserRole
     {
@@ -115,7 +113,7 @@ namespace Domain.Aggregates.UserAggregate
 
         public void SetRfreshToken(RefreshToken refreshToken)
         {
-            if(refreshToken is null)
+            if (refreshToken is null)
             {
                 throw new DomainValidationException("The RefreshToken cannot be null");
             }

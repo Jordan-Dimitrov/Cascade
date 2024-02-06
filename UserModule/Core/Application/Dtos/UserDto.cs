@@ -1,16 +1,14 @@
-﻿using Application.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.ValueObjects;
-using MediatR;
+﻿using MediatR;
+using Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Domain.Aggregates.UserAggregate;
 
-namespace Application.Dtos
+namespace Users.Application.Dtos
 {
     public class UserDto
     {

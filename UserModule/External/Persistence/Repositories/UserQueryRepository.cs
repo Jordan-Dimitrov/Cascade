@@ -1,19 +1,19 @@
-﻿using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.RequestFeatures;
-using Domain.ValueObjects;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Domain.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.RequestFeatures;
+using Users.Domain.ValueObjects;
 
 namespace Persistence.Repositories
 {
-    public sealed class UserQueryRepository : IUserQueryRepository
+    internal sealed class UserQueryRepository : IUserQueryRepository
     {
         private readonly ApplicationDbContext _Context;
         public UserQueryRepository(ApplicationDbContext context) 

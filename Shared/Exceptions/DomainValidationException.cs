@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Exceptions
+namespace Shared.Exceptions
 {
     [Serializable]
     public sealed class DomainValidationException : Exception

@@ -1,4 +1,4 @@
-﻿using Domain.Abstractions;
+﻿using Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

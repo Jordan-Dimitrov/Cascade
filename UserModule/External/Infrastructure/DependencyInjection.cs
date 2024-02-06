@@ -1,21 +1,21 @@
-﻿using Application.Abstractions;
-using Application.Dtos;
-using Domain.Abstractions;
-using Domain.Wrappers;
-using Infrastructure.BackgroundJobs;
+﻿using Infrastructure.BackgroundJobs;
 using Infrastructure.Extensions;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
+using Shared.Abstractions;
 using System.Text;
+using Users.Application.Abstractions;
+using Users.Application.Dtos;
+using Users.Domain.Wrappers;
 
 namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
+        public static IServiceCollection AddUserInfrastructure(this IServiceCollection services,
             JwtTokenSettings settings, RefreshTokenSettings refreshTokenSettings)
         {
             services.AddScoped<IDataShaper<UserDto>, DataShaper<UserDto>>();

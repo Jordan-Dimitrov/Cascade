@@ -1,19 +1,18 @@
-﻿using Application.Dtos;
-using AutoMapper;
-using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.ValueObjects;
+﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Dtos;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.ValueObjects;
 
-namespace Application
+namespace Users.Application
 {
     public class MappingConfigurations : Profile
     {
-        public MappingConfigurations() 
+        public MappingConfigurations()
         {
             CreateMap<User, UserDto>()
                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username.Value))

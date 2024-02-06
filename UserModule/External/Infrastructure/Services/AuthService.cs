@@ -1,9 +1,4 @@
-﻿using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.ValueObjects;
-using Domain.Wrappers;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -14,6 +9,11 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.DomainEntities;
+using Users.Domain.ValueObjects;
+using Users.Domain.Wrappers;
 
 namespace Infrastructure.Services
 {

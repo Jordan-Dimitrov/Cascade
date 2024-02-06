@@ -1,12 +1,12 @@
-﻿using Domain.Events;
-using MediatR;
+﻿using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Domain.DomainEvents;
 
-namespace Application.DomainEventsHandlers
+namespace Users.Application.DomainEventsHandlers
 {
     internal sealed class UserHiddenDomainEventHandler : INotificationHandler<UserHiddenDomainEvent>
     {

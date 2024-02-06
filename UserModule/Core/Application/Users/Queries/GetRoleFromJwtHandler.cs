@@ -1,12 +1,12 @@
-﻿using Domain.Abstractions;
-using MediatR;
+﻿using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Abstractions;
 
-namespace Application.Users.Queries
+namespace Users.Application.Users.Queries
 {
     internal sealed class GetRoleFromJwtHandler : IRequestHandler<GetRoleFromJwtQuery, string>
     {

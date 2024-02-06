@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Domain.Abstractions;
 using MediatR;
+using Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Users.Commands
+namespace Users.Application.Users.Commands
 {
     internal sealed class SaveChangesForPatchCommandHandler : IRequestHandler<SaveChangesForPatchCommand>
     {

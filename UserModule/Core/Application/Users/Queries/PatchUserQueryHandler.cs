@@ -1,15 +1,15 @@
-﻿using Application.Dtos;
-using AutoMapper;
-using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
+﻿using AutoMapper;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Dtos;
+using Users.Domain.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
 
-namespace Application.Users.Queries
+namespace Users.Application.Users.Queries
 {
     internal sealed class PatchUserQueryHandler : IRequestHandler<PatchUserQuery, (UserPatchDto UserToPatch, User User)>
     {

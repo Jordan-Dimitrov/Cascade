@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
 using Persistence.Repositories;
@@ -9,11 +8,13 @@ using System.Data;
 using Dapper.FluentMap;
 using Persistence.Interceptors;
 using Persistence.Extensions;
+using Shared.Abstractions;
+using Users.Domain.Abstractions;
 namespace Persistence
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPersistence(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddUserPersistence(this IServiceCollection services, string connectionString)
         {
             services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 

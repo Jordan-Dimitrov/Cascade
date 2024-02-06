@@ -1,11 +1,6 @@
-﻿using Application.Dtos;
-using Application.Users.Commands;
+﻿using Users.Application.Users.Commands;
 using AutoMapper;
 using Dapper;
-using Domain.Abstractions;
-using Domain.Aggregates.UserAggregate;
-using Domain.Entities;
-using Domain.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,8 +8,10 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Dtos;
+using Users.Domain.Abstractions;
 
-namespace Application.Users.Queries
+namespace Users.Application.Users.Queries
 {
     internal sealed class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery, UserDto>
     {
@@ -31,7 +28,7 @@ namespace Application.Users.Queries
         {
             UserDto? user = _Mapper.Map<UserDto>
                 (await _UserQueryRepository.GetUserByNameAsync(request.Username));
-               
+
             return user;
         }
     }
