@@ -102,22 +102,18 @@ namespace Users.Domain.Aggregates.UserAggregate
             }
             private set
             {
-                if (value is null)
-                {
-                    throw new DomainValidationException("The RefreshToken cannot be null");
-                }
-
                 _RefreshToken = value;
             }
         }
 
         public void SetRfreshToken(RefreshToken refreshToken)
         {
-            if (refreshToken is null)
-            {
-                throw new DomainValidationException("The RefreshToken cannot be null");
-            }
             _RefreshToken = refreshToken;
+        }
+
+        public void SetUsername(string username)
+        {
+            _Username = new Username(username);
         }
 
         public UserRole PermissionType { get; private set; }

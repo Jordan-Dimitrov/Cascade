@@ -44,11 +44,7 @@ namespace Users.Application.Users.Commands
 
             RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
 
-            RefreshToken token = user.RefreshToken;
-            user.SetRfreshToken(refreshToken);
-
-            await _UserCommandRepository.UpdateRefreshTokenAsync(user);
-            await _UserCommandRepository.RemoveOldRefreshTokenAsync(token);
+            await _UserCommandRepository.UpdateRefreshTokenAsync(user, refreshToken);
 
             if (await _UnitOfWork.SaveChangesAsync() <= 0)
             {

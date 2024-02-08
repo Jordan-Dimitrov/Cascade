@@ -36,15 +36,12 @@ namespace Persistence.Repositories
             await Task.Run(() => _Context.Update(value));
         }
 
-        public async Task UpdateRefreshTokenAsync(User value)
+        public async Task UpdateRefreshTokenAsync(User value, RefreshToken refreshToken)
         {
-            await _Context.RefreshTokens.AddAsync(value.RefreshToken);
+            RefreshToken oldRefreshToken = value.RefreshToken;
+            value.SetRfreshToken(refreshToken);
             await Task.Run(() => _Context.Users.Update(value));
-        }
-
-        public async Task RemoveOldRefreshTokenAsync(RefreshToken refreshToken)
-        {
-            await Task.Run(() => _Context.RefreshTokens.Remove(refreshToken));
+            await Task.Run(() => _Context.Remove(oldRefreshToken));
         }
     }
 }

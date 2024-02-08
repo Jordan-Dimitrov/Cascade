@@ -2,16 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
-using Users.Domain.Aggregates.UserAggregate;
-using Users.Domain.DomainEntities;
 
-namespace Persistence
+namespace Music.Persistence
 {
     public sealed class ApplicationDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
         public ApplicationDbContext()
         {
         }
@@ -24,9 +22,9 @@ namespace Persistence
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Cascade;Integrated Security=True;");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+           // optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Cascade;Integrated Security=True;");
+        //}
     }
 }

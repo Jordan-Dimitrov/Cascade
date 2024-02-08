@@ -45,7 +45,7 @@ namespace CascadeAPI
                 .AddUserPresentation()
                 .AddMusicApplication()
                 .AddMusicInfrastructure()
-                .AddMusicPersistence()
+                .AddMusicPersistence(builder.Configuration.GetConnectionString("SDR"))
                 .AddMusicPresentation();
 
             builder.Services.AddCors(options =>
@@ -107,7 +107,7 @@ namespace CascadeAPI
 
             app.UseIpRateLimiting();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthorization();
 

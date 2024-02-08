@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shared.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace Persistence.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable(nameof(ApplicationDbContext.Users), Schemas.UserSchema);
+
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).IsRequired().ValueGeneratedNever();
 
             builder.Property(x => x.Username).HasConversion(
                 username => username.Value,

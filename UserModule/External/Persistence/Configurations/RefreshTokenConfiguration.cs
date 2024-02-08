@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shared.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,10 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
-            builder.ToTable(nameof(ApplicationDbContext.RefreshTokens), Schemas.UserSchema);
+            builder.ToTable(nameof(RefreshToken), Schemas.UserSchema);
+
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).IsRequired().ValueGeneratedNever();
 
             builder.Property(x => x.Token).HasConversion(
             x => x.Value,

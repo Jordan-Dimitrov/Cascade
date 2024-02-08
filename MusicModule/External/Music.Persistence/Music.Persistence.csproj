@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Music.Application\Music.Application.csproj" />
     <ProjectReference Include="..\..\Core\Music.Domain\Music.Domain.csproj" />
   </ItemGroup>

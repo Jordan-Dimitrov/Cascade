@@ -12,7 +12,6 @@ namespace Users.Domain.Abstractions
 {
     public interface IUserCommandRepository : ICommandRepository<User>
     {
-        Task RemoveOldRefreshTokenAsync(RefreshToken refreshToken);
-        Task UpdateRefreshTokenAsync(User value);
+        Task UpdateRefreshTokenAsync(User value, RefreshToken refreshToken);
     }
 }

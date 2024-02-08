@@ -9,7 +9,7 @@ namespace Music.Persistence
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddMusicPersistence(this IServiceCollection services)
+        public static IServiceCollection AddMusicPersistence(this IServiceCollection services, string connectionString)
         {
             var assembly = typeof(DependencyInjection).Assembly;
 
