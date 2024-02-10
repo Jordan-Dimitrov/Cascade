@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Music.Persistence.Interceptors;
+using Persistence.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,10 @@ namespace Music.Persistence
         public static IServiceCollection AddMusicPersistence(this IServiceCollection services, string connectionString)
         {
             var assembly = typeof(DependencyInjection).Assembly;
+
+            services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+
+            DbContextConfig.ConfigureDbContext(services, connectionString);
 
             return services;
         }

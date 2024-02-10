@@ -1,4 +1,6 @@
-﻿using Music.Domain.Aggregates.ArtistAggregate;
+﻿using Music.Domain.Aggregates.AlbumAggregate;
+using Music.Domain.Aggregates.ArtistAggregate;
+using Music.Domain.Aggregates.PlaylistAggregate;
 using Music.Domain.Aggregates.SongAggregate;
 using Music.Domain.DomainEntities;
 using Music.Domain.ValueObjects;
@@ -16,9 +18,9 @@ namespace Music.Domain.Aggregates.ListenerAggregate
     public sealed class Listener : AggregateRoot
     {
         private Username _Username;
-        private List<Playlist> _Playlists;
-        private List<Guid> _Artists;
-        private Listener(Username username, List<Playlist> playlists, List<Guid> artists)
+        private List<ListenerPlaylist> _Playlists;
+        private List<ArtistListener> _Artists;
+        private Listener(Username username, List<ListenerPlaylist> playlists, List<ArtistListener> artists)
         {
             Id = Guid.NewGuid();
             Username = username;
@@ -34,54 +36,54 @@ namespace Music.Domain.Aggregates.ListenerAggregate
 
         public static Listener CreateListener(string username)
         {
-            Listener listener = new Listener(new Username(username), new List<Playlist>(), new List<Guid>());
+            Listener listener = new Listener(new Username(username), new List<ListenerPlaylist>(), new List<ArtistListener>());
 
             return listener;
         }
 
-        public void AddPlaylist(Playlist playlist)
+        public void AddPlaylist(Guid playlistId)
         {
-            if (_Playlists.FirstOrDefault(x => x.Id == playlist.Id) is not null)
+            if (_Playlists.FirstOrDefault(x => x.PlaylistId == playlistId) is not null)
             {
                 throw new DomainValidationException("Album already exists");
             }
 
-            if (SongExists(playlist.Songs.FirstOrDefault()))
-            {
-                throw new DomainValidationException("Song already exists in another album");
-            }
-
-            _Playlists.Add(playlist);
+            _Playlists.Add(new ListenerPlaylist(Id, playlistId));
         }
 
+        public void RemoveAlbum(Guid playlistId)
+        {
+            ListenerPlaylist? playlist = _Playlists.FirstOrDefault(x => x.PlaylistId == playlistId);
+
+            if (playlist is null)
+            {
+                throw new DomainValidationException("There is no such playlist to remove");
+            }
+
+            _Playlists.Remove(playlist);
+        }
         public void AddArtist(Guid artistId)
         {
-            if(_Artists.Contains(artistId))
+            if(_Artists.FirstOrDefault(x => x.ArtistId == artistId) is not null)
             {
                 throw new DomainValidationException("Artist already exists in listeners favorites");
             }
 
-            _Artists.Add(artistId);
+            _Artists.Add(new ArtistListener(artistId, Id));
         }
 
-        private bool SongExists(Guid songId)
+        public void RemoveArtist(Guid artistId)
         {
-            if (_Playlists.Where(x => x.Songs.Contains(songId)).FirstOrDefault() is not null)
+            ArtistListener? artist = _Artists.FirstOrDefault(x => x.ArtistId == artistId);
+
+            if (artist is null)
             {
-                return true;
+                throw new DomainValidationException("No such artist to remove");
             }
 
-            return false;
-        }
+            artist = new ArtistListener(artistId, Id);
 
-        public void RemoveAlbum(Playlist playlist)
-        {
-            if (_Playlists.FirstOrDefault(x => x.Id == playlist.Id) is null)
-            {
-                throw new DomainValidationException("Album does not exist");
-            }
-
-            _Playlists.Remove(playlist);
+            _Artists.Add(artist);
         }
 
         public Username Username
@@ -96,7 +98,7 @@ namespace Music.Domain.Aggregates.ListenerAggregate
             }
         }
 
-        public List<Guid> Artists
+        public List<ArtistListener> Artists
         {
             get
             {
@@ -108,7 +110,7 @@ namespace Music.Domain.Aggregates.ListenerAggregate
             }
         }
 
-        public List<Playlist> Playlists
+        public List<ListenerPlaylist> Playlists
         {
             get
             {

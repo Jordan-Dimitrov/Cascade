@@ -1,4 +1,5 @@
-﻿using Music.Domain.ValueObjects;
+﻿using Music.Domain.DomainEntities;
+using Music.Domain.ValueObjects;
 using Shared.Exceptions;
 using Shared.Primitives;
 using System;
@@ -8,20 +9,18 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Music.Domain.DomainEntities
+namespace Music.Domain.Aggregates.PlaylistAggregate
 {
-    public sealed class Playlist : Entity
+    public sealed class Playlist : AggregateRoot
     {
         private PlaylistName _PlaylistName;
         private DateTime _DateCreated;
-        private List<Guid> _Songs;
-        private Guid _UserId;
-        private Playlist(PlaylistName playlistName, DateTime dateCreated, Guid userId, List<Guid> songs)
+        private List<PlaylistSong> _Songs;
+        private Playlist(PlaylistName playlistName, DateTime dateCreated, List<PlaylistSong> songs)
         {
             Id = Guid.NewGuid();
             PlaylistName = playlistName;
             Songs = songs;
-            UserId = userId;
         }
 
         [JsonConstructor]
@@ -30,26 +29,32 @@ namespace Music.Domain.DomainEntities
 
         }
 
-        public static Playlist CreatePlaylist(string playlistName, DateTime dateCreated, Guid songId, Guid UserId)
+        public static Playlist CreatePlaylist(string playlistName, DateTime dateCreated, Guid songId)
         {
-            Playlist playlist = new Playlist(new PlaylistName(playlistName), DateTime.UtcNow, UserId, new List<Guid>() { songId });
+            Playlist playlist = new Playlist(new PlaylistName(playlistName), DateTime.UtcNow, new List<PlaylistSong>());
+
+            playlist.Songs.Add(new PlaylistSong(songId, playlist.Id));
 
             return playlist;
         }
 
+
+
         public void RemoveSong(Guid songId)
         {
-            if (!_Songs.Contains(songId))
+            PlaylistSong? song = _Songs.FirstOrDefault(x => x.SongId == songId);
+
+            if (song is null)
             {
                 throw new DomainValidationException("There is no such song to remove");
             }
 
-            _Songs.Remove(songId);
+            _Songs.Remove(song);
         }
 
         public void AddSong(Guid songId)
         {
-            _Songs.Add(songId);
+            _Songs.Add(new PlaylistSong(songId, Id));
         }
 
         public PlaylistName PlaylistName
@@ -76,7 +81,7 @@ namespace Music.Domain.DomainEntities
             }
         }
 
-        public List<Guid> Songs
+        public List<PlaylistSong> Songs
         {
             get
             {
@@ -85,18 +90,6 @@ namespace Music.Domain.DomainEntities
             private set
             {
                 _Songs = value;
-            }
-        }
-
-        public Guid UserId
-        {
-            get
-            {
-                return _UserId;
-            }
-            private set
-            {
-                _UserId = value;
             }
         }
     }

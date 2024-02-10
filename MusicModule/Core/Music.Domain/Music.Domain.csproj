@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DomainEvents\" />
-    <Folder Include="RequestFeatures\" />
+    <ProjectReference Include="..\..\..\Shared\Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Shared.csproj" />
+    <Folder Include="DomainEvents\" />
+    <Folder Include="RequestFeatures\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
-﻿using Music.Domain.DomainEntities;
+﻿using Music.Domain.Aggregates.AlbumAggregate;
+using Music.Domain.Aggregates.SongAggregate;
+using Music.Domain.DomainEntities;
 using Music.Domain.ValueObjects;
 using Shared.Exceptions;
 using Shared.Primitives;
@@ -15,8 +17,8 @@ namespace Music.Domain.Aggregates.ArtistAggregate
     {
         private Username _Username;
         private FollowCount _FollowCount;
-        private List<Album> _Albums;
-        private Artist(Username username, FollowCount followCount, List<Album> albums)
+        private List<ArtistAlbum> _Albums;
+        private Artist(Username username, FollowCount followCount, List<ArtistAlbum> albums)
         {
             Id = Guid.NewGuid();
             Username = username;
@@ -32,41 +34,28 @@ namespace Music.Domain.Aggregates.ArtistAggregate
 
         public static Artist CreateArtist(string username)
         {
-            Artist artist = new Artist(new Username(username), new FollowCount(0), new List<Album>());
+            Artist artist = new Artist(new Username(username), new FollowCount(0), new List<ArtistAlbum>());
 
             return artist;
         }
 
-        public void AddAlbum(Album album)
+        public void AddAlbum(Guid albumId)
         {
-            if (_Albums.FirstOrDefault(x => x.Id == album.Id) is not null)
+            if (_Albums.FirstOrDefault(x => x.AlbumId == albumId) is not null)
             {
                 throw new DomainValidationException("Album already exists");
             }
 
-            if (SongExists(album.Songs.FirstOrDefault()))
-            {
-                throw new DomainValidationException("Song already exists in another album");
-            }
-
-            _Albums.Add(album);
+            _Albums.Add(new ArtistAlbum(Id, albumId));
         }
 
-        private bool SongExists(Guid songId)
+        public void RemoveAlbum(Guid albumId)
         {
-            if (_Albums.Where(x => x.Songs.Contains(songId)).FirstOrDefault() is not null)
-            {
-                return true;
-            }
+            ArtistAlbum? album = _Albums.FirstOrDefault(x => x.AlbumId == albumId);
 
-            return false;
-        }
-
-        public void RemoveAlbum(Album album)
-        {
-            if (_Albums.FirstOrDefault(x => x.Id == album.Id) is null)
+            if (album is null)
             {
-                throw new DomainValidationException("Album does not exist");
+                throw new DomainValidationException("There is no such album to remove");
             }
 
             _Albums.Remove(album);
@@ -96,7 +85,7 @@ namespace Music.Domain.Aggregates.ArtistAggregate
             }
         }
 
-        public List<Album> Albums
+        public List<ArtistAlbum> Albums
         {
             get
             {

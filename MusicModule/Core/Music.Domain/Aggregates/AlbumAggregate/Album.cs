@@ -1,4 +1,5 @@
-﻿using Music.Domain.ValueObjects;
+﻿using Music.Domain.DomainEntities;
+using Music.Domain.ValueObjects;
 using Shared.Exceptions;
 using Shared.Primitives;
 using System;
@@ -8,20 +9,18 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Music.Domain.DomainEntities
+namespace Music.Domain.Aggregates.AlbumAggregate
 {
-    public sealed class Album : Entity
+    public sealed class Album : AggregateRoot
     {
         private AlbumName _AlbumName;
         private DateTime _DateCreated;
-        private List<Guid> _Songs;
-        private Guid _UserId;
-        private Album(AlbumName albumName, DateTime dateCreated, Guid userId, List<Guid> songs)
+        private List<AlbumSong> _Songs;
+        private Album(AlbumName albumName, DateTime dateCreated, List<AlbumSong> songs)
         {
             Id = Guid.NewGuid();
             AlbumName = albumName;
             Songs = songs;
-            UserId = userId;
         }
 
         [JsonConstructor]
@@ -30,31 +29,39 @@ namespace Music.Domain.DomainEntities
 
         }
 
-        public static Album CreateAlbum(string albumName, DateTime dateCreated, Guid songId, Guid UserId)
+        public static Album CreateAlbum(string albumName, DateTime dateCreated, Guid songId)
         {
-            Album album = new Album(new AlbumName(albumName), DateTime.UtcNow, UserId, new List<Guid>() { songId });
+            Album album = new Album(new AlbumName(albumName), DateTime.UtcNow, new List<AlbumSong>());
+
+            album.Songs.Add(new AlbumSong(songId, album.Id));
 
             return album;
         }
 
         public void RemoveSong(Guid songId)
         {
-            if(!_Songs.Contains(songId)) 
+            AlbumSong? song = _Songs.FirstOrDefault(x => x.SongId == songId);
+
+            if (song is null)
             {
                 throw new DomainValidationException("There is no such song to remove");
             }
 
-            _Songs.Remove(songId);
+            _Songs.Remove(song);
         }
 
         public void AddSong(Guid songId)
         {
-            if (_Songs.Contains(songId))
+            AlbumSong? song = _Songs.FirstOrDefault(x => x.SongId == songId);
+
+            if (song is not null)
             {
-                throw new DomainValidationException("Song already exists");
+                throw new DomainValidationException("There is already such song");
             }
 
-            _Songs.Add(songId);
+            song = new AlbumSong(songId, Id);
+
+            _Songs.Add(song);
         }
 
         public AlbumName AlbumName
@@ -81,7 +88,7 @@ namespace Music.Domain.DomainEntities
             }
         }
 
-        public List<Guid> Songs
+        public List<AlbumSong> Songs
         {
             get
             {
@@ -90,18 +97,6 @@ namespace Music.Domain.DomainEntities
             private set
             {
                 _Songs = value;
-            }
-        }
-
-        public Guid UserId
-        {
-            get
-            {
-                return _UserId;
-            }
-            private set
-            {
-                _UserId = value;
             }
         }
     }

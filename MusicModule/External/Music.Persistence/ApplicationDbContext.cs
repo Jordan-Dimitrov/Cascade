@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Music.Domain.Aggregates.ArtistAggregate;
+using Music.Domain.Aggregates.ListenerAggregate;
+using Music.Domain.Aggregates.SongAggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +13,9 @@ namespace Music.Persistence
 {
     public sealed class ApplicationDbContext : DbContext
     {
+        public DbSet<Artist> Artists { get; set; }
+        public DbSet<Listener> Listeners { get; set; }
+        public DbSet<Song> Songs { get; set; }
         public ApplicationDbContext()
         {
         }
@@ -22,9 +28,9 @@ namespace Music.Persistence
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-           // optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Cascade;Integrated Security=True;");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+           optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Cascade;Integrated Security=True;");
+        }
     }
 }
