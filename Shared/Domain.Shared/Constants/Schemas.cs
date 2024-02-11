@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Domain.Shared.Constants
+{
+    public static class Schemas
+    {
+        public static string UserSchema = "users";
+        public static string MusicSchema = "music";
+    }
+}

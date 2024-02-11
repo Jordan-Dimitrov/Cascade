@@ -1,7 +1,7 @@
 ﻿using Music.Domain.DomainEntities;
 using Music.Domain.ValueObjects;
-using Shared.Exceptions;
-using Shared.Primitives;
+using Domain.Shared.Exceptions;
+using Domain.Shared.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;

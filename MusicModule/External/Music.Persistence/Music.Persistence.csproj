@@ -17,12 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Persistence.Shared\Persistence.Shared.csproj" />
     <ProjectReference Include="..\..\Core\Music.Application\Music.Application.csproj" />
     <ProjectReference Include="..\..\Core\Music.Domain\Music.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 

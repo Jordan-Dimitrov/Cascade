@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Dapper;
 using MediatR;
-using Shared.Abstractions;
-using Shared.Exceptions;
+using Domain.Shared.Abstractions;
+using Domain.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data;

@@ -1,6 +1,6 @@
 ﻿using Users.Application.Dtos;
 using MediatR;
-using Shared.RequestFeatures;
+using Domain.Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;

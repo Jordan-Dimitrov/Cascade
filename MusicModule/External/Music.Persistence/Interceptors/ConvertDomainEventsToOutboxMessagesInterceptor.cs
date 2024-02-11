@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Music.Persistence.Outbox;
 using Newtonsoft.Json;
-using Shared.Primitives;
+using Domain.Shared.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,5 @@
 ﻿using Music.Domain.ValueObjects;
-using Shared.Primitives;
+using Domain.Shared.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;

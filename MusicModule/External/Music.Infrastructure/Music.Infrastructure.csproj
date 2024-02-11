@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Infrastructure.Shared\Infrastructure.Shared.csproj" />
     <ProjectReference Include="..\..\Core\Music.Application\Music.Application.csproj" />
     <ProjectReference Include="..\..\Core\Music.Domain\Music.Domain.csproj" />
     <ProjectReference Include="..\Music.Persistence\Music.Persistence.csproj" />

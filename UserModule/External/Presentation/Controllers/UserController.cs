@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Presentation.ActionFilters;
+using Presentation.Shared.ActionFilters;
 using System.Text.Json;
 using Users.Application.Abstractions;
 using Users.Application.Dtos;

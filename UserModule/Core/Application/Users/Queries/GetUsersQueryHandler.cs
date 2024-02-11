@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shared.Abstractions;
-using Shared.RequestFeatures;
+using Domain.Shared.Abstractions;
+using Domain.Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;

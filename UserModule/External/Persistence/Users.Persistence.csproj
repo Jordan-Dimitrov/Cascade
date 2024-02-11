@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Persistence.Shared\Persistence.Shared.csproj" />
     <ProjectReference Include="..\..\Core\Application\Users.Application.csproj" />
     <ProjectReference Include="..\..\Core\Domain\Users.Domain.csproj" />
   </ItemGroup>

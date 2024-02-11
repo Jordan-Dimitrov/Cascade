@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Shared.Primitives;
+using Domain.Shared.Primitives;
 using Users.Domain.Aggregates.UserAggregate;
 using Users.Domain.DomainEntities;
 

@@ -1,17 +1,12 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Persistence;
-using Persistence.Outbox;
 using Polly;
 using Polly.Retry;
 using Quartz;
-using Shared.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Shared.Primitives;
+using Persistence.Shared.Outbox;
+using Persistence;
 
 namespace Infrastructure.BackgroundJobs
 {

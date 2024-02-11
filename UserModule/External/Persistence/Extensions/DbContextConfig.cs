@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Persistence.Interceptors;
+using Persistence.Shared.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Extensions

@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
-using Shared.Abstractions;
+using Domain.Shared.Abstractions;
 using System.Text;
 using Users.Application.Abstractions;
 using Users.Application.Dtos;
 using Users.Domain.Wrappers;
+using Infrastructure.Shared.Services;
 
 namespace Infrastructure
 {

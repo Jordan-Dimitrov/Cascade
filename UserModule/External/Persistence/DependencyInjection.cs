@@ -6,10 +6,11 @@ using Microsoft.Data.SqlClient;
 using System.Globalization;
 using System.Data;
 using Dapper.FluentMap;
-using Persistence.Interceptors;
 using Persistence.Extensions;
-using Shared.Abstractions;
+using Domain.Shared.Abstractions;
 using Users.Domain.Abstractions;
+using Persistence.Shared.Interceptors;
+using Persistence.Shared;
 namespace Persistence
 {
     public static class DependencyInjection

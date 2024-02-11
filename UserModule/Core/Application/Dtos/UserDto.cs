@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Shared.Abstractions;
+using Domain.Shared.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Music.Domain.Aggregates.ArtistAggregate;
-using Shared.Constants;
+using Domain.Shared.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
