@@ -16,10 +16,9 @@ namespace Presentation.Controllers
 {
     public sealed class UserController : ApiController
     {
-        private readonly IAuthService _AuthService;
-        public UserController(ISender sender, IAuthService authService) : base(sender)
+        public UserController(ISender sender) : base(sender)
         {
-            _AuthService = authService;
+
         }
 
         [HttpGet("{userId:guid}"), Authorize(Roles = "User,Admin")]
@@ -104,9 +103,13 @@ namespace Presentation.Controllers
         [HttpPost("logout")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout(CancellationToken cancellationToken)
         {
-            _AuthService.ClearTokens();
+            string? jwtToken = Request.Cookies["jwtToken"];
+
+            LogoutUserCommand command = new LogoutUserCommand(jwtToken);
+
+            await _Sender.Send(command, cancellationToken);
 
             return Ok();
         }
