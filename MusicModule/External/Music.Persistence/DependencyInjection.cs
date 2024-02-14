@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Music.Persistence.Interceptors;
 using Persistence.Extensions;
+using Persistence.Shared.Interceptors;
 using System;
 using System.Collections.Generic;
 using System.Linq;

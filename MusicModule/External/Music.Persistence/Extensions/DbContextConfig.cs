@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Music.Persistence;
-using Music.Persistence.Interceptors;
+using Persistence.Shared.Interceptors;
 
 namespace Persistence.Extensions
 {

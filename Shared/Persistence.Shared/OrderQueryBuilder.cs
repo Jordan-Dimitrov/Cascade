@@ -4,16 +4,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Users.Domain.Aggregates.UserAggregate;
 
-namespace Persistence.Repositories
+namespace Persistence.Shared
 {
-    internal static class OrderQueryBuilder
+    public static class OrderQueryBuilder
     {
-        internal static string CreateOrderQuery<T>(string orderByQueryString)
+        public static string CreateOrderQuery<T>(string orderByQueryString)
         {
             var orderParams = orderByQueryString.Trim().Split(',');
-            var propertyInfos = typeof(User).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var propertyInfos = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
             var orderQueryBuilder = new StringBuilder();
 
             foreach (var param in orderParams)
