@@ -104,6 +104,13 @@ namespace Music.Persistence.Migrations
                         principalTable: "Album",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AlbumSong_Songs_SongId",
+                        column: x => x.SongId,
+                        principalSchema: "music",
+                        principalTable: "Songs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,6 +124,13 @@ namespace Music.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ArtistAlbum", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ArtistAlbum_Album_AlbumId",
+                        column: x => x.AlbumId,
+                        principalSchema: "music",
+                        principalTable: "Album",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ArtistAlbum_Artists_ArtistId",
                         column: x => x.ArtistId,
@@ -144,6 +158,13 @@ namespace Music.Persistence.Migrations
                         principalTable: "Listeners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ArtistListener_Artists_ArtistId",
+                        column: x => x.ListenerId,
+                        principalSchema: "music",
+                        principalTable: "Artists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -162,6 +183,13 @@ namespace Music.Persistence.Migrations
                         column: x => x.ListenerId,
                         principalSchema: "music",
                         principalTable: "Listeners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ListenerPlaylist_Playlist_PlaylistId",
+                        column: x => x.ListenerId,
+                        principalSchema: "music",
+                        principalTable: "Playlist",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -184,11 +212,28 @@ namespace Music.Persistence.Migrations
                         principalTable: "Playlist",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlaylistSong_Songs_SongId",
+                        column: x => x.PlaylistId,
+                        principalSchema: "music",
+                        principalTable: "Songs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AlbumSong_AlbumId",
                 table: "AlbumSong",
+                column: "AlbumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AlbumSong_SongId",
+                table: "AlbumSong",
+                column: "SongId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArtistAlbum_AlbumId",
+                table: "ArtistAlbum",
                 column: "AlbumId");
 
             migrationBuilder.CreateIndex(
@@ -202,14 +247,29 @@ namespace Music.Persistence.Migrations
                 column: "ListenerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ArtistListener_ArtistId",
+                table: "ArtistListener",
+                column: "ArtistId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ListenerPlaylist_ListenerId",
                 table: "ListenerPlaylist",
                 column: "ListenerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ListenerPlaylist_PlaylistId",
+                table: "ListenerPlaylist",
+                column: "PlaylistId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlaylistSong_PlaylistId",
                 table: "PlaylistSong",
                 column: "PlaylistId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlaylistSong_SongId",
+                table: "PlaylistSong",
+                column: "SongId");
         }
 
         /// <inheritdoc />
