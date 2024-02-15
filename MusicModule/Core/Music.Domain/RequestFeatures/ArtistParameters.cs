@@ -14,8 +14,8 @@ namespace Music.Domain.RequestFeatures
         {
             OrderBy = "followCount";
         }
-        public int MinFollowCount { get; set; } = 1;
-        public int MaxFollowCount { get; set; } = 100;
+        public int MinFollowCount { get; set; } = int.MinValue;
+        public int MaxFollowCount { get; set; } = int.MaxValue;
         public string? SearchTerm { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace Users.Application.Users.Commands
         }
         public async Task Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            User? user = await _UserQueryRepository.GetUserByNameAsync(request.Username);
+            User? user = await _UserQueryRepository.GetByNameAsync(request.Username);
 
             if (user is null)
             {

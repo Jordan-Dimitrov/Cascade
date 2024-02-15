@@ -27,7 +27,7 @@ namespace Users.Application.Users.Queries
         public async Task<UserDto> Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
         {
             UserDto? user = _Mapper.Map<UserDto>
-                (await _UserQueryRepository.GetUserByNameAsync(request.Username));
+                (await _UserQueryRepository.GetByNameAsync(request.Username));
 
             return user;
         }

@@ -8,13 +8,13 @@ using System.Linq.Dynamic.Core;
 using Persistence.Shared;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.ValueObjects;
-namespace Persistence.Repositories
+namespace Music.Persistence.Extensions
 {
     internal static class ArtistQueryRepositoryExtensions
     {
         internal static IQueryable<Artist> FilterArtists(this IQueryable<Artist> artsts,
             int minFollowCount, int maxFollowCount) => artsts
-            .Where(x => (x.FollowCount.Value >= minFollowCount && x.FollowCount.Value <= minFollowCount));
+            .Where(x => x.FollowCount.Value >= minFollowCount && x.FollowCount.Value <= minFollowCount);
 
         internal static IQueryable<Artist> Search(this IQueryable<Artist> artsts, string searchTerm)
         {

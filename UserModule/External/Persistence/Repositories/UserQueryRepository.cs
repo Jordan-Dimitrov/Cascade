@@ -41,7 +41,7 @@ namespace Persistence.Repositories
         }
 
 
-        public async Task<User?> GetUserByNameAsync(string username)
+        public async Task<User?> GetByNameAsync(string username)
         {
             Username name = new Username(username);
 

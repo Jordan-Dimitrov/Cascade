@@ -38,8 +38,6 @@ namespace Music.Domain.Aggregates.PlaylistAggregate
             return playlist;
         }
 
-
-
         public void RemoveSong(Guid songId)
         {
             PlaylistSong? song = _Songs.FirstOrDefault(x => x.SongId == songId);

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.Aggregates.ListenerAggregate;
+using Music.Domain.Aggregates.PlaylistAggregate;
 using Music.Domain.Aggregates.SongAggregate;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,8 @@ namespace Music.Persistence
         public DbSet<Artist> Artists { get; set; }
         public DbSet<Listener> Listeners { get; set; }
         public DbSet<Song> Songs { get; set; }
+        public DbSet<Album> Albums { get; set; }
+        public DbSet<Playlist> Playlists { get; set; }
         public ApplicationDbContext()
         {
         }

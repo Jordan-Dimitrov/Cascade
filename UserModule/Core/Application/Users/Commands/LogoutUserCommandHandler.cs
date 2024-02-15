@@ -32,7 +32,7 @@ namespace Users.Application.Users.Commands
         {
             string username = _AuthService.GetUsernameFromJwtToken(request.Jwt);
 
-            User? user = await _UserQueryRepository.GetUserByNameAsync(username);
+            User? user = await _UserQueryRepository.GetByNameAsync(username);
 
             if (user is null)
             {

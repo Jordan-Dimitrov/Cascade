@@ -4,7 +4,7 @@ using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.RequestFeatures;
 using Music.Domain.ValueObjects;
-using Persistence.Repositories;
+using Music.Persistence.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,25 +42,25 @@ namespace Music.Persistence.Repositories
         }
 
 
-        public async Task<Artist?> GetUserByNameAsync(string username)
+        public async Task<Artist?> GetByNameAsync(string username)
         {
             Username name = new Username(username);
 
-            Artist? user = await _Context.Artists.FirstOrDefaultAsync(x => x.Username == name);
+            Artist? artist = await _Context.Artists.FirstOrDefaultAsync(x => x.Username == name);
 
-            return user;
+            return artist;
         }
 
-        public async Task<PagedList<Artist>> GetUsersWithPaginationAsync(ArtistParameters artistParameters, bool trackChanges)
+        public async Task<PagedList<Artist>> GetArtistsWithPaginationAsync(ArtistParameters artistParameters, bool trackChanges)
         {
             var query = _Context.Artists
                 .FilterArtists(artistParameters.MinFollowCount, artistParameters.MaxFollowCount)
                 .Search(artistParameters.SearchTerm)
                 .Sort(artistParameters.OrderBy);
 
-            var users = await (trackChanges ? query.ToListAsync() : query.AsNoTracking().ToListAsync());
+            var artists = await (trackChanges ? query.ToListAsync() : query.AsNoTracking().ToListAsync());
 
-            return PagedList<Artist>.ToPagedList(users, artistParameters.PageNumber, artistParameters.PageSize);
+            return PagedList<Artist>.ToPagedList(artists, artistParameters.PageNumber, artistParameters.PageSize);
         }
     }
 }
