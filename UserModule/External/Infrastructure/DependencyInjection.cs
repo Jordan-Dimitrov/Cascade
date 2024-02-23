@@ -11,6 +11,7 @@ using Users.Application.Abstractions;
 using Users.Application.Dtos;
 using Users.Domain.Wrappers;
 using Infrastructure.Shared.Services;
+using Application.Shared.Abstractions;
 
 namespace Infrastructure
 {
@@ -30,6 +31,7 @@ namespace Infrastructure
             QuartzConfig.ConfigureQuartz(services);
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddTransient<IEventBus, EventBus>();
 
             return services;
         }

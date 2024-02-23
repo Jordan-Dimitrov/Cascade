@@ -14,7 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Application.Shared\Application.Shared.csproj" />
+    <ProjectReference Include="..\..\..\MusicModule\External\Music.IntegrationEvents\Music.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\..\Shared\Domain.Shared\Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\External\IntegrationEvents\Users.IntegrationEvents.csproj" />
     <ProjectReference Include="..\Domain\Users.Domain.csproj" />
   </ItemGroup>
 

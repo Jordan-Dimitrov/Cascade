@@ -1,16 +1,22 @@
 using AspNetCoreRateLimit;
 using CascadeAPI.Middlewares;
+using Domain.Shared.Wrappers;
 using HealthChecks.UI.Client;
 using Infrastructure;
+using MassTransit;
+using MassTransit.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.Extensions.Options;
 using Music.Application;
+using Music.Application.Consumers;
 using Music.Infrastructure;
 using Music.Persistence;
 using Music.Presentation;
 using Persistence;
 using Presentation;
 using Serilog;
+using System.Reflection;
 using Users.Application;
 using Users.Domain.Wrappers;
 namespace CascadeAPI
@@ -29,6 +35,31 @@ namespace CascadeAPI
             builder.Services.Configure<JwtTokenSettings>(builder.Configuration.GetSection("JwtTokenSettings"));
             builder.Services.Configure<RefreshTokenSettings>(builder.Configuration
                 .GetSection("RefreshTokenSettings"));
+
+            builder.Services.Configure<MessageBrokerSettings>(
+               builder.Configuration.GetSection("MessageBroker"));
+
+            builder.Services.AddMassTransit(busConfigurator =>
+            {
+                busConfigurator.SetKebabCaseEndpointNameFormatter();
+                busConfigurator.AddConsumer<UserHiddenEventConsumer>();
+                busConfigurator.UsingRabbitMq((context, configurator) =>
+                {
+                    MessageBrokerSettings settings = context.GetRequiredService<MessageBrokerSettings>();
+
+                    configurator.Host(new Uri(settings.Host), h =>
+                    {
+                        h.Username(settings.Username);
+                        h.Password(settings.Username);
+                    });
+
+                    configurator.ConfigureEndpoints(context);
+                });
+            });
+
+            builder.Services
+                .AddSingleton(x => x
+                .GetRequiredService<IOptions<MessageBrokerSettings>>().Value);
 
             JwtTokenSettings? jwtTokenSettings = builder.Configuration
                 .GetSection("JwtTokenSettings")
