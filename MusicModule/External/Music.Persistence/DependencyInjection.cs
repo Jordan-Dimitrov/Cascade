@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Domain.Shared.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
+using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
 using Music.Persistence.Repositories;
 using Persistence.Extensions;
@@ -33,6 +35,7 @@ namespace Music.Persistence
 
             services.AddScoped<ISongCommandRepository, SongCommandRepository>();
             services.AddScoped<ISongQueryRepository, SongQueryRepository>();
+            services.AddScoped<IMusicUnitOfWork, MusicUnitOfWork>();
 
             DbContextConfig.ConfigureDbContext(services, connectionString);
 

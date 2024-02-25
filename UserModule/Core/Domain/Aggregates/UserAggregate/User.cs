@@ -1,4 +1,5 @@
-﻿using Domain.Shared.Exceptions;
+﻿using Domain.Shared.Constants;
+using Domain.Shared.Exceptions;
 using Domain.Shared.Primitives;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,6 @@ using Users.Domain.ValueObjects;
 
 namespace Users.Domain.Aggregates.UserAggregate
 {
-    public enum UserRole
-    {
-        Visitor,
-        User,
-        Admin
-    }
     public sealed class User : AggregateRoot
     {
         private const string _HiddenUsername = "Hidden";
@@ -50,7 +45,7 @@ namespace Users.Domain.Aggregates.UserAggregate
         {
             User user = new User(new Username(username), passwordHash, passwordSalt, refreshToken, userRole);
 
-            user.RaiseDomainEvent(new UserCreatedDomainEvent(user));
+            user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id, user.Username.Value, (int)user.PermissionType));
 
             return user;
         }

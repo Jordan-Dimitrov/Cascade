@@ -18,9 +18,9 @@ namespace Music.Domain.Aggregates.ArtistAggregate
         private Username _Username;
         private FollowCount _FollowCount;
         private List<ArtistAlbum> _Albums;
-        private Artist(Username username, FollowCount followCount, List<ArtistAlbum> albums)
+        private Artist(Username username, FollowCount followCount, List<ArtistAlbum> albums, Guid id)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Username = username;
             FollowCount = followCount;
             Albums = albums;
@@ -32,9 +32,9 @@ namespace Music.Domain.Aggregates.ArtistAggregate
 
         }
 
-        public static Artist CreateArtist(string username)
+        public static Artist CreateArtist(Guid id, string username)
         {
-            Artist artist = new Artist(new Username(username), new FollowCount(0), new List<ArtistAlbum>());
+            Artist artist = new Artist(new Username(username), new FollowCount(0), new List<ArtistAlbum>(), id);
 
             return artist;
         }

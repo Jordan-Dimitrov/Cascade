@@ -17,11 +17,11 @@ namespace Users.Application.Users.Commands
         private readonly IUserCommandRepository _UserCommandRepository;
         private readonly IUserQueryRepository _UserQueryRepository;
         private readonly IAuthService _AuthService;
-        private readonly IUnitOfWork _UnitOfWork;
+        private readonly IUserUnitOfWork _UnitOfWork;
         public UpdateRefreshTokenCommandHandler(IUserQueryRepository userQueryRepository,
             IUserCommandRepository userCommandRepository,
             IAuthService authService,
-            IUnitOfWork unitOfWork)
+            IUserUnitOfWork unitOfWork)
         {
             _UserQueryRepository = userQueryRepository;
             _UserCommandRepository = userCommandRepository;

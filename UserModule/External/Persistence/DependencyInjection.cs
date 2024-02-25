@@ -11,6 +11,7 @@ using Domain.Shared.Abstractions;
 using Users.Domain.Abstractions;
 using Persistence.Shared.Interceptors;
 using Persistence.Shared;
+using Users.Application.Abstractions;
 namespace Persistence
 {
     public static class DependencyInjection
@@ -21,7 +22,7 @@ namespace Persistence
 
             DbContextConfig.ConfigureDbContext(services, connectionString);
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
             services.AddTransient<Seed>();
             services.AddScoped<IUserCommandRepository, UserCommandRepository>();
             services.AddScoped<IUserQueryRepository, UserQueryRepository>();

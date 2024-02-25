@@ -13,6 +13,7 @@ using Users.Domain.Aggregates.UserAggregate;
 using Users.Domain.DomainEntities;
 using Users.Domain.ValueObjects;
 using Users.Domain.Wrappers;
+using Domain.Shared.Constants;
 
 namespace Users.Application.Users.Commands
 {
@@ -20,11 +21,11 @@ namespace Users.Application.Users.Commands
     {
         private readonly IUserCommandRepository _UserRepository;
         private readonly IAuthService _AuthService;
-        private readonly IUnitOfWork _UnitOfWork;
+        private readonly IUserUnitOfWork _UnitOfWork;
         private readonly IUserQueryRepository _UserQueryRepository;
         public CreateUserCommandHandler(IUserCommandRepository userRepository,
             IAuthService authService,
-            IUnitOfWork unitOfWork,
+            IUserUnitOfWork unitOfWork,
             IUserQueryRepository userQueryRepository)
         {
             _UserRepository = userRepository;
@@ -45,7 +46,7 @@ namespace Users.Application.Users.Commands
             Token token = new Token(_AuthService.CreateRandomToken());
             RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
             User user = User.CreateUser(request.Username, pass.PasswordHash, pass.PasswordSalt,
-                refreshToken, UserRole.User);
+                refreshToken, request.PermissionType);
 
             await _UserRepository.InsertAsync(user);
 

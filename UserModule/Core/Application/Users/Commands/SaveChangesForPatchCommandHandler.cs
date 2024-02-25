@@ -6,14 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Application.Abstractions;
 
 namespace Users.Application.Users.Commands
 {
     internal sealed class SaveChangesForPatchCommandHandler : IRequestHandler<SaveChangesForPatchCommand>
     {
-        private readonly IUnitOfWork _UnitOfWork;
+        private readonly IUserUnitOfWork _UnitOfWork;
         private readonly IMapper _Mapper;
-        public SaveChangesForPatchCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public SaveChangesForPatchCommandHandler(IUserUnitOfWork unitOfWork, IMapper mapper)
         {
             _UnitOfWork = unitOfWork;
             _Mapper = mapper;

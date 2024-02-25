@@ -16,7 +16,7 @@ namespace Persistence.Repositories
     internal sealed class UserCommandRepository : IUserCommandRepository
     {
         private readonly ApplicationDbContext _Context;
-        public UserCommandRepository(ApplicationDbContext context, IUnitOfWork unitOfWork) 
+        public UserCommandRepository(ApplicationDbContext context) 
         {
             _Context = context;
         }

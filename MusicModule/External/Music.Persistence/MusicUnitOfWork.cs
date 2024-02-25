@@ -1,16 +1,17 @@
 ﻿using Domain.Shared.Abstractions;
+using Music.Application.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistence
+namespace Music.Persistence
 {
-    internal sealed class UnitOfWork : IUnitOfWork
+    internal sealed class MusicUnitOfWork : IMusicUnitOfWork
     {
         private readonly ApplicationDbContext _DbContext;
-        public UnitOfWork(ApplicationDbContext dbContext)
+        public MusicUnitOfWork(ApplicationDbContext dbContext)
         {
             _DbContext = dbContext;
         }

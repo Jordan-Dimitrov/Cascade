@@ -20,9 +20,9 @@ namespace Music.Domain.Aggregates.ListenerAggregate
         private Username _Username;
         private List<ListenerPlaylist> _Playlists;
         private List<ArtistListener> _Artists;
-        private Listener(Username username, List<ListenerPlaylist> playlists, List<ArtistListener> artists)
+        private Listener(Username username, List<ListenerPlaylist> playlists, List<ArtistListener> artists, Guid id)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Username = username;
             Playlists = playlists;
             Artists = artists;
@@ -34,9 +34,9 @@ namespace Music.Domain.Aggregates.ListenerAggregate
 
         }
 
-        public static Listener CreateListener(string username)
+        public static Listener CreateListener(string username, Guid id)
         {
-            Listener listener = new Listener(new Username(username), new List<ListenerPlaylist>(), new List<ArtistListener>());
+            Listener listener = new Listener(new Username(username), new List<ListenerPlaylist>(), new List<ArtistListener>(), id);
 
             return listener;
         }

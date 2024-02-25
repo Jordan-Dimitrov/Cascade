@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
+using Users.Application.Abstractions;
 
 namespace Users.Application.Users.Commands
 {
@@ -14,10 +15,10 @@ namespace Users.Application.Users.Commands
     {
         private readonly IUserCommandRepository _UserCommandRepository;
         private readonly IUserQueryRepository _UserQueryRepository;
-        private readonly IUnitOfWork _UnitOfWork;
+        private readonly IUserUnitOfWork _UnitOfWork;
         public HideUserCommandHandler(IUserQueryRepository userQueryRepository,
             IUserCommandRepository userCommandRepository,
-            IUnitOfWork unitOfWork)
+            IUserUnitOfWork unitOfWork)
         {
             _UserQueryRepository = userQueryRepository;
             _UserCommandRepository = userCommandRepository;

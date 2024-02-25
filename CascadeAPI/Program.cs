@@ -43,6 +43,7 @@ namespace CascadeAPI
             {
                 busConfigurator.SetKebabCaseEndpointNameFormatter();
                 busConfigurator.AddConsumer<UserHiddenEventConsumer>();
+                busConfigurator.AddConsumer<UserCreatedEventConsumer>();
                 busConfigurator.UsingRabbitMq((context, configurator) =>
                 {
                     MessageBrokerSettings settings = context.GetRequiredService<MessageBrokerSettings>();

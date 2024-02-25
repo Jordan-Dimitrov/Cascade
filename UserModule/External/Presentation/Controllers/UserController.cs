@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Domain.Shared.Constants;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -56,6 +57,19 @@ namespace Presentation.Controllers
         public async Task<IActionResult> Register([FromBody]CreateUserDto user, CancellationToken cancellationToken)
         {
             CreateUserCommand command = new CreateUserCommand(user.Username, user.Password, UserRole.User);
+
+            Guid id = await _Sender.Send(command, cancellationToken);
+
+            return Ok(id);
+        }
+
+        [HttpPost("register-artist"), Authorize(Roles = "Admin")]
+        [ValidateModelState]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RegisterArtist([FromBody] CreateUserDto user, CancellationToken cancellationToken)
+        {
+            CreateUserCommand command = new CreateUserCommand(user.Username, user.Password, UserRole.Artist);
 
             Guid id = await _Sender.Send(command, cancellationToken);
 

@@ -8,6 +8,7 @@ using System.Linq.Dynamic.Core;
 using Users.Domain.ValueObjects;
 using Users.Domain.Aggregates.UserAggregate;
 using Persistence.Shared;
+using Domain.Shared.Constants;
 namespace Persistence.Repositories
 {
     internal static class UserQueryRepositoryExtensions

@@ -19,7 +19,11 @@ namespace Users.Application.DomainEventsHandlers
         }
         public async Task Handle(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
         {
-            Console.WriteLine(notification.user.PermissionType + "-----------------------------");
+            await _EventBus
+                .PublisAsync(new UserCreatedIntegrationEvent(notification.UserId, 
+                notification.Username, notification.Role));
+
+            Console.WriteLine("fffffffffffff");
         }
     }
 }

@@ -17,11 +17,11 @@ namespace Users.Application.Users.Commands
     {
         private readonly IUserCommandRepository _UserCommandRepository;
         private readonly IAuthService _AuthService;
-        private readonly IUnitOfWork _UnitOfWork;
+        private readonly IUserUnitOfWork _UnitOfWork;
         private readonly IUserQueryRepository _UserQueryRepository;
         public LoginUserCommandHandler(ISender sender, IAuthService authService,
             IUserCommandRepository userCommandRepository,
-            IUnitOfWork unitOfWork, IUserQueryRepository userQueryRepository)
+            IUserUnitOfWork unitOfWork, IUserQueryRepository userQueryRepository)
         {
             _AuthService = authService;
             _UserCommandRepository = userCommandRepository;

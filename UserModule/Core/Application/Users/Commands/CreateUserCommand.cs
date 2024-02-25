@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Domain.Shared.Constants;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
