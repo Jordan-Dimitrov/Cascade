@@ -88,6 +88,13 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             }
         }
 
+        public Album HideAlbum()
+        {
+            this.AlbumName = new AlbumName("Hidden");
+            this.Songs = new List<AlbumSong>();
+            return this;
+        }
+
         public List<AlbumSong> Songs
         {
             get

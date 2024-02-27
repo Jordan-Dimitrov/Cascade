@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace Users.IntegrationEvents
 {
-    public sealed record UserHiddenIntegrationEvent(Guid UserId) : IntegragtionEvent;
+    public sealed record UserHiddenIntegrationEvent(Guid UserId, int Role) : IntegragtionEvent;
 }

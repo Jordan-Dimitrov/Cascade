@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Music.Domain.DomainServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,8 @@ namespace Music.Application
                 configuration.RegisterServicesFromAssembly(assembly));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            services.AddScoped<ArtistService>();
+            
             return services;
         }
     }

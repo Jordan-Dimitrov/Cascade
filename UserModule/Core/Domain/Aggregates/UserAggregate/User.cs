@@ -78,10 +78,11 @@ namespace Users.Domain.Aggregates.UserAggregate
         {
             _Username = new Username(_HiddenUsername);
             PasswordHash = _HiddenPassword;
+
+            RaiseDomainEvent(new UserHiddenDomainEvent(Id, PermissionType));
+
             PermissionType = UserRole.Visitor;
             PasswordSalt = _HiddenPassword;
-
-            RaiseDomainEvent(new UserHiddenDomainEvent(Id));
 
             return this;
         }

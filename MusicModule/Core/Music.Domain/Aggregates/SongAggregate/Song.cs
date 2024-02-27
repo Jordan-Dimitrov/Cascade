@@ -43,9 +43,13 @@ namespace Music.Domain.Aggregates.SongAggregate
 
         }
 
-        public void HideSong()
+        public Song HideSong()
         {
+            this.SongName = new SongName("Hidden");
+            this.AudioFile = new AudioFile("Hidden");
+            this.SongCategory = new SongCategory("Hidden");
 
+            return this;
         }
 
         public Guid UserId 

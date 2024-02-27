@@ -124,7 +124,7 @@ namespace Music.Domain.Aggregates.ListenerAggregate
 
         public void HideListener()
         {
-
+            Username = new Username("Hidden");
         }
     }
 }

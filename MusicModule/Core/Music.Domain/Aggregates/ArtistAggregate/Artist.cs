@@ -99,7 +99,7 @@ namespace Music.Domain.Aggregates.ArtistAggregate
 
         public void HideArtist()
         {
-
+            Username = new Username("Hidden");
         }
     }
 }
