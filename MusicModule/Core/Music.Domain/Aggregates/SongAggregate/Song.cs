@@ -21,6 +21,7 @@ namespace Music.Domain.Aggregates.SongAggregate
             Id = Guid.NewGuid();
             SongName = songName;
             DateCreated = dateCreated;
+            AudioFile = audioFile;
             UserId = userId;
             SongCategory = songCategory;
         }

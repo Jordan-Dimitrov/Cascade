@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Presentation.Shared;
 using Presentation.Shared.ActionFilters;
 using System.Text.Json;
-using Users.Application.Abstractions;
 using Users.Application.Dtos;
 using Users.Application.Users.Commands;
 using Users.Application.Users.Queries;
-using Users.Domain.Aggregates.UserAggregate;
 using Users.Domain.RequestFeatures;
 namespace Presentation.Controllers
 {
@@ -22,7 +21,7 @@ namespace Presentation.Controllers
 
         }
 
-        [HttpGet("{userId:guid}"), Authorize(Roles = "User,Admin")]
+        [HttpGet("{userId:guid}"), Authorize(Roles = "User,Admin,Artist")]
         [ResponseCache(CacheProfileName = "Default")]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -35,8 +34,8 @@ namespace Presentation.Controllers
             return Ok(user);
         }
 
-        [HttpGet, Authorize(Roles = "User,Admin")]
-        [HttpHead, Authorize(Roles = "User,Admin")]
+        [HttpGet, Authorize(Roles = "User,Admin,Artist")]
+        [HttpHead, Authorize(Roles = "User,Admin,Artist")]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUsers([FromQuery] UserParameters requestParameters, CancellationToken cancellationToken)
@@ -98,7 +97,7 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [HttpGet("role"), Authorize(Roles = "User,Admin")]
+        [HttpGet("role"), Authorize(Roles = "User,Admin,Artist")]
         [EndpointName("GetUserRole")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

@@ -38,7 +38,6 @@ namespace Music.Domain.ValueObjects
                 }
 
                 _Value = value;
-
             }
         }
 

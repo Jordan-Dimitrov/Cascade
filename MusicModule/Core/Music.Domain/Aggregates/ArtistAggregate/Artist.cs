@@ -23,7 +23,7 @@ namespace Music.Domain.Aggregates.ArtistAggregate
             Id = id;
             Username = username;
             FollowCount = followCount;
-            Albums = albums;
+            Albums = albums ?? new List<ArtistAlbum>();
         }
 
         [JsonConstructor]
@@ -41,6 +41,11 @@ namespace Music.Domain.Aggregates.ArtistAggregate
 
         public void AddAlbum(Guid albumId)
         {
+            if(_Albums is null)
+            {
+                _Albums = new List<ArtistAlbum>();
+            }
+
             if (_Albums.FirstOrDefault(x => x.AlbumId == albumId) is not null)
             {
                 throw new DomainValidationException("Album already exists");
@@ -89,6 +94,11 @@ namespace Music.Domain.Aggregates.ArtistAggregate
         {
             get
             {
+                if (_Albums is null)
+                {
+                    _Albums = new List<ArtistAlbum>();
+                }
+
                 return _Albums.AsReadOnly().ToList();
             }
             private set

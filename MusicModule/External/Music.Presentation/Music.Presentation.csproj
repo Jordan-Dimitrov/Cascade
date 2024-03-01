@@ -11,4 +11,8 @@
     <ProjectReference Include="..\..\Core\Music.Application\Music.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

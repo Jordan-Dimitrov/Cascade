@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.Shared;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Users.Application.Users.Queries
         }
         public Task<string> Handle(GetRoleFromJwtQuery request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_AuthService.GetRoleFromJwtToken(request.JwtToken));
+            return Task.FromResult(Utils.GetRoleFromJwtToken(request.JwtToken));
         }
     }
 }

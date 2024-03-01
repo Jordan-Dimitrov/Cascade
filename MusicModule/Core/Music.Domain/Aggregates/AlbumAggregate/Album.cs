@@ -20,6 +20,7 @@ namespace Music.Domain.Aggregates.AlbumAggregate
         {
             Id = Guid.NewGuid();
             AlbumName = albumName;
+            DateCreated = dateCreated;
             Songs = songs;
         }
 
@@ -29,7 +30,7 @@ namespace Music.Domain.Aggregates.AlbumAggregate
 
         }
 
-        public static Album CreateAlbum(string albumName, DateTime dateCreated, Guid songId)
+        public static Album CreateAlbum(string albumName, Guid songId)
         {
             Album album = new Album(new AlbumName(albumName), DateTime.UtcNow, new List<AlbumSong>());
 

@@ -85,26 +85,7 @@ namespace Infrastructure.Services
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
-        public string GetUsernameFromJwtToken(string token)
-        {
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-            JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(token);
-
-            string username = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
-
-            return username;
-        }
-        public string GetRoleFromJwtToken(string token)
-        {
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-
-            JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(token);
-
-            string role = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value;
-
-            return role;
-        }
         public DateTime GetDateFromJwtToken(string token)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

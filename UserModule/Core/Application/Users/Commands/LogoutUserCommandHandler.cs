@@ -1,4 +1,5 @@
-﻿using Domain.Shared.Abstractions;
+﻿using Application.Shared;
+using Domain.Shared.Abstractions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Users.Application.Users.Commands
         }
         public async Task Handle(LogoutUserCommand request, CancellationToken cancellationToken)
         {
-            string username = _AuthService.GetUsernameFromJwtToken(request.Jwt);
+            string username = Utils.GetUsernameFromJwtToken(request.Jwt);
 
             User? user = await _UserQueryRepository.GetByNameAsync(username);
 

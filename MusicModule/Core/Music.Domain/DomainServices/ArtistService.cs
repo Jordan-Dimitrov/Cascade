@@ -11,7 +11,7 @@ namespace Music.Domain.DomainServices
 {
     public sealed class ArtistService
     {
-        public void HideArtistService(Artist artist, IQueryable<Album> albums, IQueryable<Song> songs)
+        public void HideArtist(Artist artist, IQueryable<Album> albums, IQueryable<Song> songs)
         {
             artist.HideArtist();
 
@@ -19,5 +19,6 @@ namespace Music.Domain.DomainServices
 
             songs.Select(x => x.HideSong());
         }
+
     }
 }
