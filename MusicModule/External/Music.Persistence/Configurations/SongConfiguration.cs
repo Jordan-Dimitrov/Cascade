@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Music.Domain.Aggregates.SongAggregate;
 using Music.Domain.ValueObjects;
+using Music.Domain.DomainEntities;
 
 namespace Music.Persistence.Configurations
 {
@@ -16,7 +16,7 @@ namespace Music.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Song> builder)
         {
-            builder.ToTable(nameof(ApplicationDbContext.Songs), Schemas.MusicSchema);
+            builder.ToTable(nameof(Song) + "s", Schemas.MusicSchema);
 
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired().ValueGeneratedNever();

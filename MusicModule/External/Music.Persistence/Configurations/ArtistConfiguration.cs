@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Music.Domain.Aggregates.AlbumAggregate;
 
 namespace Music.Persistence.Configurations
 {
@@ -23,11 +24,6 @@ namespace Music.Persistence.Configurations
             builder.Property(x => x.Username).HasConversion(
                 username => username.Value,
                 value => new Username(value)).HasMaxLength(50);
-
-            builder.Property(x => x.FollowCount).HasConversion(
-                count => count.Value,
-                value => new FollowCount(value));
-
         }
     }
 }

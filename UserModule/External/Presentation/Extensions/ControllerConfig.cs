@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using Presentation.Shared.Constants;
 
 namespace Presentation.Extensions
 {
@@ -24,7 +25,7 @@ namespace Presentation.Extensions
 
             services.AddControllers(options =>
             {
-                options.CacheProfiles.Add("Default",
+                options.CacheProfiles.Add(CacheProfiles.Default,
                     new CacheProfile()
                     {
                         Duration = 10

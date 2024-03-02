@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Music.Application.Dtos
+namespace Presentation.Shared.Constants
 {
-    public class PlaylistPatchDto
+    public static class CacheProfiles
     {
-        public string PlaylistName { get; set; }
+        public const string Default = "Default";
     }
 }

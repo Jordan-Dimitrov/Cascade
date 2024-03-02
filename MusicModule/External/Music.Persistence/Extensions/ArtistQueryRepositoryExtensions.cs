@@ -13,8 +13,8 @@ namespace Music.Persistence.Extensions
     internal static class ArtistQueryRepositoryExtensions
     {
         internal static IQueryable<Artist> FilterArtists(this IQueryable<Artist> artsts,
-            int minFollowCount, int maxFollowCount) => artsts
-            .Where(x => x.FollowCount.Value >= minFollowCount && x.FollowCount.Value <= minFollowCount);
+            int minAlbumCount, int maxAlbumCount) => artsts
+            .Where(x => x.Albums.Count >= minAlbumCount && x.Albums.Count <= maxAlbumCount);
 
         internal static IQueryable<Artist> Search(this IQueryable<Artist> artsts, string searchTerm)
         {

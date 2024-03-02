@@ -6,23 +6,24 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Music.Domain.Aggregates.AlbumAggregate;
 
-namespace Music.Domain.Aggregates.SongAggregate
+namespace Music.Domain.DomainEntities
 {
-    public sealed class Song : AggregateRoot
+    public sealed class Song : Entity
     {
+        private const string _HiddenName = "Hidden";
+        private const string _HiddenFileName = "hidden.mp3";
         private SongName _SongName;
         private AudioFile _AudioFile;
         private DateTime _DateCreated;
-        private Guid _UserId;
         private SongCategory _SongCategory;
-        private Song(SongName songName, AudioFile audioFile, DateTime dateCreated, Guid userId, SongCategory songCategory)
+        private Song(SongName songName, AudioFile audioFile, DateTime dateCreated, SongCategory songCategory)
         {
             Id = Guid.NewGuid();
             SongName = songName;
             DateCreated = dateCreated;
             AudioFile = audioFile;
-            UserId = userId;
             SongCategory = songCategory;
         }
 
@@ -32,38 +33,21 @@ namespace Music.Domain.Aggregates.SongAggregate
 
         }
 
-        public static Song CreateSong(string songName, string audioName, Guid userId, string songCategory)
+        public static Song CreateSong(string songName, string audioName, string songCategory)
         {
-            Song song = new Song(new SongName(songName), new AudioFile(audioName), DateTime.UtcNow, userId , new SongCategory(songCategory));
+            Song song = new Song(new SongName(songName), new AudioFile(audioName), DateTime.UtcNow,
+                new SongCategory(songCategory));
 
             return song;
         }
 
-        public void DeleteSong()
+        public void HideSong()
         {
-
+            SongName = new SongName(_HiddenName);
+            AudioFile = new AudioFile(_HiddenFileName);
+            SongCategory = new SongCategory(_HiddenName);
         }
 
-        public Song HideSong()
-        {
-            this.SongName = new SongName("Hidden");
-            this.AudioFile = new AudioFile("Hidden");
-            this.SongCategory = new SongCategory("Hidden");
-
-            return this;
-        }
-
-        public Guid UserId 
-        {
-            get 
-            {
-                return _UserId; 
-            }
-            private set
-            {
-                _UserId = value;
-            }
-        }
         public DateTime DateCreated
         {
             get

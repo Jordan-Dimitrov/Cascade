@@ -27,14 +27,6 @@ namespace Music.Persistence
             services.AddScoped<IArtistCommandRepository, ArtistCommandRepository>();
             services.AddScoped<IArtistQueryRepository,  ArtistQueryRepository>();
 
-            services.AddScoped<IListenerCommandRepository, ListenerCommandRepository>();
-            services.AddScoped<IListenerQueryRepository, ListenerQueryRepository>();
-
-            services.AddScoped<IPlaylistCommandRepository, PlaylistCommandRepository>();
-            services.AddScoped<IPlaylistQueryRepository, PlaylistQueryRepository>();
-
-            services.AddScoped<ISongCommandRepository, SongCommandRepository>();
-            services.AddScoped<ISongQueryRepository, SongQueryRepository>();
             services.AddScoped<IMusicUnitOfWork, MusicUnitOfWork>();
 
             DbContextConfig.ConfigureDbContext(services, connectionString);

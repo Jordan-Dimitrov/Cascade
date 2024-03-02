@@ -3,7 +3,7 @@ using MassTransit;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.ArtistAggregate;
-using Music.Domain.Aggregates.ListenerAggregate;
+using Music.Domain.DomainServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,58 +15,33 @@ namespace Music.Application.Consumers
 {
     public sealed class UserHiddenEventConsumer : IConsumer<UserHiddenIntegrationEvent>
     {
-        private readonly IArtistCommandRepository _ArtistCommandRepository;
-        private readonly IListenerCommandRepository _ListenerCommandRepository;
+        private readonly ArtistService _ArtistService;
         private readonly IMusicUnitOfWork _UnitOfWork;
         private readonly IArtistQueryRepository _ArtistQueryRepository;
-        private readonly IListenerQueryRepository _ListenerQueryRepository;
 
-        public UserHiddenEventConsumer(IArtistCommandRepository artistCommandRepository,
-            IListenerCommandRepository listenerCommandRepository,
-            IMusicUnitOfWork musicUnitOfWork,
+        public UserHiddenEventConsumer(IMusicUnitOfWork musicUnitOfWork,
             IArtistQueryRepository artistQueryRepository,
-            IListenerQueryRepository listenerQueryRepository)
+            ArtistService artistService)
         {
-            _ArtistCommandRepository = artistCommandRepository;
-            _ListenerCommandRepository = listenerCommandRepository;
             _UnitOfWork = musicUnitOfWork;
             _ArtistQueryRepository = artistQueryRepository;
-            _ListenerQueryRepository = listenerQueryRepository;
+            _ArtistService = artistService;
         }
         public async Task Consume(ConsumeContext<UserHiddenIntegrationEvent> context)
         {
-            int role = context.Message.Role;
-
-            if(role == (int)UserRole.Artist)
-            {
-                Artist? artist = await _ArtistQueryRepository.GetByIdAsync(context.Message.UserId, true);
-
-                if(artist is null)
-                {
-                    throw new ApplicationException("Such artist does not exist");
-                }
-
-                artist.HideArtist();
-
-                await _ArtistCommandRepository.UpdateAsync(artist);
-            }
-            else if(role == (int)UserRole.User)
-            {
-                Listener? listener = await _ListenerQueryRepository.GetByIdAsync(context.Message.UserId, true);
-
-                if (listener is null)
-                {
-                    throw new ApplicationException("Such listener does not exist");
-                }
-
-                listener.HideListener();
-
-                await _ListenerCommandRepository.UpdateAsync(listener);
-            }
-            else
+            if (context.Message.Role != (int)UserRole.Artist)
             {
                 return;
             }
+
+            Artist? artist = await _ArtistQueryRepository.GetByIdAsync(context.Message.UserId, true);
+
+            if (artist is null)
+            {
+                throw new ApplicationException("Such artist does not exist");
+            }
+
+            await _ArtistService.HideArtist(artist);
 
             if (await _UnitOfWork.SaveChangesAsync() <= 0)
             {

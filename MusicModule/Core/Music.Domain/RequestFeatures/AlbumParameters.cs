@@ -13,8 +13,9 @@ namespace Music.Domain.RequestFeatures
         {
             OrderBy = "dateCreated";
         }
-        public DateTime MinDateCreated { get; set; } = DateTime.MinValue;
-        public DateTime MaxDateCreated { get; set; } = DateTime.MaxValue;
+        public DateTime MinDateCreated { get; set; } = new DateTime(2023, 8, 1, 0, 0, 0, DateTimeKind.Utc);
+        public DateTime MaxDateCreated { get; set; } = DateTime.UtcNow;
+
         public string? SearchTerm { get; set; }
     }
 }

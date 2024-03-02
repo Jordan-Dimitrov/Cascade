@@ -1,5 +1,4 @@
 ﻿using Music.Domain.Aggregates.AlbumAggregate;
-using Music.Domain.Aggregates.SongAggregate;
 using Music.Domain.DomainEntities;
 using Music.Domain.ValueObjects;
 using Domain.Shared.Exceptions;
@@ -15,15 +14,13 @@ namespace Music.Domain.Aggregates.ArtistAggregate
 {
     public sealed class Artist : AggregateRoot
     {
+        private const string _HiddenName = "Hidden";
         private Username _Username;
-        private FollowCount _FollowCount;
-        private List<ArtistAlbum> _Albums;
-        private Artist(Username username, FollowCount followCount, List<ArtistAlbum> albums, Guid id)
+        private List<Album> _Albums;
+        private Artist(Username username, List<Album> albums, Guid id)
         {
             Id = id;
             Username = username;
-            FollowCount = followCount;
-            Albums = albums ?? new List<ArtistAlbum>();
         }
 
         [JsonConstructor]
@@ -32,31 +29,31 @@ namespace Music.Domain.Aggregates.ArtistAggregate
 
         }
 
-        public static Artist CreateArtist(Guid id, string username)
+        public static Artist CreateArtist(string username, Guid id)
         {
-            Artist artist = new Artist(new Username(username), new FollowCount(0), new List<ArtistAlbum>(), id);
+            Artist artist = new Artist(new Username(username), new List<Album>(), id);
 
             return artist;
         }
 
-        public void AddAlbum(Guid albumId)
+        public void AddAlbum(Album album)
         {
             if(_Albums is null)
             {
-                _Albums = new List<ArtistAlbum>();
+                _Albums = new List<Album>();
             }
 
-            if (_Albums.FirstOrDefault(x => x.AlbumId == albumId) is not null)
+            if (_Albums.Any(x => x == album))
             {
                 throw new DomainValidationException("Album already exists");
             }
 
-            _Albums.Add(new ArtistAlbum(Id, albumId));
+            _Albums.Add(album);
         }
 
         public void RemoveAlbum(Guid albumId)
         {
-            ArtistAlbum? album = _Albums.FirstOrDefault(x => x.AlbumId == albumId);
+            Album? album = _Albums.FirstOrDefault(x => x.Id == albumId);
 
             if (album is null)
             {
@@ -78,27 +75,10 @@ namespace Music.Domain.Aggregates.ArtistAggregate
             }
         }
 
-        public FollowCount FollowCount
+        public List<Album> Albums
         {
             get
             {
-                return _FollowCount;
-            }
-            set 
-            {
-                _FollowCount = value; 
-            }
-        }
-
-        public List<ArtistAlbum> Albums
-        {
-            get
-            {
-                if (_Albums is null)
-                {
-                    _Albums = new List<ArtistAlbum>();
-                }
-
                 return _Albums.AsReadOnly().ToList();
             }
             private set
@@ -109,7 +89,7 @@ namespace Music.Domain.Aggregates.ArtistAggregate
 
         public void HideArtist()
         {
-            Username = new Username("Hidden");
+            Username = new Username(_HiddenName);
         }
     }
 }

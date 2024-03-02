@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application.Shared.Constants;
+using Infrastructure.Shared;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -107,7 +109,7 @@ namespace Infrastructure.Services
                 Expires = newRefreshToken.TokenDates.TokenExpires,
             };
 
-            response?.Cookies.Append("refreshToken", newRefreshToken.Token.Value, cookieOptions);
+            response?.Cookies.Append(Tokens.RefreshToken, newRefreshToken.Token.Value, cookieOptions);
         }
         public void SetJwtToken(string jwtToken)
         {
@@ -120,15 +122,15 @@ namespace Infrastructure.Services
                 HttpOnly = true,
             };
 
-            response?.Cookies.Append("jwtToken", jwtToken, cookieOptions);
+            response?.Cookies.Append(Tokens.JwtToken, jwtToken, cookieOptions);
         }
         public void ClearTokens()
         {
             HttpResponse? response = _HttpContextAccessor.HttpContext?.Response;
 
-            response?.Cookies.Delete("jwtToken");
+            response?.Cookies.Delete(Tokens.JwtToken);
 
-            response?.Cookies.Delete("refreshToken");
+            response?.Cookies.Delete(Tokens.RefreshToken);
         }
 
     }

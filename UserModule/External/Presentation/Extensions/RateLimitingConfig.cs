@@ -1,5 +1,6 @@
 ﻿using AspNetCoreRateLimit;
 using Microsoft.Extensions.DependencyInjection;
+using Presentation.Shared.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,9 @@ namespace Presentation.Extensions
                 {
                 new RateLimitRule
                     {
-                        Endpoint = "*",
-                        Limit = 30,
-                        Period = "1m"
+                        Endpoint = RateLimits.Endpoint,
+                        Limit = RateLimits.Limit,
+                        Period = RateLimits.Period
                     }
                 };
 

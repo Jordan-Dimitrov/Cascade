@@ -12,10 +12,10 @@ namespace Music.Domain.RequestFeatures
     {
         public ArtistParameters()
         {
-            OrderBy = "followCount";
+            OrderBy = "username";
         }
-        public int MinFollowCount { get; set; } = int.MinValue;
-        public int MaxFollowCount { get; set; } = int.MaxValue;
+        public int MinAlbumCount { get; set; } = int.MinValue;
+        public int MaxAlbumCount { get; set; } = int.MaxValue;
         public string? SearchTerm { get; set; }
     }
 }

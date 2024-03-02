@@ -36,7 +36,9 @@ namespace Music.Persistence.Repositories
 
         public async Task<Artist?> GetByIdAsync(Guid id, bool trackChanges)
         {
-            var query = _Context.Artists.Where(x => x.Id == id);
+            var query = _Context.Artists.Where(x => x.Id == id)
+                .Include(x => x.Albums)
+                    .ThenInclude(c => c.Songs);
 
             return await (trackChanges ? query.FirstOrDefaultAsync() : query.AsNoTracking().FirstOrDefaultAsync());
         }
@@ -54,7 +56,7 @@ namespace Music.Persistence.Repositories
         public async Task<PagedList<Artist>> GetArtistsWithPaginationAsync(ArtistParameters artistParameters, bool trackChanges)
         {
             var query = _Context.Artists
-                .FilterArtists(artistParameters.MinFollowCount, artistParameters.MaxFollowCount)
+                .FilterArtists(artistParameters.MinAlbumCount, artistParameters.MaxAlbumCount)
                 .Search(artistParameters.SearchTerm)
                 .Sort(artistParameters.OrderBy);
 

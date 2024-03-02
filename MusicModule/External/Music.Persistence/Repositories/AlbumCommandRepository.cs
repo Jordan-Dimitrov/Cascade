@@ -1,6 +1,7 @@
 ﻿using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
+using Music.Domain.DomainEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,11 @@ namespace Music.Persistence.Repositories
         public async Task InsertAsync(Album value)
         {
             await _Context.AddAsync(value);
+        }
+
+        public Task RemoveSong(Song song)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task UpdateAsync(Album value)

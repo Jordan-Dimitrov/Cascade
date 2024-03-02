@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Music.Domain.ValueObjects;
-using Music.Domain.Aggregates.SongAggregate;
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.DomainEntities;
+using System.Reflection.Emit;
 
 namespace Music.Persistence.Configurations
 {
@@ -26,10 +26,6 @@ namespace Music.Persistence.Configurations
             builder.Property(x => x.AlbumName).HasConversion(
                 albumName => albumName.Value,
                 value => new AlbumName(value)).HasMaxLength(16);
-
-            builder.HasMany<AlbumSong>()
-               .WithOne()
-               .HasForeignKey(song => song.AlbumId);
         }
     }
 }

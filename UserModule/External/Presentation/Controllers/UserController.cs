@@ -1,4 +1,5 @@
-﻿using Domain.Shared.Constants;
+﻿using Application.Shared.Constants;
+using Domain.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Presentation.Shared;
 using Presentation.Shared.ActionFilters;
+using Presentation.Shared.Constants;
+using System.Reflection.Metadata;
 using System.Text.Json;
 using Users.Application.Dtos;
 using Users.Application.Users.Commands;
@@ -21,7 +24,7 @@ namespace Presentation.Controllers
 
         }
 
-        [HttpGet("{userId:guid}"), Authorize(Roles = "User,Admin,Artist")]
+        [HttpGet("{userId:guid}"), Authorize(Roles = AllowedRoles.All)]
         [ResponseCache(CacheProfileName = "Default")]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -34,17 +37,19 @@ namespace Presentation.Controllers
             return Ok(user);
         }
 
-        [HttpGet, Authorize(Roles = "User,Admin,Artist")]
-        [HttpHead, Authorize(Roles = "User,Admin,Artist")]
-        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet, Authorize(Roles = AllowedRoles.All)]
+        [HttpHead, Authorize(Roles = AllowedRoles.All)]
+        [ResponseCache(CacheProfileName = "Default")]
+        [ProducesResponseType(typeof(ICollection<UserDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetUsers([FromQuery] UserParameters requestParameters, CancellationToken cancellationToken)
         {
             GetUsersQuery query = new GetUsersQuery(requestParameters);
 
             var result = await _Sender.Send(query, cancellationToken);
 
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.metaData));
+            Response.Headers.Add(CustomHeaders.PaginationHeader,
+                JsonSerializer.Serialize(result.metaData));
 
             return Ok(result.users);
         }
@@ -62,7 +67,7 @@ namespace Presentation.Controllers
             return Ok(id);
         }
 
-        [HttpPost("register-artist"), Authorize(Roles = "Admin")]
+        [HttpPost("register-artist"), Authorize(Roles = AllowedRoles.Admin)]
         [ValidateModelState]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -92,19 +97,19 @@ namespace Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetUsersOptions()
         {
-            Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST, PATCH, PUT, DELETE");
 
             return Ok();
         }
 
-        [HttpGet("role"), Authorize(Roles = "User,Admin,Artist")]
+        [HttpGet("role"), Authorize(Roles = AllowedRoles.All)]
         [EndpointName("GetUserRole")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ResponseCache(CacheProfileName = "Default")]
         public async Task<IActionResult> GetUserRole(CancellationToken cancellationToken)
         {
-            string? jwtToken = Request.Cookies["jwtToken"];
+            string? jwtToken = Request.Cookies[Tokens.JwtToken];
 
             GetRoleFromJwtQuery query = new GetRoleFromJwtQuery(jwtToken);
 
@@ -118,7 +123,7 @@ namespace Presentation.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> Logout(CancellationToken cancellationToken)
         {
-            string? jwtToken = Request.Cookies["jwtToken"];
+            string? jwtToken = Request.Cookies[Tokens.JwtToken];
 
             LogoutUserCommand command = new LogoutUserCommand(jwtToken);
 
@@ -127,7 +132,7 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [HttpPut("hide/{userId:guid}"), Authorize(Roles = "Admin")]
+        [HttpPut("hide/{userId:guid}"), Authorize(Roles = AllowedRoles.Admin)]
         [EndpointName("HideUser")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -146,7 +151,7 @@ namespace Presentation.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> GetRefreshToken(CancellationToken cancellationToken)
         {
-            string refreshToken = Request.Cookies["refreshToken"];
+            string? refreshToken = Request.Cookies[Tokens.RefreshToken];
 
             UpdateRefreshTokenCommand command = new UpdateRefreshTokenCommand(refreshToken);
 
@@ -155,7 +160,7 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [HttpPatch("{userId:guid}"), Authorize(Roles = "Admin")]
+        [HttpPatch("{userId:guid}"), Authorize(Roles = AllowedRoles.Admin)]
         [EndpointName("PatchUser")]
         [ValidateModelState]
         [ProducesResponseType(204)]
@@ -165,7 +170,7 @@ namespace Presentation.Controllers
             [FromBody] JsonPatchDocument<UserPatchDto> patchDoc,
             CancellationToken cancellationToken)
         {
-            string? jwtToken = Request.Cookies["jwtToken"];
+            string? jwtToken = Request.Cookies[Tokens.JwtToken];
 
             PatchUserQuery query = new PatchUserQuery(userId);
             var result = await _Sender.Send(query, cancellationToken);

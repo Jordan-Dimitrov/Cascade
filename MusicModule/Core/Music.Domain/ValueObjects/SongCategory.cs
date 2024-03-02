@@ -11,8 +11,7 @@ namespace Music.Domain.ValueObjects
 {
     public sealed class SongCategory : ValueObject
     {
-        private const int _MinLength = 4;
-        private const int _MaxLength = 16;
+        private string[] _AllowedCategories = { "Srubsko", "Hidden"};
         private string _Value = null!;
         public SongCategory(string value)
         {
@@ -38,9 +37,9 @@ namespace Music.Domain.ValueObjects
                     throw new DomainValidationException("Cannot be null or empty.");
                 }
 
-                if (value.Length < _MinLength || value.Length > _MaxLength)
+                if (!_AllowedCategories.Contains(value))
                 {
-                    throw new DomainValidationException($"Must be in between {_MinLength} and {_MaxLength} characters.");
+                    throw new DomainValidationException($"{value} is not a valid category!");
                 }
 
                 _Value = value;

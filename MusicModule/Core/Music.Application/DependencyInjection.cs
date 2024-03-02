@@ -19,7 +19,6 @@ namespace Music.Application
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ArtistService>();
-            services.AddScoped<AlbumService>();
             
             return services;
         }

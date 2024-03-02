@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Listeners\**" />
+    <Compile Remove="Playlists\**" />
+    <Compile Remove="Songs\**" />
+    <EmbeddedResource Remove="Listeners\**" />
+    <EmbeddedResource Remove="Playlists\**" />
+    <EmbeddedResource Remove="Songs\**" />
+    <None Remove="Listeners\**" />
+    <None Remove="Playlists\**" />
+    <None Remove="Songs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MassTransit" Version="8.1.3" />
     <PackageReference Include="MediatR" Version="12.2.0" />
@@ -18,14 +30,6 @@
     <ProjectReference Include="..\..\..\Shared\Domain.Shared\Domain.Shared.csproj" />
     <ProjectReference Include="..\..\..\UserModule\External\IntegrationEvents\Users.IntegrationEvents.csproj" />
     <ProjectReference Include="..\Music.Domain\Music.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Albums\Queries\" />
-    <Folder Include="Artists\" />
-    <Folder Include="Listeners\" />
-    <Folder Include="Songs\" />
-    <Folder Include="Playlists\" />
   </ItemGroup>
 
 </Project>

@@ -45,7 +45,10 @@ namespace Users.Domain.Aggregates.UserAggregate
         {
             User user = new User(new Username(username), passwordHash, passwordSalt, refreshToken, userRole);
 
-            user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id, user.Username.Value, (int)user.PermissionType));
+            if(userRole == UserRole.Artist)
+            {
+                user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id, user.Username.Value, (int)user.PermissionType));
+            }
 
             return user;
         }

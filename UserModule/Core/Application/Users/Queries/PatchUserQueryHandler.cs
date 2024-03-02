@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Shared.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Users.Application.Users.Queries
 
             if (user is null)
             {
-                throw new ApplicationException("User not found");
+                throw new EntityNotFoundException("User not found");
             }
 
             UserPatchDto userToPatch = _Mapper.Map<UserPatchDto>(user);

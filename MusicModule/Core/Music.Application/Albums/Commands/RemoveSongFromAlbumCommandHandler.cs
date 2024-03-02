@@ -1,13 +1,10 @@
 ﻿using Application.Shared;
-using Domain.Shared.Abstractions;
 using MediatR;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.DomainEntities;
-using Music.Domain.DomainServices;
-using Music.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,57 +13,55 @@ using System.Threading.Tasks;
 
 namespace Music.Application.Albums.Commands
 {
-    internal sealed class CreateAlbumCommandHandler : IRequestHandler<CreateAlbumCommand, Guid>
+    internal sealed class RemoveSongFromAlbumCommandHandler : IRequestHandler<RemoveSongFromAlbumCommand>
     {
+        private readonly IAlbumCommandRepository _AlbumCommandRepository;
+        private readonly IAlbumQueryRepository _AlbumQueryRepository;
         private readonly IArtistQueryRepository _ArtistQueryRepository;
         private readonly IArtistCommandRepository _ArtistCommandRepository;
         private readonly IMusicUnitOfWork _MusicUnitOfWork;
-        private readonly IAlbumQueryRepository _AlbumQueryRepository;
-        public CreateAlbumCommandHandler(IArtistCommandRepository artistCommandRepository,
+        public RemoveSongFromAlbumCommandHandler(IAlbumCommandRepository albumCommandRepository,
+            IAlbumQueryRepository albumQueryRepository,
+            IArtistCommandRepository artistCommandRepository,
             IArtistQueryRepository artistQueryRepository,
-            IMusicUnitOfWork musicUnitOfWork,
-            IAlbumQueryRepository albumQueryRepository)
+            IMusicUnitOfWork musicUnitOfWork)
         {
+            _AlbumCommandRepository = albumCommandRepository;
+            _AlbumQueryRepository = albumQueryRepository;
             _ArtistCommandRepository = artistCommandRepository;
             _ArtistQueryRepository = artistQueryRepository;
             _MusicUnitOfWork = musicUnitOfWork;
-            _AlbumQueryRepository = albumQueryRepository;
         }
-
-        public async Task<Guid> Handle(CreateAlbumCommand request, CancellationToken cancellationToken)
+        public async Task Handle(RemoveSongFromAlbumCommand request, CancellationToken cancellationToken)
         {
             Artist? artist = await _ArtistQueryRepository
                 .GetByNameAsync(Utils.GetUsernameFromJwtToken(request.JwtToken));
 
-            if(artist is null)
+            if (artist is null)
             {
                 throw new ApplicationException("No such artist exists!");
             }
 
-            Song song = Song.CreateSong(request.CreateAlbumDto.SongName,
-                request.FileName,
-                request.CreateAlbumDto.SongCategory);
+            Album? album = await _AlbumQueryRepository.GetByIdAsync(request.AlbumId, true);
 
-            AlbumName name = new AlbumName(request.CreateAlbumDto.AlbumName);
-
-            if(await _AlbumQueryRepository.ExistsAsync(x => x.AlbumName == name))
+            if (album is null)
             {
-                throw new ApplicationException("Such album name already exists!");
+                throw new ApplicationException("No such album exists!");
             }
 
-            Album album = Album.CreateAlbum(request.CreateAlbumDto.AlbumName, artist.Id, song);
-            album.AddSong(song);
+            if (album.ArtistId != artist.Id)
+            {
+                throw new ApplicationException("Album does not belong to artist!");
+            }
 
-            artist.AddAlbum(album);
+            album.RemoveSong(request.SongId);
 
-            await _ArtistCommandRepository.UpdateAsync(artist);
+            await _AlbumCommandRepository.UpdateAsync(album);
 
             if (await _MusicUnitOfWork.SaveChangesAsync() <= 0)
             {
                 throw new ApplicationException("Unexpected error");
             }
-
-            return album.Id;
         }
     }
 }

@@ -13,15 +13,19 @@ namespace Music.Domain.Aggregates.AlbumAggregate
 {
     public sealed class Album : AggregateRoot
     {
+        private const string _HiddenName = "Hidden";
+        private const byte _AllowedSongCount = 16;
         private AlbumName _AlbumName;
         private DateTime _DateCreated;
-        private List<AlbumSong> _Songs;
-        private Album(AlbumName albumName, DateTime dateCreated, List<AlbumSong> songs)
+        private List<Song> _Songs;
+        private Guid _ArtistId;
+        private Album(AlbumName albumName, DateTime dateCreated, List<Song> songs, Guid userId)
         {
             Id = Guid.NewGuid();
             AlbumName = albumName;
             DateCreated = dateCreated;
             Songs = songs;
+            ArtistId = userId;
         }
 
         [JsonConstructor]
@@ -30,18 +34,22 @@ namespace Music.Domain.Aggregates.AlbumAggregate
 
         }
 
-        public static Album CreateAlbum(string albumName, Guid songId)
+        public static Album CreateAlbum(string albumName, Guid userId, Song song)
         {
-            Album album = new Album(new AlbumName(albumName), DateTime.UtcNow, new List<AlbumSong>());
+            Album album = new Album(new AlbumName(albumName), DateTime.UtcNow, new List<Song>(), userId);
 
-            album.Songs.Add(new AlbumSong(songId, album.Id));
+            album.Songs.Add(song);
 
             return album;
         }
 
         public void RemoveSong(Guid songId)
         {
-            AlbumSong? song = _Songs.FirstOrDefault(x => x.SongId == songId);
+            if (_Songs is null)
+            {
+                throw new DomainValidationException("No songs to remove!");
+            }
+            Song? song = _Songs.FirstOrDefault(x => x.Id == songId);
 
             if (song is null)
             {
@@ -51,16 +59,20 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             _Songs.Remove(song);
         }
 
-        public void AddSong(Guid songId)
+        public void AddSong(Song song)
         {
-            AlbumSong? song = _Songs.FirstOrDefault(x => x.SongId == songId);
-
-            if (song is not null)
+            if (_Songs is null)
+            {
+                _Songs = new List<Song>();
+            }
+            if (_Songs.Count > _AllowedSongCount)
+            {
+                throw new ApplicationException("Cannot add more songs to this album");
+            }
+            if (_Songs.Any(x => x == song || x.SongName == song.SongName))
             {
                 throw new DomainValidationException("There is already such song");
             }
-
-            song = new AlbumSong(songId, Id);
 
             _Songs.Add(song);
         }
@@ -89,14 +101,16 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             }
         }
 
-        public Album HideAlbum()
+        public void HideAlbum()
         {
-            this.AlbumName = new AlbumName("Hidden");
-            this.Songs = new List<AlbumSong>();
-            return this;
+            AlbumName = new AlbumName(_HiddenName);
+            foreach (Song song in Songs)
+            {
+                song.HideSong();
+            }
         }
 
-        public List<AlbumSong> Songs
+        public List<Song> Songs
         {
             get
             {
@@ -105,6 +119,18 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             private set
             {
                 _Songs = value;
+            }
+        }
+
+        public Guid ArtistId
+        {
+            get
+            {
+                return _ArtistId;
+            }
+            private set
+            {
+                _ArtistId = value;
             }
         }
     }

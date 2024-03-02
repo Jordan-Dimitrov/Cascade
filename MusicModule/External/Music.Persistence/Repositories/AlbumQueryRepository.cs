@@ -36,7 +36,8 @@ namespace Music.Persistence.Repositories
 
         public async Task<Album?> GetByIdAsync(Guid id, bool trackChanges)
         {
-            var query = _Context.Albums.Where(x => x.Id == id);
+            var query = _Context.Albums.Where(x => x.Id == id)
+                .Include(x => x.Songs);
 
             return await (trackChanges ? query.FirstOrDefaultAsync() : query.AsNoTracking().FirstOrDefaultAsync());
         }

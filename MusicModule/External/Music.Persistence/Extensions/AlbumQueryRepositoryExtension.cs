@@ -14,7 +14,7 @@ namespace Music.Persistence.Extensions
     {
         internal static IQueryable<Album> FilterAlbums(this IQueryable<Album> albums,
             DateTime minDateCreated, DateTime maxDateCreated) => albums
-            .Where(x => x.DateCreated >= minDateCreated && x.DateCreated <= minDateCreated);
+            .Where(x => x.DateCreated >= minDateCreated && x.DateCreated <= maxDateCreated);
 
         internal static IQueryable<Album> Search(this IQueryable<Album> albums, string searchTerm)
         {
