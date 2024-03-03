@@ -16,6 +16,7 @@ using Music.Presentation;
 using Persistence;
 using Presentation;
 using Serilog;
+using Serilog.Events;
 using System.Reflection;
 using Users.Application;
 using Users.Domain.Wrappers;
@@ -101,8 +102,14 @@ namespace CascadeAPI
             });
 
             builder.Host.UseSerilog((context, configuration) =>
-                configuration.ReadFrom.Configuration(context.Configuration)
-                .WriteTo.Console());
+            {
+                configuration
+                    .MinimumLevel.Debug()
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console()
+                    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day);
+            });
 
             var app = builder.Build();
 

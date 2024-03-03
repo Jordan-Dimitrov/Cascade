@@ -1,24 +1,24 @@
 ﻿using Application.Shared.CustomExceptions;
 using Domain.Shared.Exceptions;
 using Newtonsoft.Json;
+using Serilog;
 using System.Net;
 
 namespace CascadeAPI.Middlewares
 {
     public class ErrorHandlingMiddleware
     {
-        private readonly RequestDelegate _Next;
-
+        private readonly RequestDelegate _next;
         public ErrorHandlingMiddleware(RequestDelegate next)
         {
-            _Next = next;
+            _next = next;
         }
 
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                await _Next(context);
+                await _next(context);
             }
             catch (AppException ex)
             {
@@ -34,7 +34,7 @@ namespace CascadeAPI.Middlewares
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var response = new { error = "An unexpected error occurred." };
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -45,7 +45,7 @@ namespace CascadeAPI.Middlewares
                 context.Response.StatusCode = (int)appException.StatusCode;
             }
 
-            if(exception is DomainValidationException domainValidationException)
+            if (exception is DomainValidationException domainValidationException)
             {
                 response = new { error = domainValidationException.Message };
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -55,7 +55,7 @@ namespace CascadeAPI.Middlewares
 
             context.Response.ContentType = "application/json";
 
-            return context.Response.WriteAsync(jsonResponse);
+            await context.Response.WriteAsync(jsonResponse);
         }
     }
 }
