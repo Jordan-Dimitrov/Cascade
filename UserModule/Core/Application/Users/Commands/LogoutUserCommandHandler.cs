@@ -1,9 +1,11 @@
 ﻿using Application.Shared;
+using Application.Shared.CustomExceptions;
 using Domain.Shared.Abstractions;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Users.Application.Abstractions;
@@ -37,7 +39,7 @@ namespace Users.Application.Users.Commands
 
             if (user is null)
             {
-                throw new ApplicationException("User not found");
+                throw new AppException("User not found", HttpStatusCode.NotFound);
             }
 
             RefreshToken refreshToken = _AuthService.GenerateRefreshToken();

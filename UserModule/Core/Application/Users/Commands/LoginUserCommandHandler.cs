@@ -10,6 +10,8 @@ using Users.Application.Abstractions;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
 using Users.Domain.DomainEntities;
+using Application.Shared.CustomExceptions;
+using System.Net;
 
 namespace Users.Application.Users.Commands
 {
@@ -34,12 +36,12 @@ namespace Users.Application.Users.Commands
 
             if (user is null)
             {
-                throw new ApplicationException("User not found");
+                throw new AppException("User not found", HttpStatusCode.NotFound);
             }
 
             if (!_AuthService.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
-                throw new ApplicationException("Passwords do not match");
+                throw new AppException("Passwords do not match", HttpStatusCode.BadRequest);
             }
 
             RefreshToken refreshToken = _AuthService.GenerateRefreshToken();

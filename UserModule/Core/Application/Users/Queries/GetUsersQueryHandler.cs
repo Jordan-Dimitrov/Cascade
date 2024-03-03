@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Users.Application.Dtos;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
+using Application.Shared.CustomExceptions;
+using System.Net;
 
 namespace Users.Application.Users.Queries
 {
@@ -32,7 +34,7 @@ namespace Users.Application.Users.Queries
         {
             if (request.RequestParameters.MaxRole < request.RequestParameters.MinRole)
             {
-                throw new ApplicationException("Invalid range");
+                throw new AppException("Invalid range", HttpStatusCode.BadRequest);
             }
             PagedList<User> users = await _UserQueryRepository
                 .GetUsersWithPaginationAsync(request.RequestParameters, false);

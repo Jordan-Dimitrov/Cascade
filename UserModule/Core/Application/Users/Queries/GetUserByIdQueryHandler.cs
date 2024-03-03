@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Users.Application.Dtos;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
+using Application.Shared.CustomExceptions;
+using System.Net;
 
 namespace Users.Application.Users.Queries
 {
@@ -35,7 +37,7 @@ namespace Users.Application.Users.Queries
 
             if (user is null)
             {
-                throw new EntityNotFoundException(typeof(User));
+                throw new AppException("User not found", HttpStatusCode.NotFound);
             }
 
             AddLinksForUser(user);

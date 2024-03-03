@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Shared.CustomExceptions;
+using AutoMapper;
 using Domain.Shared.Abstractions;
 using Domain.Shared.Exceptions;
 using MediatR;
@@ -8,6 +9,7 @@ using Music.Domain.Aggregates.AlbumAggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +36,7 @@ namespace Music.Application.Albums.Queries
 
             if(album is null)
             {
-                throw new EntityNotFoundException(typeof(Album));
+                throw new AppException("No such album exists!", HttpStatusCode.NotFound);
             }
 
             AddLinksForAlbum(album);

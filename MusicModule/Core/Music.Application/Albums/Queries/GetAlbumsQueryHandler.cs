@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Shared.CustomExceptions;
+using AutoMapper;
 using Domain.Shared.Abstractions;
 using Domain.Shared.RequestFeatures;
 using MediatR;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +36,7 @@ namespace Music.Application.Albums.Queries
         {
             if (request.RequestParameters.MaxDateCreated < request.RequestParameters.MinDateCreated)
             {
-                throw new ApplicationException("Invalid range");
+                throw new AppException("Invalid range", HttpStatusCode.BadRequest);
             }
 
             PagedList<Album> albums = await _AlbumQueryRepository

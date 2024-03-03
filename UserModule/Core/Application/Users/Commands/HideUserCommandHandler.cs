@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
 using Users.Application.Abstractions;
+using Application.Shared.CustomExceptions;
+using System.Net;
 
 namespace Users.Application.Users.Commands
 {
@@ -30,7 +32,7 @@ namespace Users.Application.Users.Commands
 
             if (user is null)
             {
-                throw new ApplicationException("User not found");
+                throw new AppException("User not found", HttpStatusCode.NotFound);
             }
 
             user.HideUserDetails();

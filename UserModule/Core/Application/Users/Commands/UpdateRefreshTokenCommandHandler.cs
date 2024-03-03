@@ -9,6 +9,8 @@ using Users.Application.Abstractions;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
 using Users.Domain.DomainEntities;
+using Application.Shared.CustomExceptions;
+using System.Net;
 
 namespace Users.Application.Users.Commands
 {
@@ -34,7 +36,7 @@ namespace Users.Application.Users.Commands
 
             if (user is null)
             {
-                throw new ApplicationException("Invalid Refresh Token.");
+                throw new AppException("Invalid Refresh Token.", HttpStatusCode.NotFound);
             }
 
             user.RefreshToken.TokenDates.CheckTokenDates();

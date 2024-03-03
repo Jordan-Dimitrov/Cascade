@@ -1,4 +1,5 @@
 ﻿using Application.Shared;
+using Application.Shared.CustomExceptions;
 using MediatR;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
@@ -8,6 +9,7 @@ using Music.Domain.DomainEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,19 +39,19 @@ namespace Music.Application.Albums.Commands
 
             if (artist is null)
             {
-                throw new ApplicationException("No such artist exists!");
+                throw new AppException("No such artist exists!", HttpStatusCode.NotFound);
             }
 
             Album? album = await _AlbumQueryRepository.GetByIdAsync(request.AlbumId, true);
 
             if (album is null)
             {
-                throw new ApplicationException("No such album exists!");
+                throw new AppException("No such album exists!", HttpStatusCode.NotFound);
             }
 
             if(album.ArtistId != artist.Id)
             {
-                throw new ApplicationException("Album does not belong to artist!");
+                throw new AppException("Album does not belong to artist!", HttpStatusCode.BadRequest);
             }
 
             Song song = Song.CreateSong(request.CreateSongDto.SongName,

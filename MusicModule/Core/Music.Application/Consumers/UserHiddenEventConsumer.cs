@@ -1,4 +1,5 @@
-﻿using Domain.Shared.Constants;
+﻿using Application.Shared.CustomExceptions;
+using Domain.Shared.Constants;
 using MassTransit;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
@@ -7,6 +8,7 @@ using Music.Domain.DomainServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Users.IntegrationEvents;
@@ -38,7 +40,7 @@ namespace Music.Application.Consumers
 
             if (artist is null)
             {
-                throw new ApplicationException("Such artist does not exist");
+                throw new AppException("No such artist exists!", HttpStatusCode.NotFound);
             }
 
             await _ArtistService.HideArtist(artist);

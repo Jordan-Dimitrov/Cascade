@@ -1,4 +1,5 @@
-﻿using Application.Shared.Constants;
+﻿using Application.Shared;
+using Application.Shared.Constants;
 using Domain.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -111,9 +112,7 @@ namespace Presentation.Controllers
         {
             string? jwtToken = Request.Cookies[Tokens.JwtToken];
 
-            GetRoleFromJwtQuery query = new GetRoleFromJwtQuery(jwtToken);
-
-            string role = await _Sender.Send(query, cancellationToken);
+            string role = await Task.Run(() => Utils.GetRoleFromJwtToken(jwtToken));
 
             return Ok(role);
         }

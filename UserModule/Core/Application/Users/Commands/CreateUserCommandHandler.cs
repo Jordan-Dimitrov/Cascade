@@ -14,6 +14,8 @@ using Users.Domain.DomainEntities;
 using Users.Domain.ValueObjects;
 using Users.Domain.Wrappers;
 using Domain.Shared.Constants;
+using Application.Shared.CustomExceptions;
+using System.Net;
 
 namespace Users.Application.Users.Commands
 {
@@ -39,7 +41,7 @@ namespace Users.Application.Users.Commands
 
             if (await _UserQueryRepository.ExistsAsync(x => x.Username == username))
             {
-                throw new ApplicationException("Username already exists");
+                throw new AppException("Username already exists", HttpStatusCode.BadRequest);
             }
 
             UserPassword pass = _AuthService.CreatePasswordHash(request.Password);

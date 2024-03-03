@@ -139,7 +139,7 @@ namespace CascadeAPI
 
             app.UseIpRateLimiting();
 
-            //app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthorization();
 
