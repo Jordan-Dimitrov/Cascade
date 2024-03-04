@@ -26,7 +26,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{userId:guid}"), Authorize(Roles = AllowedRoles.All)]
-        [ResponseCache(CacheProfileName = "Default")]
+        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUser(Guid userId, CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ namespace Presentation.Controllers
 
         [HttpGet, Authorize(Roles = AllowedRoles.All)]
         [HttpHead, Authorize(Roles = AllowedRoles.All)]
-        [ResponseCache(CacheProfileName = "Default")]
+        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [ProducesResponseType(typeof(ICollection<UserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetUsers([FromQuery] UserParameters requestParameters, CancellationToken cancellationToken)
@@ -107,7 +107,7 @@ namespace Presentation.Controllers
         [EndpointName("GetUserRole")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        [ResponseCache(CacheProfileName = "Default")]
+        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         public async Task<IActionResult> GetUserRole(CancellationToken cancellationToken)
         {
             string? jwtToken = Request.Cookies[Tokens.JwtToken];

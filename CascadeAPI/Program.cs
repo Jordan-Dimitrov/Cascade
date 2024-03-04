@@ -19,6 +19,7 @@ using Serilog;
 using Serilog.Events;
 using Streaming.Application;
 using Streaming.Application.Consumers;
+using Streaming.Application.Wrappers;
 using Streaming.Infrastructure;
 using Streaming.Presentation;
 using System.Reflection;
@@ -69,6 +70,8 @@ namespace CascadeAPI
                 .AddSingleton(x => x
                 .GetRequiredService<IOptions<MessageBrokerSettings>>().Value);
 
+            builder.Services.Configure<FFMpegConfig>(builder.Configuration.GetSection("FFMpegConfig"));
+
             JwtTokenSettings? jwtTokenSettings = builder.Configuration
                 .GetSection("JwtTokenSettings")
                 .Get<JwtTokenSettings>();
@@ -76,6 +79,12 @@ namespace CascadeAPI
             RefreshTokenSettings? refreshTokenSettings = builder.Configuration
                 .GetSection("RefreshTokenSettings")
                 .Get<RefreshTokenSettings>();
+
+            builder.Services.AddSingleton<FFMpegConfig>();
+
+            FFMpegConfig? ffmpegConfig = builder.Configuration
+                .GetSection("FFMpegConfig")
+                .Get<FFMpegConfig>();
 
             builder.Services
                 .AddUserApplication()
@@ -87,7 +96,7 @@ namespace CascadeAPI
                 .AddMusicPersistence(builder.Configuration.GetConnectionString("SDR"))
                 .AddMusicPresentation()
                 .AddStreamingApplication()
-                .AddStreamingInfrastructure()
+                .AddStreamingInfrastructure(ffmpegConfig)
                 .AddStreamingPresentation();
 
             builder.Services.AddCors(options =>

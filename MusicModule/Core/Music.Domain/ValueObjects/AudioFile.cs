@@ -1,4 +1,5 @@
-﻿using Domain.Shared.Exceptions;
+﻿using Domain.Shared.Constants;
+using Domain.Shared.Exceptions;
 using Domain.Shared.Primitives;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ namespace Music.Domain.ValueObjects
 {
     public sealed class AudioFile : ValueObject
     {
-        private static List<string> _AllowedFormats = new List<string>() { ".mp3", ".ogg" };
         private string _Value = null!;
         public AudioFile(string value)
         {
@@ -34,13 +34,13 @@ namespace Music.Domain.ValueObjects
             {
                 string extension = Path.GetExtension(value);
 
-                if (!_AllowedFormats.Contains(extension.ToLowerInvariant()))
+                if (!SupportedAudioMimeTypes.Types.Contains(extension.ToLowerInvariant()))
                 {
                     throw new DomainValidationException("Invalid file");
                 }
 
                 _Value = $"{value
-                    .Substring(0, value.Length - extension.Length)}_{Guid.NewGuid()}{_AllowedFormats[1]}";
+                    .Substring(0, value.Length - extension.Length)}_{Guid.NewGuid()}{SupportedAudioMimeTypes.Types[1]}";
             }
         }
 

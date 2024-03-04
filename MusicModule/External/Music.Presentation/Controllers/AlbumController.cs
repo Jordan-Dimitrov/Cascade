@@ -95,7 +95,7 @@ namespace Music.Presentation.Controllers
         }
 
         [HttpGet("{albumId:guid}"), Authorize(Roles = AllowedRoles.All)]
-        [ResponseCache(CacheProfileName = "Default")]
+        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [ProducesResponseType(typeof(AlbumWithSongsDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUser(Guid albumId, CancellationToken cancellationToken)
@@ -109,7 +109,7 @@ namespace Music.Presentation.Controllers
 
         [HttpGet, Authorize(Roles = AllowedRoles.All)]
         [HttpHead, Authorize(Roles = AllowedRoles.All)]
-        [ResponseCache(CacheProfileName = "Default")]
+        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [ProducesResponseType(typeof(ICollection<AlbumDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAlbums([FromQuery] AlbumParameters requestParameters,
