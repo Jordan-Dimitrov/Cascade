@@ -1,4 +1,5 @@
 ﻿using Application.Shared;
+using Application.Shared.Abstractions;
 using Application.Shared.CustomExceptions;
 using Domain.Shared.Abstractions;
 using Domain.Shared.Constants;
@@ -22,39 +23,44 @@ namespace Music.Application.Albums.Commands
 {
     internal sealed class CreateAlbumCommandHandler : IRequestHandler<CreateAlbumCommand, Guid>
     {
-        private static int _ByteCount = 4;
         private readonly IArtistQueryRepository _ArtistQueryRepository;
         private readonly IArtistCommandRepository _ArtistCommandRepository;
         private readonly IMusicUnitOfWork _MusicUnitOfWork;
         private readonly IAlbumQueryRepository _AlbumQueryRepository;
+        private readonly IFileConversionService _FileConversionService;
+        private readonly IUserInfoService _UserInfoService;
         public CreateAlbumCommandHandler(IArtistCommandRepository artistCommandRepository,
             IArtistQueryRepository artistQueryRepository,
             IMusicUnitOfWork musicUnitOfWork,
-            IAlbumQueryRepository albumQueryRepository)
+            IAlbumQueryRepository albumQueryRepository,
+            IUserInfoService userInfoService,
+            IFileConversionService fileConversionService)
         {
             _ArtistCommandRepository = artistCommandRepository;
             _ArtistQueryRepository = artistQueryRepository;
             _MusicUnitOfWork = musicUnitOfWork;
             _AlbumQueryRepository = albumQueryRepository;
+            _UserInfoService = userInfoService;
+            _FileConversionService = fileConversionService;
         }
 
         public async Task<Guid> Handle(CreateAlbumCommand request, CancellationToken cancellationToken)
         {
             Artist? artist = await _ArtistQueryRepository
-                .GetByNameAsync(Utils.GetUsernameFromJwtToken(request.JwtToken));
+                .GetByNameAsync(_UserInfoService.GetUsernameFromJwtToken(request.JwtToken));
 
             if (artist is null)
             {
                 throw new AppException("No such artist exists!", HttpStatusCode.NotFound);
             }
 
-            string generated = Convert.ToHexString(RandomNumberGenerator.GetBytes(_ByteCount));
+            string generated = _FileConversionService.GenerateRandomString();
 
             Song song = Song.CreateSong(request.CreateAlbumDto.SongName,
                 request.FileName,
                 request.CreateAlbumDto.SongCategory, generated);
 
-            string fileName = Utils.OriginalFileName(request.FileName, generated);
+            string fileName = _FileConversionService.OriginalFileName(request.FileName, generated);
 
             AlbumName name = new AlbumName(request.CreateAlbumDto.AlbumName);
 

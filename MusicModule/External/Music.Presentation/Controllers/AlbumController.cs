@@ -15,14 +15,16 @@ using System.Text.Json;
 using Domain.Shared.Constants;
 using Presentation.Shared.Constants;
 using Application.Shared.Constants;
+using Application.Shared.Abstractions;
 
 namespace Music.Presentation.Controllers
 {
     public sealed class AlbumController : ApiController
     {
-        public AlbumController(ISender sender) : base(sender)
+        private readonly IFileConversionService _FileConversionService;
+        public AlbumController(ISender sender, IFileConversionService fileConversionService) : base(sender)
         {
-
+            _FileConversionService = fileConversionService;
         }
 
         [HttpPost, Authorize(Roles = AllowedRoles.Artist)]
@@ -35,7 +37,7 @@ namespace Music.Presentation.Controllers
         {
             string? jwtToken = Request.Cookies[Tokens.JwtToken];
 
-            byte[] file = await Utils.ConvertToByteArrayAsync(formFile);
+            byte[] file = await _FileConversionService.ConvertToByteArrayAsync(formFile);
 
             CreateAlbumCommand command = new CreateAlbumCommand(createAlbumDto, jwtToken,
                 file, formFile.FileName, createAlbumDto.Lyrics);
@@ -57,7 +59,7 @@ namespace Music.Presentation.Controllers
         {
             string? jwtToken = Request.Cookies[Tokens.JwtToken];
 
-            byte[] file = await Utils.ConvertToByteArrayAsync(formFile);
+            byte[] file = await _FileConversionService.ConvertToByteArrayAsync(formFile);
 
             AddSongToAlbumCommand command = new AddSongToAlbumCommand(createSongDto, jwtToken,
                 file, formFile.FileName, albumId);

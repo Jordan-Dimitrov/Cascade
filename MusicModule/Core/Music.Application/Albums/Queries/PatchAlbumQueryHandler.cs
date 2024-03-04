@@ -1,4 +1,5 @@
 ﻿using Application.Shared;
+using Application.Shared.Abstractions;
 using Application.Shared.CustomExceptions;
 using AutoMapper;
 using MediatR;
@@ -20,19 +21,22 @@ namespace Music.Application.Albums.Queries
         private readonly IAlbumQueryRepository _AlbumQueryRepository;
         private readonly IArtistQueryRepository _ArtistQueryRepository;
         private readonly IMapper _Mapper;
+        private readonly IUserInfoService _UserInfoService;
         public PatchAlbumQueryHandler(IAlbumQueryRepository albumQueryRepository,
             IMapper mapper,
-            IArtistQueryRepository artistQueryRepository)
+            IArtistQueryRepository artistQueryRepository,
+            IUserInfoService userInfoService)
         {
             _AlbumQueryRepository = albumQueryRepository;
             _Mapper = mapper;
             _ArtistQueryRepository = artistQueryRepository;
+            _UserInfoService = userInfoService;
         }
         public async Task<(AlbumPatchDto, Album Album)> Handle(PatchAlbumQuery request,
             CancellationToken cancellationToken)
         {
             Artist? artist = await _ArtistQueryRepository
-                .GetByNameAsync(Utils.GetUsernameFromJwtToken(request.JwtToken));
+                .GetByNameAsync(_UserInfoService.GetUsernameFromJwtToken(request.JwtToken));
 
             if (artist is null)
             {

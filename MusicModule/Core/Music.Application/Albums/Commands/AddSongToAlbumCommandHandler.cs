@@ -1,4 +1,5 @@
 ﻿using Application.Shared;
+using Application.Shared.Abstractions;
 using Application.Shared.CustomExceptions;
 using MediatR;
 using Music.Application.Abstractions;
@@ -18,26 +19,31 @@ namespace Music.Application.Albums.Commands
 {
     internal sealed class AddSongToAlbumCommandHandler : IRequestHandler<AddSongToAlbumCommand>
     {
-        private static int _ByteCount = 4;
         private readonly IAlbumCommandRepository _AlbumCommandRepository;
         private readonly IAlbumQueryRepository _AlbumQueryRepository;
         private readonly IArtistQueryRepository _ArtistQueryRepository;
         private readonly IMusicUnitOfWork _MusicUnitOfWork;
+        private readonly IFileConversionService _FileConversionService;
+        private readonly IUserInfoService _UserInfoService;
         public AddSongToAlbumCommandHandler(IAlbumCommandRepository albumCommandRepository,
             IAlbumQueryRepository albumQueryRepository,
             IArtistQueryRepository artistQueryRepository,
-            IMusicUnitOfWork musicUnitOfWork)
+            IMusicUnitOfWork musicUnitOfWork,
+            IUserInfoService userInfoService,
+            IFileConversionService fileConversionService)
         {
             _AlbumCommandRepository = albumCommandRepository;
             _AlbumQueryRepository = albumQueryRepository;
             _ArtistQueryRepository = artistQueryRepository;
             _MusicUnitOfWork = musicUnitOfWork;
+            _UserInfoService = userInfoService;
+            _FileConversionService = fileConversionService;
         }
 
         public async Task Handle(AddSongToAlbumCommand request, CancellationToken cancellationToken)
         {
             Artist? artist = await _ArtistQueryRepository
-                .GetByNameAsync(Utils.GetUsernameFromJwtToken(request.JwtToken));
+                .GetByNameAsync(_UserInfoService.GetUsernameFromJwtToken(request.JwtToken));
 
             if (artist is null)
             {
@@ -56,13 +62,13 @@ namespace Music.Application.Albums.Commands
                 throw new AppException("Album does not belong to artist!", HttpStatusCode.BadRequest);
             }
 
-            string generated = Convert.ToHexString(RandomNumberGenerator.GetBytes(_ByteCount));
+            string generated = _FileConversionService.GenerateRandomString();
 
             Song song = Song.CreateSong(request.CreateSongDto.SongName,
                 request.FileName,
                 request.CreateSongDto.SongCategory, generated);
 
-            string fileName = Utils.OriginalFileName(request.FileName, generated);
+            string fileName = _FileConversionService.OriginalFileName(request.FileName, generated);
 
             album.AddSong(song, request.File, request.CreateSongDto.Lyrics, fileName);
 

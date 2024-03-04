@@ -1,4 +1,5 @@
 ﻿using Application.Shared;
+using Application.Shared.Abstractions;
 using Application.Shared.Constants;
 using Domain.Shared.Constants;
 using MediatR;
@@ -20,9 +21,10 @@ namespace Presentation.Controllers
 {
     public sealed class UserController : ApiController
     {
-        public UserController(ISender sender) : base(sender)
+        private readonly IUserInfoService _UserInfoService;
+        public UserController(ISender sender, IUserInfoService userInfoService) : base(sender)
         {
-
+            _UserInfoService = userInfoService;
         }
 
         [HttpGet("{userId:guid}"), Authorize(Roles = AllowedRoles.All)]
@@ -112,7 +114,7 @@ namespace Presentation.Controllers
         {
             string? jwtToken = Request.Cookies[Tokens.JwtToken];
 
-            string role = await Task.Run(() => Utils.GetRoleFromJwtToken(jwtToken));
+            string role = await Task.Run(() => _UserInfoService.GetRoleFromJwtToken(jwtToken));
 
             return Ok(role);
         }

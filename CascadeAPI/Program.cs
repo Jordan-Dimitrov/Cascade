@@ -7,6 +7,7 @@ using MassTransit;
 using MassTransit.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Music.Application;
 using Music.Application.Consumers;

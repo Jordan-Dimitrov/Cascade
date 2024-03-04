@@ -30,6 +30,8 @@ namespace Infrastructure
 
             QuartzConfig.ConfigureQuartz(services);
 
+            services.AddScoped<IFileConversionService, FileConversionService>();
+            services.AddScoped<IUserInfoService, UserInfoService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddTransient<IEventBus, EventBus>();
 

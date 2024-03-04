@@ -1,4 +1,5 @@
 ﻿using Application.Shared;
+using Application.Shared.Abstractions;
 using Application.Shared.CustomExceptions;
 using MediatR;
 using Music.Application.Abstractions;
@@ -21,20 +22,23 @@ namespace Music.Application.Albums.Commands
         private readonly IAlbumQueryRepository _AlbumQueryRepository;
         private readonly IArtistQueryRepository _ArtistQueryRepository;
         private readonly IMusicUnitOfWork _MusicUnitOfWork;
+        private readonly IUserInfoService _UserInfoService;
         public RemoveSongFromAlbumCommandHandler(IAlbumCommandRepository albumCommandRepository,
             IAlbumQueryRepository albumQueryRepository,
             IArtistQueryRepository artistQueryRepository,
-            IMusicUnitOfWork musicUnitOfWork)
+            IMusicUnitOfWork musicUnitOfWork,
+            IUserInfoService userInfoService)
         {
             _AlbumCommandRepository = albumCommandRepository;
             _AlbumQueryRepository = albumQueryRepository;
             _ArtistQueryRepository = artistQueryRepository;
             _MusicUnitOfWork = musicUnitOfWork;
+            _UserInfoService = userInfoService;
         }
         public async Task Handle(RemoveSongFromAlbumCommand request, CancellationToken cancellationToken)
         {
             Artist? artist = await _ArtistQueryRepository
-                .GetByNameAsync(Utils.GetUsernameFromJwtToken(request.JwtToken));
+                .GetByNameAsync(_UserInfoService.GetUsernameFromJwtToken(request.JwtToken));
 
             if (artist is null)
             {

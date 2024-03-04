@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users.Infrastructure.BackgroundJobs;
 
 namespace Infrastructure.Extensions
 {
@@ -15,10 +16,16 @@ namespace Infrastructure.Extensions
         {
             services.AddQuartz(configure =>
             {
-                var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+                var processOutboxMessagesjobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+                var removeOldOutboxMessagejobKey = new JobKey(nameof(RemoveOldOutboxMessageJob));
 
-                configure.AddJob<ProcessOutboxMessagesJob>(jobKey)
-                    .AddTrigger(trigger => trigger.ForJob(jobKey)
+                configure.AddJob<ProcessOutboxMessagesJob>(processOutboxMessagesjobKey)
+                    .AddTrigger(trigger => trigger.ForJob(processOutboxMessagesjobKey)
+                    .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10)
+                    .RepeatForever()));
+
+                configure.AddJob<RemoveOldOutboxMessageJob>(removeOldOutboxMessagejobKey)
+                    .AddTrigger(trigger => trigger.ForJob(removeOldOutboxMessagejobKey)
                     .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10)
                     .RepeatForever()));
 
