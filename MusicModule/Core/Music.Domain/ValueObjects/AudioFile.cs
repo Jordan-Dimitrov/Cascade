@@ -4,6 +4,7 @@ using Domain.Shared.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -16,6 +17,11 @@ namespace Music.Domain.ValueObjects
         public AudioFile(string value)
         {
             Value = value;
+        }
+
+        public static AudioFile CreateAudioFile(string value)
+        {
+            return new AudioFile(GenerateFileName(value));
         }
 
         [JsonConstructor]
@@ -32,16 +38,22 @@ namespace Music.Domain.ValueObjects
             }
             private set
             {
-                string extension = Path.GetExtension(value);
-
-                if (!SupportedAudioMimeTypes.Types.Contains(extension.ToLowerInvariant()))
-                {
-                    throw new DomainValidationException("Invalid file");
-                }
-
-                _Value = $"{value
-                    .Substring(0, value.Length - extension.Length)}_{Guid.NewGuid()}{SupportedAudioMimeTypes.Types[1]}";
+                _Value = value;
             }
+        }
+
+        private static string GenerateFileName(string value)
+        {
+            string extension = Path.GetExtension(value);
+
+            if (!SupportedAudioMimeTypes.Types.Contains(extension.ToLowerInvariant()))
+            {
+                throw new DomainValidationException("Invalid file");
+            }
+
+            return $"{value
+                .Substring(0, value.Length - extension.Length)}_{Convert
+                .ToHexString(RandomNumberGenerator.GetBytes(4))}{SupportedAudioMimeTypes.Types[1]}";
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

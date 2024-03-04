@@ -13,7 +13,7 @@ namespace Music.Domain.DomainEntities
     public sealed class Song : Entity
     {
         private const string _HiddenName = "Hidden";
-        private const string _HiddenFileName = "hidden.mp3";
+        private const string _HiddenFileName = "hidden.ogg";
         private SongName _SongName;
         private AudioFile _AudioFile;
         private DateTime _DateCreated;
@@ -35,8 +35,8 @@ namespace Music.Domain.DomainEntities
 
         public static Song CreateSong(string songName, string audioName, string songCategory)
         {
-            Song song = new Song(new SongName(songName), new AudioFile(audioName), DateTime.UtcNow,
-                new SongCategory(songCategory));
+            Song song = new Song(new SongName(songName), AudioFile.CreateAudioFile(audioName),
+                DateTime.UtcNow, new SongCategory(songCategory));
 
             return song;
         }
@@ -44,7 +44,7 @@ namespace Music.Domain.DomainEntities
         public void HideSong()
         {
             SongName = new SongName(_HiddenName);
-            AudioFile = new AudioFile(_HiddenFileName);
+            AudioFile = AudioFile.CreateAudioFile(_HiddenFileName);
             SongCategory = new SongCategory(_HiddenName);
         }
 

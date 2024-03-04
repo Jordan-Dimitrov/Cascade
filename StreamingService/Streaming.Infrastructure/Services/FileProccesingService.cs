@@ -47,17 +47,15 @@ namespace Streaming.Infrastructure.Services
         {
             string filePath = Path.Combine(_UploadsDirectory, fileName);
 
-            if (File.Exists(filePath))
-            {
-                FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                string contentType = GetContentType(fileName);
-                byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
-                return (stream, contentType);
-            }
-            else
+            if (!File.Exists(filePath))
             {
                 throw new AppException("File not found", HttpStatusCode.NotFound);
             }
+
+            FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            string contentType = GetContentType(fileName);
+            byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
+            return (stream, contentType);
         }
 
         public async Task RemoveAsync(string fileName)

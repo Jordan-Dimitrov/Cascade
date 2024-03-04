@@ -50,12 +50,15 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             {
                 throw new DomainValidationException("No songs to remove!");
             }
+
             Song? song = _Songs.FirstOrDefault(x => x.Id == songId);
 
             if (song is null)
             {
                 throw new DomainValidationException("There is no such song to remove");
             }
+
+            RaiseDomainEvent(new SongHiddenDomainEvent(song.AudioFile.Value));
 
             _Songs.Remove(song);
         }
