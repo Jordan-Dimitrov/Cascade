@@ -32,12 +32,15 @@ namespace Music.Domain.ValueObjects
             }
             private set
             {
-                if (!_AllowedFormats.Contains(Path.GetExtension(value).ToLowerInvariant()))
+                string extension = Path.GetExtension(value);
+
+                if (!_AllowedFormats.Contains(extension.ToLowerInvariant()))
                 {
                     throw new DomainValidationException("Invalid file");
                 }
 
-                _Value = value;
+                _Value = $"{value
+                    .Substring(0, value.Length - extension.Length)}_{Guid.NewGuid()}{_AllowedFormats[1]}";
             }
         }
 

@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistence.Configurations
+namespace Persistence.Shared.Outbox
 {
-    internal class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
+    public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
     {
         public void Configure(EntityTypeBuilder<OutboxMessage> builder)
         {

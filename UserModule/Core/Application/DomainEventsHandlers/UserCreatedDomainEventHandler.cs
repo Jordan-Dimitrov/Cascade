@@ -22,8 +22,6 @@ namespace Users.Application.DomainEventsHandlers
             await _EventBus
                 .PublisAsync(new UserCreatedIntegrationEvent(notification.UserId, 
                 notification.Username, notification.Role));
-
-            Console.WriteLine("fffffffffffff");
         }
     }
 }

@@ -20,9 +20,8 @@ namespace Users.Application.DomainEventsHandlers
         public async Task Handle(UserHiddenDomainEvent notification, CancellationToken cancellationToken)
         {
             await _EventBus
-                .PublisAsync(new UserHiddenIntegrationEvent(notification.UserId, (int)notification.Role), cancellationToken);
-
-            Console.WriteLine(notification.UserId + "-----------------------------");
+                .PublisAsync(new UserHiddenIntegrationEvent(notification.UserId,
+                (int)notification.Role), cancellationToken);
         }
     }
 }

@@ -18,6 +18,9 @@
     <ProjectReference Include="..\MusicModule\External\Music.Infrastructure\Music.Infrastructure.csproj" />
     <ProjectReference Include="..\MusicModule\External\Music.Persistence\Music.Persistence.csproj" />
     <ProjectReference Include="..\MusicModule\External\Music.Presentation\Music.Presentation.csproj" />
+    <ProjectReference Include="..\StreamingService\Streaming.Application\Streaming.Application.csproj" />
+    <ProjectReference Include="..\StreamingService\Streaming.Infrastructure\Streaming.Infrastructure.csproj" />
+    <ProjectReference Include="..\StreamingService\Streaming.Presentation\Streaming.Presentation.csproj" />
     <ProjectReference Include="..\UserModule\Core\Application\Users.Application.csproj" />
     <ProjectReference Include="..\UserModule\External\Infrastructure\Users.Infrastructure.csproj" />
     <ProjectReference Include="..\UserModule\External\Persistence\Users.Persistence.csproj" />

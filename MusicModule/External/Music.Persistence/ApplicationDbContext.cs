@@ -2,6 +2,8 @@
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.DomainEntities;
+using Music.Persistence.Outbox;
+using Persistence.Shared.Outbox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +25,10 @@ namespace Music.Persistence
             : base(options)
         {
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(OutboxMessageConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
     }

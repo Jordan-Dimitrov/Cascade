@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="Songs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MusicModule\External\Music.IntegrationEvents\Music.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Shared\Application.Shared\Application.Shared.csproj" />
+    <ProjectReference Include="..\..\Shared\Domain.Shared\Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

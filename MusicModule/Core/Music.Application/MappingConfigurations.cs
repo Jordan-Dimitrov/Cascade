@@ -28,7 +28,7 @@ namespace Music.Application
                 .ForMember(dest => dest.SongName, opt => opt.MapFrom(src => src.SongName.Value))
                 .ForMember(dest => dest.AudioFile, opt => opt.MapFrom(src => src.AudioFile.Value))
                 .ForMember(dest => dest.DateCreated, opt => opt.MapFrom(src => src.DateCreated))
-                .ForMember(dest => dest.SongCategory, opt => opt.MapFrom(src => src.SongCategory))
+                .ForMember(dest => dest.SongCategory, opt => opt.MapFrom(src => src.SongCategory.Value))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ReverseMap();
 

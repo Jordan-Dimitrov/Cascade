@@ -40,7 +40,7 @@ namespace Music.Application.Albums.Commands
             Artist? artist = await _ArtistQueryRepository
                 .GetByNameAsync(Utils.GetUsernameFromJwtToken(request.JwtToken));
 
-            if(artist is null)
+            if (artist is null)
             {
                 throw new AppException("No such artist exists!", HttpStatusCode.NotFound);
             }
@@ -51,13 +51,12 @@ namespace Music.Application.Albums.Commands
 
             AlbumName name = new AlbumName(request.CreateAlbumDto.AlbumName);
 
-            if(await _AlbumQueryRepository.ExistsAsync(x => x.AlbumName == name))
+            if (await _AlbumQueryRepository.ExistsAsync(x => x.AlbumName == name))
             {
                 throw new AppException("Such album name already exists!", HttpStatusCode.BadRequest);
             }
 
-            Album album = Album.CreateAlbum(request.CreateAlbumDto.AlbumName, artist.Id, song);
-            album.AddSong(song);
+            Album album = Album.CreateAlbum(request.CreateAlbumDto.AlbumName, artist.Id, song, request.File);
 
             artist.AddAlbum(album);
 

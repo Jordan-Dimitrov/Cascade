@@ -49,7 +49,7 @@ namespace Music.Application.Albums.Commands
                 throw new AppException("No such album exists!", HttpStatusCode.NotFound);
             }
 
-            if(album.ArtistId != artist.Id)
+            if (album.ArtistId != artist.Id)
             {
                 throw new AppException("Album does not belong to artist!", HttpStatusCode.BadRequest);
             }
@@ -58,7 +58,7 @@ namespace Music.Application.Albums.Commands
                 request.FileName,
                 request.CreateSongDto.SongCategory);
 
-            album.AddSong(song);
+            album.AddSong(song, request.File);
 
             await _AlbumCommandRepository.UpdateAsync(album);
 

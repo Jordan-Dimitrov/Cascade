@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Music.Domain.DomainEvents;
 
 namespace Music.Domain.Aggregates.AlbumAggregate
 {
@@ -34,11 +35,11 @@ namespace Music.Domain.Aggregates.AlbumAggregate
 
         }
 
-        public static Album CreateAlbum(string albumName, Guid userId, Song song)
+        public static Album CreateAlbum(string albumName, Guid userId, Song song, byte[] file)
         {
             Album album = new Album(new AlbumName(albumName), DateTime.UtcNow, new List<Song>(), userId);
 
-            album.Songs.Add(song);
+            album.AddSong(song, file);
 
             return album;
         }
@@ -59,7 +60,7 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             _Songs.Remove(song);
         }
 
-        public void AddSong(Song song)
+        public void AddSong(Song song, byte[] file)
         {
             if (_Songs is null)
             {
@@ -75,6 +76,7 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             }
 
             _Songs.Add(song);
+            RaiseDomainEvent(new SongCreatedDomainEvent(song.AudioFile.Value, file));
         }
 
         public AlbumName AlbumName
@@ -107,6 +109,7 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             foreach (Song song in Songs)
             {
                 song.HideSong();
+                RaiseDomainEvent(new SongHiddenDomainEvent(song.AudioFile.Value));
             }
         }
 

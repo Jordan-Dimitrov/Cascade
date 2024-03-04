@@ -17,6 +17,10 @@ using Persistence;
 using Presentation;
 using Serilog;
 using Serilog.Events;
+using Streaming.Application;
+using Streaming.Application.Consumers;
+using Streaming.Infrastructure;
+using Streaming.Presentation;
 using System.Reflection;
 using Users.Application;
 using Users.Domain.Wrappers;
@@ -45,6 +49,8 @@ namespace CascadeAPI
                 busConfigurator.SetKebabCaseEndpointNameFormatter();
                 busConfigurator.AddConsumer<UserHiddenEventConsumer>();
                 busConfigurator.AddConsumer<UserCreatedEventConsumer>();
+                busConfigurator.AddConsumer<SongCreatedEventConsumer>();
+                busConfigurator.AddConsumer<SongHiddenEventConsumer>();
                 busConfigurator.UsingRabbitMq((context, configurator) =>
                 {
                     MessageBrokerSettings settings = context.GetRequiredService<MessageBrokerSettings>();
@@ -79,7 +85,10 @@ namespace CascadeAPI
                 .AddMusicApplication()
                 .AddMusicInfrastructure()
                 .AddMusicPersistence(builder.Configuration.GetConnectionString("SDR"))
-                .AddMusicPresentation();
+                .AddMusicPresentation()
+                .AddStreamingApplication()
+                .AddStreamingInfrastructure()
+                .AddStreamingPresentation();
 
             builder.Services.AddCors(options =>
             {
@@ -146,7 +155,7 @@ namespace CascadeAPI
 
             app.UseIpRateLimiting();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthorization();
 
