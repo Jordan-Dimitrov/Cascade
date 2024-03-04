@@ -45,5 +45,13 @@ namespace Application.Shared
                 return memoryStream.ToArray();
             }
         }
+
+        public static string OriginalFileName(string fileName, string generated)
+        {
+            string extension = Path.GetExtension(fileName);
+
+            return $"{fileName
+                .Substring(0, fileName.Length - extension.Length)}_{generated}{extension}";
+        }
     }
 }

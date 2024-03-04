@@ -14,14 +14,15 @@ namespace Music.Domain.ValueObjects
     public sealed class AudioFile : ValueObject
     {
         private string _Value = null!;
+        private static int _ByteCount = 4;
         public AudioFile(string value)
         {
             Value = value;
         }
 
-        public static AudioFile CreateAudioFile(string value)
+        public static AudioFile CreateAudioFile(string value, string generated)
         {
-            return new AudioFile(GenerateFileName(value));
+            return new AudioFile(GenerateFileName(value, generated));
         }
 
         [JsonConstructor]
@@ -42,7 +43,7 @@ namespace Music.Domain.ValueObjects
             }
         }
 
-        private static string GenerateFileName(string value)
+        private static string GenerateFileName(string value, string generated)
         {
             string extension = Path.GetExtension(value);
 
@@ -52,8 +53,7 @@ namespace Music.Domain.ValueObjects
             }
 
             return $"{value
-                .Substring(0, value.Length - extension.Length)}_{Convert
-                .ToHexString(RandomNumberGenerator.GetBytes(4))}{SupportedAudioMimeTypes.Types[1]}";
+                .Substring(0, value.Length - extension.Length)}_{generated}{SupportedAudioMimeTypes.Types[1]}";
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

@@ -38,7 +38,7 @@ namespace Music.Presentation.Controllers
             byte[] file = await Utils.ConvertToByteArrayAsync(formFile);
 
             CreateAlbumCommand command = new CreateAlbumCommand(createAlbumDto, jwtToken,
-                file, formFile.FileName);
+                file, formFile.FileName, createAlbumDto.Lyrics);
 
             Guid id = await _Sender.Send(command, cancellationToken);
 

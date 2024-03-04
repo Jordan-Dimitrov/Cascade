@@ -1,6 +1,7 @@
 ﻿using Application.Shared;
 using Application.Shared.CustomExceptions;
 using Domain.Shared.Abstractions;
+using Domain.Shared.Constants;
 using MediatR;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +22,7 @@ namespace Music.Application.Albums.Commands
 {
     internal sealed class CreateAlbumCommandHandler : IRequestHandler<CreateAlbumCommand, Guid>
     {
+        private static int _ByteCount = 4;
         private readonly IArtistQueryRepository _ArtistQueryRepository;
         private readonly IArtistCommandRepository _ArtistCommandRepository;
         private readonly IMusicUnitOfWork _MusicUnitOfWork;
@@ -45,9 +48,13 @@ namespace Music.Application.Albums.Commands
                 throw new AppException("No such artist exists!", HttpStatusCode.NotFound);
             }
 
+            string generated = Convert.ToHexString(RandomNumberGenerator.GetBytes(_ByteCount));
+
             Song song = Song.CreateSong(request.CreateAlbumDto.SongName,
                 request.FileName,
-                request.CreateAlbumDto.SongCategory);
+                request.CreateAlbumDto.SongCategory, generated);
+
+            string fileName = Utils.OriginalFileName(request.FileName, generated);
 
             AlbumName name = new AlbumName(request.CreateAlbumDto.AlbumName);
 
@@ -56,7 +63,8 @@ namespace Music.Application.Albums.Commands
                 throw new AppException("Such album name already exists!", HttpStatusCode.BadRequest);
             }
 
-            Album album = Album.CreateAlbum(request.CreateAlbumDto.AlbumName, artist.Id, song, request.File);
+            Album album = Album.CreateAlbum(request.CreateAlbumDto.AlbumName,
+                artist.Id, song, request.File, request.Lyrics, fileName);
 
             artist.AddAlbum(album);
 

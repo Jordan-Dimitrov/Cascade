@@ -33,9 +33,10 @@ namespace Music.Domain.DomainEntities
 
         }
 
-        public static Song CreateSong(string songName, string audioName, string songCategory)
+        public static Song CreateSong(string songName, string audioName,
+            string songCategory, string generated)
         {
-            Song song = new Song(new SongName(songName), AudioFile.CreateAudioFile(audioName),
+            Song song = new Song(new SongName(songName), AudioFile.CreateAudioFile(audioName, generated),
                 DateTime.UtcNow, new SongCategory(songCategory));
 
             return song;
@@ -44,7 +45,7 @@ namespace Music.Domain.DomainEntities
         public void HideSong()
         {
             SongName = new SongName(_HiddenName);
-            AudioFile = AudioFile.CreateAudioFile(_HiddenFileName);
+            AudioFile = AudioFile.CreateAudioFile(_HiddenFileName, "hiddengg");
             SongCategory = new SongCategory(_HiddenName);
         }
 

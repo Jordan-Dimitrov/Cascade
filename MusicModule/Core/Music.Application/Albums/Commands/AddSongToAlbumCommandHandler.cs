@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace Music.Application.Albums.Commands
 {
     internal sealed class AddSongToAlbumCommandHandler : IRequestHandler<AddSongToAlbumCommand>
     {
+        private static int _ByteCount = 4;
         private readonly IAlbumCommandRepository _AlbumCommandRepository;
         private readonly IAlbumQueryRepository _AlbumQueryRepository;
         private readonly IArtistQueryRepository _ArtistQueryRepository;
@@ -54,11 +56,15 @@ namespace Music.Application.Albums.Commands
                 throw new AppException("Album does not belong to artist!", HttpStatusCode.BadRequest);
             }
 
+            string generated = Convert.ToHexString(RandomNumberGenerator.GetBytes(_ByteCount));
+
             Song song = Song.CreateSong(request.CreateSongDto.SongName,
                 request.FileName,
-                request.CreateSongDto.SongCategory);
+                request.CreateSongDto.SongCategory, generated);
 
-            album.AddSong(song, request.File);
+            string fileName = Utils.OriginalFileName(request.FileName, generated);
+
+            album.AddSong(song, request.File, request.CreateSongDto.Lyrics, fileName);
 
             await _AlbumCommandRepository.UpdateAsync(album);
 

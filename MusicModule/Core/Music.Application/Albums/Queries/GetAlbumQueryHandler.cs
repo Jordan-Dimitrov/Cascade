@@ -60,7 +60,7 @@ namespace Music.Application.Albums.Queries
 
             albumDto.Links.Add(_LinkService
                 .Generate("PatchAlbum",
-                new { userId = albumDto.Id },
+                new { albumId = albumDto.Id },
                 "patch-album",
             "PATCH"));
         }

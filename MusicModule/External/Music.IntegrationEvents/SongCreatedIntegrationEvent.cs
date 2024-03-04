@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 
 namespace Music.IntegrationEvents
 {
-    public sealed record SongCreatedIntegrationEvent(string FileName, byte[] File) : IntegragtionEvent;
+    public sealed record SongCreatedIntegrationEvent(string FileName, byte[] File, string[] Lyrics)
+        : IntegragtionEvent;
 }

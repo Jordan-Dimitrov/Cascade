@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="FFMpegCore" Version="5.1.0" />
+    <PackageReference Include="TagLibSharp" Version="2.3.0" />
+    <PackageReference Include="z440.atl.core" Version="5.20.0" />
   </ItemGroup>
 
   <ItemGroup>

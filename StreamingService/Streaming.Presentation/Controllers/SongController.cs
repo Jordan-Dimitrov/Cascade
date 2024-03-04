@@ -17,15 +17,17 @@ namespace Streaming.Presentation.Controllers
 {
     public sealed class SongController : ApiController
     {
-        public SongController(ISender sender) : base(sender)
+        private readonly IBackgroundQueue _BackgroundQueue;
+        public SongController(ISender sender, IBackgroundQueue backgroundQueue) : base(sender)
         {
+            _BackgroundQueue = backgroundQueue;
         }
 
         [HttpGet("{fileName}"), Authorize(Roles = AllowedRoles.All)]
         [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(void), 404)]
-        public async Task<IActionResult> GetThumbnail(string fileName)
+        public async Task<IActionResult> GetSong(string fileName)
         {
             GetSongQuery query = new GetSongQuery(fileName);
 

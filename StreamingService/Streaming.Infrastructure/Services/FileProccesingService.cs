@@ -1,10 +1,12 @@
 ﻿using Application.Shared.CustomExceptions;
+using ATL;
 using FFMpegCore;
 using FFMpegCore.Enums;
 using Streaming.Application.Abstractions;
 using Streaming.Application.Wrappers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -70,7 +72,7 @@ namespace Streaming.Infrastructure.Services
             await Task.Run(() => File.Delete(filePath));
         }
 
-        public async Task<string> UploadSongAsync(byte[] file, string filename)
+        public async Task<string> UploadSongAsync(byte[] file, string filename, string[] lyrics)
         {
             string fileName = Path.GetFileName(filename);
             string fileExtension = Path.GetExtension(fileName).ToLowerInvariant();
@@ -93,8 +95,19 @@ namespace Streaming.Infrastructure.Services
 
             await ConvertToOgg(filePath, Guid.NewGuid());
 
+            Track track = new Track(oggPath);
+
+            Console.WriteLine(track.Duration);
+
+            LyricsInfo lyricsInfo = new LyricsInfo();
+            lyricsInfo.ParseLRC(string.Join("\n", lyrics));
+
+            track.Lyrics = lyricsInfo;
+            track.Save();
+
             return oggFileName;
         }
+
 
         private async Task ConvertToOgg(string inputPath, Guid taskId)
         {
@@ -110,7 +123,6 @@ namespace Streaming.Infrastructure.Services
                .WithConstantRateFactor(30)
                .WithVariableBitrate(3)
                .WithFastStart()
-               .WithoutMetadata()
                .UsingThreads(_FFMpegConfig.ConversionThreads))
                .ProcessAsynchronously();
 

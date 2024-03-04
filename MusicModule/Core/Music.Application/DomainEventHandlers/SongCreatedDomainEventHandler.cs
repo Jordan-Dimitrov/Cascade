@@ -21,7 +21,7 @@ namespace Music.Application.DomainEventHandlers
         {
             await _EventBus
                 .PublisAsync(new SongCreatedIntegrationEvent(notification.FileName,
-                notification.File));
+                notification.File, notification.Lyrics));
         }
     }
 }

@@ -35,11 +35,12 @@ namespace Music.Domain.Aggregates.AlbumAggregate
 
         }
 
-        public static Album CreateAlbum(string albumName, Guid userId, Song song, byte[] file)
+        public static Album CreateAlbum(string albumName, Guid userId,
+            Song song, byte[] file, string[] lyrics, string originalFileName)
         {
             Album album = new Album(new AlbumName(albumName), DateTime.UtcNow, new List<Song>(), userId);
 
-            album.AddSong(song, file);
+            album.AddSong(song, file, lyrics, originalFileName);
 
             return album;
         }
@@ -63,7 +64,7 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             _Songs.Remove(song);
         }
 
-        public void AddSong(Song song, byte[] file)
+        public void AddSong(Song song, byte[] file, string[] lyrics, string originalFileName)
         {
             if (_Songs is null)
             {
@@ -79,7 +80,7 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             }
 
             _Songs.Add(song);
-            RaiseDomainEvent(new SongCreatedDomainEvent(song.AudioFile.Value, file));
+            RaiseDomainEvent(new SongCreatedDomainEvent(originalFileName, file, lyrics));
         }
 
         public AlbumName AlbumName

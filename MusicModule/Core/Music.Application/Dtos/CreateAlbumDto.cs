@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Music.Application.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace Music.Application.Dtos
         public string AlbumName { get; set; }
         public string SongName { get; set; }
         public string SongCategory { get; set; }
+        [LyricsPattern]
+        public string[] Lyrics { get; set; }
     }
 }

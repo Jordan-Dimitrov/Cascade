@@ -19,7 +19,7 @@ namespace Streaming.Application.Consumers
         public async Task Consume(ConsumeContext<SongCreatedIntegrationEvent> context)
         {
             await _FileProcessingService.UploadSongAsync(context.Message.File,
-                context.Message.FileName);
+                context.Message.FileName, context.Message.Lyrics);
         }
     }
 }
