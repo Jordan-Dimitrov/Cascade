@@ -1,7 +1,6 @@
 ﻿using Application.Shared.CustomExceptions;
 using Domain.Shared.Exceptions;
 using Newtonsoft.Json;
-using Serilog;
 using System.Net;
 
 namespace CascadeAPI.Middlewares
