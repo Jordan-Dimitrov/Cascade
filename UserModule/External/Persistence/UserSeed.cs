@@ -10,11 +10,11 @@ using Users.Domain.Wrappers;
 
 namespace Persistence
 {
-    public class Seed
+    public class UserSeed
     {
         private readonly ApplicationDbContext _Context;
         private readonly IAuthService _AuthService;
-        public Seed(ApplicationDbContext context, IAuthService authService)
+        public UserSeed(ApplicationDbContext context, IAuthService authService)
         {
             _Context = context;
             _AuthService = authService;

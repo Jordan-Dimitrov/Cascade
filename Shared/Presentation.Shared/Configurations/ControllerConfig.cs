@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Presentation.Shared.Constants;
 
-namespace Presentation.Extensions
+namespace Presentation.Shared.Configurations
 {
-    internal static class ControllerConfig
+    public static class ControllerConfig
     {
-        internal static void ConfigureControllers(IServiceCollection services, Assembly assembly)
+        public static void ConfigureControllers(IServiceCollection services, Assembly assembly)
         {
             NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() =>
                 new ServiceCollection().AddLogging().AddMvc().AddNewtonsoftJson()
@@ -25,7 +25,7 @@ namespace Presentation.Extensions
 
             services.AddControllers(options =>
             {
-                options.CacheProfiles.Add(CacheProfiles.Default,
+                options.CacheProfiles.TryAdd(CacheProfiles.Default,
                     new CacheProfile()
                     {
                         Duration = 10

@@ -8,17 +8,17 @@ namespace CascadeAPI.Middlewares
 {
     public class ErrorHandlingMiddleware
     {
-        private readonly RequestDelegate _next;
+        private readonly RequestDelegate _Next;
         public ErrorHandlingMiddleware(RequestDelegate next)
         {
-            _next = next;
+            _Next = next;
         }
 
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                await _next(context);
+                await _Next(context);
             }
             catch (AppException ex)
             {

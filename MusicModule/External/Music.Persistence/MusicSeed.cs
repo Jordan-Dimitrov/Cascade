@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Music.Persistence
 {
-    internal class Seed
+    public class MusicSeed
     {
     }
 }

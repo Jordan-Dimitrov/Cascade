@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.Extensions
+namespace Presentation.Shared.Configurations
 {
-    internal static class RateLimitingConfig
+    public static class RateLimitingConfig
     {
-        internal static void ConfigureRateLimiting(IServiceCollection services)
+        public static void ConfigureRateLimiting(IServiceCollection services)
         {
             var rateLimitRules = new List<RateLimitRule>
                 {
@@ -23,7 +23,8 @@ namespace Presentation.Extensions
                     }
                 };
 
-            services.Configure<IpRateLimitOptions>(opt => {
+            services.Configure<IpRateLimitOptions>(opt =>
+            {
                 opt.GeneralRules = rateLimitRules;
             });
         }

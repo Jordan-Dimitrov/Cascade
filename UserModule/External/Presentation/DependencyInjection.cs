@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
-using Presentation.Extensions;
+using Presentation.Shared.Configurations;
 namespace Presentation
 {
     public static class DependencyInjection
@@ -18,10 +19,10 @@ namespace Presentation
 
             services.AddMemoryCache();
 
-            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
-            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
-            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+            services.TryAddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.TryAddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.TryAddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.TryAddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
             services.AddHttpContextAccessor();
 

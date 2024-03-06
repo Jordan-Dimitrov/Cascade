@@ -1,5 +1,6 @@
 ﻿using Domain.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
 using Music.Persistence.Repositories;
@@ -19,7 +20,7 @@ namespace Music.Persistence
         {
             var assembly = typeof(DependencyInjection).Assembly;
 
-            services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+            services.TryAddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
             services.AddScoped<IAlbumCommandRepository, AlbumCommandRepository>();
             services.AddScoped<IAlbumQueryRepository, AlbumQueryRepository>();
@@ -27,6 +28,7 @@ namespace Music.Persistence
             services.AddScoped<IArtistCommandRepository, ArtistCommandRepository>();
             services.AddScoped<IArtistQueryRepository,  ArtistQueryRepository>();
 
+            services.AddSingleton<MusicSeed>();
             services.AddScoped<IMusicUnitOfWork, MusicUnitOfWork>();
 
             DbContextConfig.ConfigureDbContext(services, connectionString);

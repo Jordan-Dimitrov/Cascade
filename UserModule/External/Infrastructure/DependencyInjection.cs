@@ -12,6 +12,7 @@ using Users.Application.Dtos;
 using Users.Domain.Wrappers;
 using Infrastructure.Shared.Services;
 using Application.Shared.Abstractions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Infrastructure
 {
@@ -22,7 +23,7 @@ namespace Infrastructure
         {
             services.AddScoped<IDataShaper<UserDto>, DataShaper<UserDto>>();
             services.AddHttpContextAccessor();
-            services.AddScoped<ILinkService, LinkService>();
+            services.TryAddScoped<ILinkService, LinkService>();
 
             var assembly = typeof(DependencyInjection).Assembly;
 
@@ -30,10 +31,10 @@ namespace Infrastructure
 
             QuartzConfig.ConfigureQuartz(services);
 
-            services.AddScoped<IFileConversionService, FileConversionService>();
-            services.AddScoped<IUserInfoService, UserInfoService>();
+            services.TryAddScoped<IFileConversionService, FileConversionService>();
+            services.TryAddScoped<IUserInfoService, UserInfoService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddTransient<IEventBus, EventBus>();
+            services.TryAddTransient<IEventBus, EventBus>();
 
             return services;
         }
