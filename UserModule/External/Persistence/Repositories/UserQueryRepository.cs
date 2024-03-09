@@ -27,7 +27,7 @@ namespace Persistence.Repositories
 
         public async Task<ICollection<User>> GetAllAsync(bool trackChanges)
         {
-            var query = _Context.Users;
+            var query = _Context.Users.Include(x => x.RefreshToken);
 
             return await (trackChanges ? query.ToListAsync() : query.AsNoTracking().ToListAsync());
         }
@@ -35,7 +35,8 @@ namespace Persistence.Repositories
 
         public async Task<User?> GetByIdAsync(Guid id, bool trackChanges)
         {
-            var query = _Context.Users.Where(x => x.Id == id);
+            var query = _Context.Users
+                .Include(x => x.RefreshToken).Where(x => x.Id == id);
 
             return await (trackChanges ? query.FirstOrDefaultAsync() : query.AsNoTracking().FirstOrDefaultAsync());
         }
@@ -77,6 +78,7 @@ namespace Persistence.Repositories
         public async Task<PagedList<User>> GetUsersWithPaginationAsync(UserParameters userParameters, bool trackChanges)
         {
             var query = _Context.Users
+                .Include(x => x.RefreshToken)
                 .FilterUsers(userParameters.MinRole, userParameters.MaxRole)
                 .Search(userParameters.SearchTerm)
                 .Sort(userParameters.OrderBy);

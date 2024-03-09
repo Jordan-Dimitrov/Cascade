@@ -1,0 +1,46 @@
+﻿using Application.Shared.Abstractions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Users.Application.Constants;
+using Users.Domain.Abstractions;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.DomainEntities;
+
+namespace Users.Persistence.CachedRepositories
+{
+    internal sealed class CachedUserCommandRepository : IUserCommandRepository
+    {
+        private readonly IUserCommandRepository _Decorated;
+        private readonly ICacheService _CacheService;
+        public CachedUserCommandRepository(IUserCommandRepository userCommandRepository,
+            ICacheService cacheService)
+        {
+            _Decorated = userCommandRepository;
+            _CacheService = cacheService;
+        }
+        public async Task DeleteAsync(User value)
+        {
+            await _CacheService.RemoveAsync(CacheKeys.GetUserKey(value.Id));
+            await _Decorated.DeleteAsync(value);
+        }
+
+        public async Task InsertAsync(User value)
+        {
+            await _Decorated.InsertAsync(value);
+        }
+
+        public async Task UpdateAsync(User value)
+        {
+            await _CacheService.RemoveAsync(CacheKeys.GetUserKey(value.Id));
+            await _Decorated.UpdateAsync(value);
+        }
+
+        public async Task UpdateRefreshTokenAsync(User value, RefreshToken refreshToken)
+        {
+            await _Decorated.UpdateRefreshTokenAsync(value, refreshToken);
+        }
+    }
+}

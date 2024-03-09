@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Users.Domain.Wrappers;
-namespace Infrastructure.Extensions
+namespace Users.Infrastructure.Extensions
 {
     internal class AuthenticationConfig
     {

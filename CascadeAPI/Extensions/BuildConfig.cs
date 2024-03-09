@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Options;
 using Streaming.Application.Wrappers;
 using Users.Domain.Wrappers;
-using Infrastructure;
 using Music.Application;
 using Music.Infrastructure;
 using Music.Persistence;
@@ -13,6 +12,9 @@ using Streaming.Application;
 using Streaming.Infrastructure;
 using Streaming.Presentation;
 using Users.Application;
+using Application.Shared.Abstractions;
+using Infrastructure.Shared.Services;
+using Users.Infrastructure;
 namespace CascadeAPI.Extensions
 {
     public static class BuildConfig
@@ -74,6 +76,16 @@ namespace CascadeAPI.Extensions
             });
 
             SerilogConfig.ConfigureSerilog(builder);
+
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddStackExchangeRedisCache(redisOptions =>
+            {
+                string? connection = builder.Configuration
+                    .GetConnectionString("Redis");
+
+                redisOptions.Configuration = connection;
+            });
         }
     }
 }

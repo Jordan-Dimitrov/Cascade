@@ -13,6 +13,8 @@ using Persistence.Shared.Interceptors;
 using Persistence.Shared;
 using Users.Application.Abstractions;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Users.Persistence.CachedRepositories;
+using Scrutor;
 namespace Persistence
 {
     public static class DependencyInjection
@@ -28,6 +30,8 @@ namespace Persistence
 
             services.AddScoped<IUserCommandRepository, UserCommandRepository>();
             services.AddScoped<IUserQueryRepository, UserQueryRepository>();
+            services.Decorate<IUserQueryRepository, CachedUserQueryRepository>();
+            services.Decorate<IUserCommandRepository, CachedUserCommandRepository>();
 
             return services;
         }

@@ -17,7 +17,7 @@ using Users.Domain.DomainEntities;
 using Users.Domain.ValueObjects;
 using Users.Domain.Wrappers;
 
-namespace Infrastructure.Services
+namespace Users.Infrastructure.Services
 {
     internal class AuthService : IAuthService
     {
@@ -41,7 +41,7 @@ namespace Infrastructure.Services
                 new Claim(ClaimTypes.Role, user.PermissionType.ToString())
             };
 
-            SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(_JwtTokenSettings.Token));
 
             SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -74,7 +74,7 @@ namespace Infrastructure.Services
             {
                 UserPassword pass = new UserPassword();
                 pass.PasswordSalt = hmac.Key;
-                pass.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                pass.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return pass;
             }
         }
@@ -83,7 +83,7 @@ namespace Infrastructure.Services
         {
             using (HMACSHA512 hmac = new HMACSHA512(passwordSalt))
             {
-                byte[] computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return computedHash.SequenceEqual(passwordHash);
             }
         }

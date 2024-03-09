@@ -8,7 +8,7 @@ using Domain.Shared.Primitives;
 using Persistence.Shared.Outbox;
 using Persistence;
 
-namespace Infrastructure.BackgroundJobs
+namespace Users.Infrastructure.BackgroundJobs
 {
     [DisallowConcurrentExecution]
     public class ProcessOutboxMessagesJob : IJob

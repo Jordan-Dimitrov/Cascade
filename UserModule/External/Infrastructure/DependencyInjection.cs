@@ -1,7 +1,4 @@
-﻿using Infrastructure.BackgroundJobs;
-using Infrastructure.Extensions;
-using Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
@@ -13,8 +10,10 @@ using Users.Domain.Wrappers;
 using Infrastructure.Shared.Services;
 using Application.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Users.Infrastructure.Extensions;
+using Users.Infrastructure.Services;
 
-namespace Infrastructure
+namespace Users.Infrastructure
 {
     public static class DependencyInjection
     {
@@ -35,6 +34,7 @@ namespace Infrastructure
             services.TryAddScoped<IUserInfoService, UserInfoService>();
             services.AddScoped<IAuthService, AuthService>();
             services.TryAddTransient<IEventBus, EventBus>();
+            services.TryAddSingleton<ICacheService, CacheService>();
 
             return services;
         }

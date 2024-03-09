@@ -27,8 +27,9 @@ namespace Presentation.Controllers
             _UserInfoService = userInfoService;
         }
 
-        [HttpGet("{userId:guid}"), Authorize(Roles = AllowedRoles.All)]
-        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
+        //, Authorize(Roles = AllowedRoles.All)
+        [HttpGet("{userId:guid}")]
+        //[ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUser(Guid userId, CancellationToken cancellationToken)

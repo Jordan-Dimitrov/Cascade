@@ -1,5 +1,4 @@
-﻿using Infrastructure.BackgroundJobs;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users.Infrastructure.BackgroundJobs;
 
-namespace Infrastructure.Extensions
+namespace Users.Infrastructure.Extensions
 {
     internal class QuartzConfig
     {

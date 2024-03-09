@@ -3,6 +3,7 @@ using Domain.Shared.Abstractions;
 using Infrastructure.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Music.Application.Abstractions;
 using Music.Application.Dtos;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace Music.Infrastructure
 
             services.TryAddScoped<IFileConversionService, FileConversionService>();
             services.TryAddScoped<IUserInfoService, UserInfoService>();
+            services.TryAddSingleton<ICacheService, CacheService>();
 
             return services;
         }
