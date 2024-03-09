@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Users.Application.Abstractions;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
-using Users.Domain.DomainEntities;
 using Application.Shared.CustomExceptions;
 using System.Net;
 
@@ -44,14 +43,7 @@ namespace Users.Application.Users.Commands
                 throw new AppException("Passwords do not match", HttpStatusCode.BadRequest);
             }
 
-            RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
-
-            await _UserCommandRepository.UpdateRefreshTokenAsync(user, refreshToken);
-
-            if (await _UnitOfWork.SaveChangesAsync() <= 0)
-            {
-                throw new ApplicationException("Unexpected error");
-            }
+            RefreshToken refreshToken = await _AuthService.GenerateRefreshToken(user);
 
             string jwtToken = _AuthService.GenerateJwtToken(user);
 

@@ -27,11 +27,6 @@ namespace Music.Persistence.Repositories
             await _Context.AddAsync(value);
         }
 
-        public Task RemoveSong(Song song)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task UpdateAsync(Album value)
         {
             await Task.Run(() => _Context.Update(value));

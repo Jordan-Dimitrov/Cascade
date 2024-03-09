@@ -12,5 +12,6 @@ namespace Music.Application.Dtos
         public Guid Id { get; set; }
         public string AlbumName { get; set; }
         public DateTime DateCreated {  get; set; }
+        public Guid ArtistId { get; set; }
     }
 }

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Users.Domain.DomainEntities;
 using Users.Domain.DomainEvents;
 using Users.Domain.ValueObjects;
 
@@ -18,16 +17,14 @@ namespace Users.Domain.Aggregates.UserAggregate
         private const string _HiddenUsername = "Hidden";
         private byte[] _HiddenPassword = new byte[4];
         private Username _Username;
-        private RefreshToken _RefreshToken;
         private User(Username username,
             byte[] passwordHash, byte[] passwordSalt,
-            RefreshToken refreshToken, UserRole permissionType)
+            UserRole permissionType)
         {
             Id = Guid.NewGuid();
             Username = username;
             PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
-            RefreshToken = refreshToken;
             PermissionType = permissionType;
         }
 
@@ -40,10 +37,9 @@ namespace Users.Domain.Aggregates.UserAggregate
         public static User CreateUser(string username,
             byte[] passwordHash,
             byte[] passwordSalt,
-            RefreshToken refreshToken,
             UserRole userRole)
         {
-            User user = new User(new Username(username), passwordHash, passwordSalt, refreshToken, userRole);
+            User user = new User(new Username(username), passwordHash, passwordSalt, userRole);
 
             if(userRole == UserRole.Artist)
             {
@@ -64,19 +60,6 @@ namespace Users.Domain.Aggregates.UserAggregate
             }
         }
 
-        public Guid RefreshTokenId
-        {
-            get
-            {
-                return _RefreshToken.Id;
-            }
-            private set
-            {
-                _RefreshTokenId = value;
-            }
-        }
-
-        private Guid _RefreshTokenId;
         public User HideUserDetails()
         {
             _Username = new Username(_HiddenUsername);
@@ -92,23 +75,6 @@ namespace Users.Domain.Aggregates.UserAggregate
 
         public byte[] PasswordHash { get; private set; } = null!;
         public byte[] PasswordSalt { get; private set; } = null!;
-
-        public RefreshToken RefreshToken
-        {
-            get
-            {
-                return _RefreshToken;
-            }
-            private set
-            {
-                _RefreshToken = value;
-            }
-        }
-
-        public void SetRfreshToken(RefreshToken refreshToken)
-        {
-            _RefreshToken = refreshToken;
-        }
 
         public void SetUsername(string username)
         {

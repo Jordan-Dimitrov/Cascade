@@ -1,19 +1,9 @@
-﻿using Users.Application.Users.Queries;
-using MediatR;
-using Domain.Shared.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 using Users.Application.Abstractions;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
-using Users.Domain.DomainEntities;
 using Users.Domain.ValueObjects;
 using Users.Domain.Wrappers;
-using Domain.Shared.Constants;
 using Application.Shared.CustomExceptions;
 using System.Net;
 
@@ -45,10 +35,9 @@ namespace Users.Application.Users.Commands
             }
 
             UserPassword pass = _AuthService.CreatePasswordHash(request.Password);
-            Token token = new Token(_AuthService.CreateRandomToken());
-            RefreshToken refreshToken = _AuthService.GenerateRefreshToken();
+
             User user = User.CreateUser(request.Username, pass.PasswordHash, pass.PasswordSalt,
-                refreshToken, request.PermissionType);
+                request.PermissionType);
 
             await _UserRepository.InsertAsync(user);
 

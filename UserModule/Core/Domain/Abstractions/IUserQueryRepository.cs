@@ -13,6 +13,5 @@ namespace Users.Domain.Abstractions
     public interface IUserQueryRepository : IQueryRepository<User>
     {
         Task<PagedList<User>> GetUsersWithPaginationAsync(UserParameters userParameters, bool trackChanges);
-        Task<User?> GetUserByRefreshTokenAsync(string refreshToken);
     }
 }

@@ -6,16 +6,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Users.Domain.ValueObjects
+namespace Users.Application
 {
-    public sealed class Token : ValueObject
+    public sealed class RefreshToken
     {
         private const int _Length = 64;
         private string _Value = null!;
-        public Token(string value)
+        private DateTime _Expires;
+        private Guid _UserId;
+        public RefreshToken(string value, DateTime expires, Guid userId)
         {
             Value = value;
+            Expires = expires;
+            UserId = userId;
         }
+
+        public DateTime Expires
+        {
+            get
+            {
+                return _Expires;
+            }
+            private set
+            {
+                _Expires = value;
+            }
+        }
+
         public string Value
         {
             get
@@ -39,9 +56,16 @@ namespace Users.Domain.ValueObjects
             }
         }
 
-        protected override IEnumerable<object> GetEqualityComponents()
+        public Guid UserId
         {
-            yield return _Value;
+            get
+            {
+                return _UserId;
+            }
+            private set
+            {
+                _UserId = value;
+            }
         }
     }
 }

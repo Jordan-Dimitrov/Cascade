@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
-using Users.Domain.DomainEntities;
 
 namespace Persistence.Repositories
 {
@@ -34,14 +33,6 @@ namespace Persistence.Repositories
         public async Task UpdateAsync(User value)
         {
             await Task.Run(() => _Context.Update(value));
-        }
-
-        public async Task UpdateRefreshTokenAsync(User value, RefreshToken refreshToken)
-        {
-            RefreshToken oldRefreshToken = value.RefreshToken;
-            value.SetRfreshToken(refreshToken);
-            await Task.Run(() => _Context.Users.Update(value));
-            await Task.Run(() => _Context.Remove(oldRefreshToken));
         }
     }
 }

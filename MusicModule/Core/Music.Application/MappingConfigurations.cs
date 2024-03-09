@@ -14,6 +14,7 @@ namespace Music.Application
             CreateMap<Album, AlbumDto>()
                .ForMember(dest => dest.AlbumName, opt => opt.MapFrom(src => src.AlbumName.Value))
                .ForMember(dest => dest.DateCreated, opt => opt.MapFrom(src => src.DateCreated))
+               .ForMember(dest => dest.ArtistId, opt => opt.MapFrom(src => src.ArtistId))
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<AlbumPatchDto, Album>()
@@ -35,6 +36,7 @@ namespace Music.Application
             CreateMap<Album, AlbumWithSongsDto>()
                 .ForMember(dest => dest.AlbumName, opt => opt.MapFrom(src => src.AlbumName.Value))
                .ForMember(dest => dest.DateCreated, opt => opt.MapFrom(src => src.DateCreated))
+               .ForMember(dest => dest.ArtistId, opt => opt.MapFrom(src => src.ArtistId))
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                .ForMember(dest => dest.Songs, opt => opt.MapFrom(src => src.Songs))
                .ReverseMap();

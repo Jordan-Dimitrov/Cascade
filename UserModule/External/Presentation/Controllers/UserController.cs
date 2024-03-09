@@ -126,8 +126,9 @@ namespace Presentation.Controllers
         public async Task<IActionResult> Logout(CancellationToken cancellationToken)
         {
             string? jwtToken = Request.Cookies[Tokens.JwtToken];
+            string? refreshToken = Request.Cookies[Tokens.RefreshToken];
 
-            LogoutUserCommand command = new LogoutUserCommand(jwtToken);
+            LogoutUserCommand command = new LogoutUserCommand(jwtToken, refreshToken);
 
             await _Sender.Send(command, cancellationToken);
 

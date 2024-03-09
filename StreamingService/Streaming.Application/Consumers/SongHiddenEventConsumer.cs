@@ -19,7 +19,7 @@ namespace Streaming.Application.Consumers
 
         public async Task Consume(ConsumeContext<SongHiddenIntegrationEvent> context)
         {
-            await _FileProcessingService.RemoveAsync(context.Message.FileName);
+            await _FileProcessingService.RemoveFile(context.Message.FileName);
         }
     }
 }

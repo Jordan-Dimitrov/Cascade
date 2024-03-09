@@ -13,5 +13,9 @@ namespace Users.Application.Constants
         {
             return $"user-{id}";
         }
+        public static string GetRefreshTokenKey(string token)
+        {
+            return $"refreshToken-{token}";
+        }
     }
 }

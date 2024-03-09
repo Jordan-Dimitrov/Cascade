@@ -27,7 +27,7 @@ namespace Persistence.Repositories
 
         public async Task<ICollection<User>> GetAllAsync(bool trackChanges)
         {
-            var query = _Context.Users.Include(x => x.RefreshToken);
+            var query = _Context.Users;
 
             return await (trackChanges ? query.ToListAsync() : query.AsNoTracking().ToListAsync());
         }
@@ -35,8 +35,7 @@ namespace Persistence.Repositories
 
         public async Task<User?> GetByIdAsync(Guid id, bool trackChanges)
         {
-            var query = _Context.Users
-                .Include(x => x.RefreshToken).Where(x => x.Id == id);
+            var query = _Context.Users.Where(x => x.Id == id);
 
             return await (trackChanges ? query.FirstOrDefaultAsync() : query.AsNoTracking().FirstOrDefaultAsync());
         }
@@ -48,37 +47,12 @@ namespace Persistence.Repositories
 
             User? user = await _Context.Users.FirstOrDefaultAsync(x => x.Username == name);
 
-            if(user is not null)
-            {
-                await _Context.Entry(user).Reference(u => u.RefreshToken).LoadAsync();
-            }
-
-            return user;
-        }
-
-        public async Task<User?> GetUserByRefreshTokenAsync(string refreshToken)
-        {
-            if (refreshToken is null)
-            {
-                return null;
-            }
-
-            Token token = new Token(refreshToken);
-
-            User? user = await _Context.Users.Where(x => x.RefreshToken.Token == token).FirstOrDefaultAsync();
-
-            if (user is not null)
-            {
-                await _Context.Entry(user).Reference(u => u.RefreshToken).LoadAsync();
-            }
-
             return user;
         }
 
         public async Task<PagedList<User>> GetUsersWithPaginationAsync(UserParameters userParameters, bool trackChanges)
         {
             var query = _Context.Users
-                .Include(x => x.RefreshToken)
                 .FilterUsers(userParameters.MinRole, userParameters.MaxRole)
                 .Search(userParameters.SearchTerm)
                 .Sort(userParameters.OrderBy);

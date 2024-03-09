@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
+using Music.Persistence.CachedRepositories;
 using Music.Persistence.Repositories;
 using Persistence.Extensions;
 using Persistence.Shared.Interceptors;
@@ -27,6 +28,11 @@ namespace Music.Persistence
 
             services.AddScoped<IArtistCommandRepository, ArtistCommandRepository>();
             services.AddScoped<IArtistQueryRepository,  ArtistQueryRepository>();
+
+            services.Decorate<IArtistCommandRepository, CachedArtistCommandRepository>();
+            services.Decorate<IArtistQueryRepository, CachedArtistQueryRepository>();
+            services.Decorate<IAlbumCommandRepository, CachedAlbumCommandRepository>();
+            services.Decorate<IAlbumQueryRepository, CachedAlbumQueryRepository>();
 
             services.AddSingleton<MusicSeed>();
             services.AddScoped<IMusicUnitOfWork, MusicUnitOfWork>();

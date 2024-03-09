@@ -54,11 +54,6 @@ namespace Users.Persistence.CachedRepositories
             return await _Decorated.GetByNameAsync(username);
         }
 
-        public async Task<User?> GetUserByRefreshTokenAsync(string refreshToken)
-        {
-            return await _Decorated.GetUserByRefreshTokenAsync(refreshToken);
-        }
-
         public async Task<PagedList<User>> GetUsersWithPaginationAsync(UserParameters userParameters, bool trackChanges)
         {
             //Find a better way to cache this

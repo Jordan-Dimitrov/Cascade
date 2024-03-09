@@ -28,10 +28,10 @@ namespace Persistence
                 List<User> users = new List<User>();
 
                 users.Add(User.CreateUser("TOMAAAA", pass.PasswordHash, pass.PasswordSalt,
-                    _AuthService.GenerateRefreshToken(), UserRole.Admin));
+                    UserRole.Admin));
 
                 users.Add(User.CreateUser("KristiQn Enchev", pass.PasswordHash, pass.PasswordSalt,
-                    _AuthService.GenerateRefreshToken(), UserRole.User));
+                    UserRole.User));
 
                 _Context.Users.AddRange(users);
                 _Context.SaveChanges();

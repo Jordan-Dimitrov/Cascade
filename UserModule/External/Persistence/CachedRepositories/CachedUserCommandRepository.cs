@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Users.Application.Constants;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
-using Users.Domain.DomainEntities;
 
 namespace Users.Persistence.CachedRepositories
 {
@@ -36,11 +35,6 @@ namespace Users.Persistence.CachedRepositories
         {
             await _CacheService.RemoveAsync(CacheKeys.GetUserKey(value.Id));
             await _Decorated.UpdateAsync(value);
-        }
-
-        public async Task UpdateRefreshTokenAsync(User value, RefreshToken refreshToken)
-        {
-            await _Decorated.UpdateRefreshTokenAsync(value, refreshToken);
         }
     }
 }

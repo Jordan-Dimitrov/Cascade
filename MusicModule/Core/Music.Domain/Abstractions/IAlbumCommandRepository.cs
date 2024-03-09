@@ -11,6 +11,5 @@ namespace Music.Domain.Abstractions
 {
     public interface IAlbumCommandRepository : ICommandRepository<Album>
     {
-        Task RemoveSong(Song song);
     }
 }

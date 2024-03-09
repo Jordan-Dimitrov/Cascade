@@ -112,8 +112,8 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             AlbumName = new AlbumName(_HiddenName);
             foreach (Song song in Songs)
             {
-                song.HideSong();
                 RaiseDomainEvent(new SongHiddenDomainEvent(song.AudioFile.Value));
+                song.HideSong();
             }
         }
 

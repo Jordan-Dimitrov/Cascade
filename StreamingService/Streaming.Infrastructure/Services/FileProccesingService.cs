@@ -60,7 +60,7 @@ namespace Streaming.Infrastructure.Services
             return (stream, contentType);
         }
 
-        public async Task RemoveAsync(string fileName)
+        public async Task RemoveFile(string fileName)
         {
             string filePath = Path.Combine(_UploadsDirectory, fileName);
 
@@ -97,8 +97,6 @@ namespace Streaming.Infrastructure.Services
 
             Track track = new Track(oggPath);
 
-            Console.WriteLine(track.Duration);
-
             LyricsInfo lyricsInfo = new LyricsInfo();
             lyricsInfo.ParseLRC(string.Join("\n", lyrics));
 
@@ -126,7 +124,7 @@ namespace Streaming.Infrastructure.Services
                .UsingThreads(_FFMpegConfig.ConversionThreads))
                .ProcessAsynchronously();
 
-            await RemoveAsync(inputPath);
+            await RemoveFile(inputPath);
 
             _BackgroundQueue.AddStatus(taskId, "Finished");
         }
