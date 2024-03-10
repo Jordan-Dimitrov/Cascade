@@ -1,12 +1,7 @@
 ﻿using Application.Shared.Abstractions;
 using Domain.Shared.Constants;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Shared.Services
 {

@@ -1,7 +1,5 @@
 ﻿using Domain.Shared.Wrappers;
 using Microsoft.Extensions.Options;
-using Streaming.Application.Wrappers;
-using Users.Domain.Wrappers;
 using Music.Application;
 using Music.Infrastructure;
 using Music.Persistence;
@@ -9,9 +7,11 @@ using Music.Presentation;
 using Persistence;
 using Presentation;
 using Streaming.Application;
+using Streaming.Application.Wrappers;
 using Streaming.Infrastructure;
 using Streaming.Presentation;
 using Users.Application;
+using Users.Domain.Wrappers;
 using Users.Infrastructure;
 namespace CascadeAPI.Extensions
 {

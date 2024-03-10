@@ -1,11 +1,11 @@
-﻿using MediatR;
+﻿using Application.Shared.CustomExceptions;
+using MediatR;
+using System.Net;
 using Users.Application.Abstractions;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
 using Users.Domain.ValueObjects;
 using Users.Domain.Wrappers;
-using Application.Shared.CustomExceptions;
-using System.Net;
 
 namespace Users.Application.Users.Commands
 {

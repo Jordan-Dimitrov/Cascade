@@ -2,22 +2,15 @@
 using Application.Shared.Constants;
 using Application.Shared.CustomExceptions;
 using Domain.Shared.Wrappers;
-using MassTransit.Configuration;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Cache;
-using System.Text;
-using System.Threading.Tasks;
 namespace Infrastructure.Shared.Services
 {
-    public class FtpServer : IFtpServer
+    public class FtpClient : IFtpClient
     {
         private readonly FtpServerSettings _FtpServerSettings;
         private readonly string _Uri;
-        public FtpServer(IOptions<FtpServerSettings> ftpServerSettings)
+        public FtpClient(IOptions<FtpServerSettings> ftpServerSettings)
         {
             _FtpServerSettings = ftpServerSettings.Value;
             _Uri = _FtpServerSettings.Host + $"/{Directories.Media}/";

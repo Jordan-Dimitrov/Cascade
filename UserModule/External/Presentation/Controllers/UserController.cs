@@ -1,5 +1,4 @@
-﻿using Application.Shared;
-using Application.Shared.Abstractions;
+﻿using Application.Shared.Abstractions;
 using Application.Shared.Constants;
 using Domain.Shared.Constants;
 using MediatR;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Routing;
 using Presentation.Shared;
 using Presentation.Shared.ActionFilters;
 using Presentation.Shared.Constants;
-using System.Reflection.Metadata;
 using System.Text.Json;
 using Users.Application.Dtos;
 using Users.Application.Users.Commands;
@@ -61,7 +59,7 @@ namespace Presentation.Controllers
         [ValidateModelState]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register([FromBody]CreateUserDto user, CancellationToken cancellationToken)
+        public async Task<IActionResult> Register([FromBody] CreateUserDto user, CancellationToken cancellationToken)
         {
             CreateUserCommand command = new CreateUserCommand(user.Username, user.Password, UserRole.User);
 

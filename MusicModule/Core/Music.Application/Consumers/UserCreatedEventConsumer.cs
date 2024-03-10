@@ -1,15 +1,8 @@
-﻿using Domain.Shared.Abstractions;
-using Domain.Shared.Constants;
+﻿using Domain.Shared.Constants;
 using MassTransit;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.ArtistAggregate;
-using Music.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Users.IntegrationEvents;
 
 namespace Music.Application.Consumers

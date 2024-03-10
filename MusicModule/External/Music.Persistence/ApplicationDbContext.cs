@@ -1,15 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
-using Music.Domain.DomainEntities;
-using Music.Persistence.Outbox;
 using Persistence.Shared.Outbox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Persistence
 {

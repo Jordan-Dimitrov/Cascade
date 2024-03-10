@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
-using MediatR;
 namespace Users.Application
 {
     public static class DependencyInjection

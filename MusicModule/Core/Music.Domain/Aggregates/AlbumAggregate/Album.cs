@@ -1,14 +1,9 @@
-﻿using Music.Domain.DomainEntities;
-using Music.Domain.ValueObjects;
-using Domain.Shared.Exceptions;
+﻿using Domain.Shared.Exceptions;
 using Domain.Shared.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Music.Domain.DomainEntities;
 using Music.Domain.DomainEvents;
+using Music.Domain.ValueObjects;
+using System.Text.Json.Serialization;
 
 namespace Music.Domain.Aggregates.AlbumAggregate
 {
@@ -121,7 +116,7 @@ namespace Music.Domain.Aggregates.AlbumAggregate
         {
             get
             {
-                if(_Songs is null)
+                if (_Songs is null)
                 {
                     return null;
                 }

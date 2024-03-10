@@ -1,20 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using System.Data.SqlClient;
-using Persistence.Repositories;
-using Microsoft.Data.SqlClient;
-using System.Globalization;
-using System.Data;
-using Dapper.FluentMap;
-using Persistence.Extensions;
-using Domain.Shared.Abstractions;
-using Users.Domain.Abstractions;
-using Persistence.Shared.Interceptors;
-using Persistence.Shared;
-using Users.Application.Abstractions;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Persistence.Extensions;
+using Persistence.Repositories;
+using Persistence.Shared.Interceptors;
+using Users.Application.Abstractions;
+using Users.Domain.Abstractions;
 using Users.Persistence.CachedRepositories;
-using Scrutor;
 namespace Persistence
 {
     public static class DependencyInjection

@@ -1,17 +1,12 @@
 ﻿using Domain.Shared.Exceptions;
 using Domain.Shared.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Music.Domain.ValueObjects
 {
     public sealed class SongCategory : ValueObject
     {
-        private string[] _AllowedCategories = { "Srubsko", "Hidden"};
+        private string[] _AllowedCategories = { "Srubsko", "Hidden" };
         private string _Value = null!;
         public SongCategory(string value)
         {

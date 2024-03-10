@@ -1,10 +1,6 @@
 ﻿using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
 using Presentation.Shared.Configurations;
 namespace Presentation
 {

@@ -3,13 +3,7 @@ using Domain.Shared.Abstractions;
 using Infrastructure.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Music.Application.Abstractions;
 using Music.Application.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Infrastructure
 {
@@ -28,7 +22,7 @@ namespace Music.Infrastructure
             services.TryAddScoped<IFileConversionService, FileConversionService>();
             services.TryAddScoped<IUserInfoService, UserInfoService>();
             services.TryAddSingleton<ICacheService, CacheService>();
-            services.TryAddSingleton<IFtpServer, FtpServer>();
+            services.TryAddSingleton<IFtpClient, FtpClient>();
 
             return services;
         }

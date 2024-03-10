@@ -1,12 +1,7 @@
 ﻿using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.ValueObjects;
-using System.Linq.Dynamic.Core;
 using Persistence.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Dynamic.Core;
 
 namespace Music.Persistence.Extensions
 {

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Shared.Abstractions
+﻿namespace Application.Shared.Abstractions
 {
-    public interface IFtpServer
+    public interface IFtpClient
     {
         Task<byte[]> GetAsync(string filePath);
         Task DeleteAsync(string filePath);

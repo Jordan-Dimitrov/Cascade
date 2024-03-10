@@ -6,13 +6,8 @@ using MediatR;
 using Music.Application.Dtos;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.AlbumAggregate;
-using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Application.Albums.Queries
 {

@@ -5,11 +5,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Streaming.Application.Abstractions;
 using Streaming.Application.Wrappers;
 using Streaming.Infrastructure.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Streaming.Infrastructure
 {
@@ -23,7 +18,7 @@ namespace Streaming.Infrastructure
             services.AddHostedService<QueueService>();
             services.AddSingleton<IBackgroundQueue, BackgroundQueue>();
             services.AddScoped<IFileProcessingService, FileProccesingService>();
-            services.TryAddSingleton<IFtpServer, FtpServer>();
+            services.TryAddSingleton<IFtpClient, FtpClient>();
 
             return services;
         }

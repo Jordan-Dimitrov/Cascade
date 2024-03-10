@@ -1,17 +1,10 @@
 ﻿using Application.Shared.Abstractions;
 using Domain.Shared.RequestFeatures;
-using Microsoft.EntityFrameworkCore;
 using Music.Application.Constants;
 using Music.Domain.Abstractions;
-using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.RequestFeatures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Persistence.CachedRepositories
 {

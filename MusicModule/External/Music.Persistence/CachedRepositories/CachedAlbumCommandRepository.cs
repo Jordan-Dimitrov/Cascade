@@ -2,13 +2,6 @@
 using Music.Application.Constants;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.AlbumAggregate;
-using Music.Domain.DomainEntities;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Persistence.CachedRepositories
 {

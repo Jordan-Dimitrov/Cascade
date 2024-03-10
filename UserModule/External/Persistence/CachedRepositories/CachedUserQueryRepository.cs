@@ -1,15 +1,7 @@
 ﻿using Application.Shared.Abstractions;
-using AutoMapper.Execution;
 using Domain.Shared.RequestFeatures;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Users.Application.Abstractions;
 using Users.Application.Constants;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
@@ -47,8 +39,8 @@ namespace Users.Persistence.CachedRepositories
 
         public async Task<User?> GetByIdAsync(Guid id, bool trackChanges)
         {
-            User? user = await _CacheService.GetAsync(CacheKeys.GetUserKey(id), 
-                async() =>
+            User? user = await _CacheService.GetAsync(CacheKeys.GetUserKey(id),
+                async () =>
                 {
                     return await _Decorated
                     .GetByIdAsync(id, trackChanges);

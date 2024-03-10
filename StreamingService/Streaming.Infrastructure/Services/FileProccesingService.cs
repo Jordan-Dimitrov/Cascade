@@ -7,13 +7,7 @@ using FFMpegCore;
 using FFMpegCore.Enums;
 using Streaming.Application.Abstractions;
 using Streaming.Application.Wrappers;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Streaming.Infrastructure.Services
 {
@@ -24,10 +18,10 @@ namespace Streaming.Infrastructure.Services
 
         private readonly IBackgroundQueue _BackgroundQueue;
         private readonly FFMpegConfig _FFMpegConfig;
-        private readonly IFtpServer _FtpServer;
+        private readonly IFtpClient _FtpServer;
         public FileProccesingService(IBackgroundQueue backgroundQueue,
             FFMpegConfig fFMpegConfig,
-            IFtpServer ftpServer)
+            IFtpClient ftpServer)
         {
             _BackgroundQueue = backgroundQueue;
             _FFMpegConfig = fFMpegConfig;

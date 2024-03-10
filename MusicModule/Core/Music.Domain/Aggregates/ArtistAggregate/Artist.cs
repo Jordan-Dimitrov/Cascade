@@ -1,14 +1,8 @@
-﻿using Music.Domain.Aggregates.AlbumAggregate;
-using Music.Domain.DomainEntities;
-using Music.Domain.ValueObjects;
-using Domain.Shared.Exceptions;
+﻿using Domain.Shared.Exceptions;
 using Domain.Shared.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Music.Domain.Aggregates.AlbumAggregate;
+using Music.Domain.ValueObjects;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Music.Domain.Aggregates.ArtistAggregate
 {
@@ -38,7 +32,7 @@ namespace Music.Domain.Aggregates.ArtistAggregate
 
         public void AddAlbum(Album album)
         {
-            if(_Albums is null)
+            if (_Albums is null)
             {
                 _Albums = new List<Album>();
             }
@@ -79,7 +73,7 @@ namespace Music.Domain.Aggregates.ArtistAggregate
         {
             get
             {
-                if(_Albums is null)
+                if (_Albums is null)
                 {
                     return null;
                 }

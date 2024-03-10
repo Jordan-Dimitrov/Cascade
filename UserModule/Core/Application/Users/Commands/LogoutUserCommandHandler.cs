@@ -1,14 +1,7 @@
-﻿using Application.Shared;
-using Application.Shared.Abstractions;
+﻿using Application.Shared.Abstractions;
 using Application.Shared.CustomExceptions;
-using Domain.Shared.Abstractions;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Users.Application.Abstractions;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;

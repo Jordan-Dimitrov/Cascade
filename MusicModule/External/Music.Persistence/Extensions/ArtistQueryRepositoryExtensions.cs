@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq.Dynamic.Core;
-using Persistence.Shared;
-using Music.Domain.Aggregates.ArtistAggregate;
+﻿using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.ValueObjects;
+using Persistence.Shared;
+using System.Linq.Dynamic.Core;
 namespace Music.Persistence.Extensions
 {
     internal static class ArtistQueryRepositoryExtensions

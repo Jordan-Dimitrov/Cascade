@@ -1,13 +1,5 @@
-﻿using Users.Application.Users.Commands;
-using AutoMapper;
-using Dapper;
+﻿using AutoMapper;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Users.Application.Dtos;
 using Users.Domain.Abstractions;
 

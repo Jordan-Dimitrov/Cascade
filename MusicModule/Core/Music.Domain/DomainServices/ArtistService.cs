@@ -1,12 +1,5 @@
 ﻿using Music.Domain.Abstractions;
-using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
-using Music.Domain.DomainEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Domain.DomainServices
 {

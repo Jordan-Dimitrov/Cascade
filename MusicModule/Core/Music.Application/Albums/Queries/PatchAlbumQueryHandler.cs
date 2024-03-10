@@ -1,5 +1,4 @@
-﻿using Application.Shared;
-using Application.Shared.Abstractions;
+﻿using Application.Shared.Abstractions;
 using Application.Shared.CustomExceptions;
 using AutoMapper;
 using MediatR;
@@ -7,12 +6,7 @@ using Music.Application.Dtos;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Application.Albums.Queries
 {

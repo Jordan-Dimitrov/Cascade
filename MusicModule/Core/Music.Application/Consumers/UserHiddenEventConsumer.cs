@@ -5,12 +5,7 @@ using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.DomainServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Users.IntegrationEvents;
 
 namespace Music.Application.Consumers

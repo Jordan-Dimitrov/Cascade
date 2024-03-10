@@ -5,12 +5,7 @@ using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.RequestFeatures;
 using Music.Domain.ValueObjects;
 using Music.Persistence.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Persistence.Repositories
 {

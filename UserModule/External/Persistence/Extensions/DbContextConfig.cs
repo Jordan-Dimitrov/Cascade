@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Persistence.Shared.Interceptors;
-using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Extensions
 {

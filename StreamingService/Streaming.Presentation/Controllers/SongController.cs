@@ -6,12 +6,6 @@ using Presentation.Shared;
 using Presentation.Shared.Constants;
 using Streaming.Application.Abstractions;
 using Streaming.Application.Songs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Streaming.Presentation.Controllers
 {

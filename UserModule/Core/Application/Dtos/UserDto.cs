@@ -1,12 +1,4 @@
-﻿using MediatR;
-using Domain.Shared.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Users.Domain.Aggregates.UserAggregate;
+﻿using Domain.Shared.Abstractions;
 using Domain.Shared.Constants;
 
 namespace Users.Application.Dtos

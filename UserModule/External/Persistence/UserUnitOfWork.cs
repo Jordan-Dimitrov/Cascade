@@ -1,11 +1,4 @@
-﻿using Domain.Shared.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Users.Application.Abstractions;
-using Users.Domain.Abstractions;
+﻿using Users.Application.Abstractions;
 
 namespace Persistence
 {

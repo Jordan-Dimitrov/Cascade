@@ -1,17 +1,10 @@
 ﻿using Application.Shared.CustomExceptions;
 using AutoMapper;
 using Domain.Shared.Abstractions;
-using Domain.Shared.Exceptions;
 using MediatR;
 using Music.Application.Dtos;
 using Music.Domain.Abstractions;
-using Music.Domain.Aggregates.AlbumAggregate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Application.Albums.Queries
 {
@@ -34,7 +27,7 @@ namespace Music.Application.Albums.Queries
                 .Map<AlbumWithSongsDto>(await _AlbumQueryRepository
                 .GetByIdAsync(request.AlbumId, false));
 
-            if(album is null)
+            if (album is null)
             {
                 throw new AppException("No such album exists!", HttpStatusCode.NotFound);
             }

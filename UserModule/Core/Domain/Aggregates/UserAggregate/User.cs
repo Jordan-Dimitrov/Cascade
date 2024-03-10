@@ -1,12 +1,7 @@
 ﻿using Domain.Shared.Constants;
 using Domain.Shared.Exceptions;
 using Domain.Shared.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Users.Domain.DomainEvents;
 using Users.Domain.ValueObjects;
 
@@ -41,7 +36,7 @@ namespace Users.Domain.Aggregates.UserAggregate
         {
             User user = new User(new Username(username), passwordHash, passwordSalt, userRole);
 
-            if(userRole == UserRole.Artist)
+            if (userRole == UserRole.Artist)
             {
                 user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id, user.Username.Value, (int)user.PermissionType));
             }

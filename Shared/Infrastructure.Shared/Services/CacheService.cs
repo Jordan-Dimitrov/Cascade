@@ -1,6 +1,5 @@
 ﻿using Application.Shared.Abstractions;
 using Domain.Shared.Wrappers;
-using Infrastructure.Shared;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

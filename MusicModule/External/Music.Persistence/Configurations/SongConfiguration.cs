@@ -1,14 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Domain.Shared.Constants;
 using Microsoft.EntityFrameworkCore;
-using Music.Domain.Aggregates.ArtistAggregate;
-using Domain.Shared.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Music.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Music.Domain.DomainEntities;
+using Music.Domain.ValueObjects;
 
 namespace Music.Persistence.Configurations
 {

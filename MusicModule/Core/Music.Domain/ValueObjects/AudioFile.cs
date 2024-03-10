@@ -1,13 +1,7 @@
 ﻿using Domain.Shared.Constants;
 using Domain.Shared.Exceptions;
 using Domain.Shared.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Music.Domain.ValueObjects
 {

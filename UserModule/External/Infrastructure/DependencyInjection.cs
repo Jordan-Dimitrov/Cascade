@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Quartz;
+﻿using Application.Shared.Abstractions;
 using Domain.Shared.Abstractions;
-using System.Text;
+using Infrastructure.Shared.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Users.Application.Abstractions;
 using Users.Application.Dtos;
 using Users.Domain.Wrappers;
-using Infrastructure.Shared.Services;
-using Application.Shared.Abstractions;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Users.Infrastructure.Extensions;
 using Users.Infrastructure.Services;
 

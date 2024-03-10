@@ -1,11 +1,6 @@
 ﻿using MassTransit;
 using Music.IntegrationEvents;
 using Streaming.Application.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Streaming.Application.Consumers
 {

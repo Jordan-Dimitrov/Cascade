@@ -1,15 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Shared.Primitives;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using Newtonsoft.Json;
-using Domain.Shared.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Persistence.Shared.Outbox;
 
 namespace Persistence.Shared.Interceptors

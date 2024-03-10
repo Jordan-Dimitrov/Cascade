@@ -1,26 +1,20 @@
 ﻿using Application.Shared.Abstractions;
 using Application.Shared.Constants;
 using Application.Shared.CustomExceptions;
-using Infrastructure.Shared;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Users.Application;
 using Users.Application.Abstractions;
 using Users.Application.Constants;
 using Users.Domain.Aggregates.UserAggregate;
 using Users.Domain.Wrappers;
-using System.Net;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Caching.Distributed;
 namespace Users.Infrastructure.Services
 {
     internal class AuthService : IAuthService
@@ -89,7 +83,7 @@ namespace Users.Infrastructure.Services
             RefreshToken? value = await _CacheService
                 .GetAsync<RefreshToken>(CacheKeys.GetRefreshTokenKey(token));
 
-            if(value is null)
+            if (value is null)
             {
                 throw new AppException("Invalid or expired token", HttpStatusCode.NotFound);
             }

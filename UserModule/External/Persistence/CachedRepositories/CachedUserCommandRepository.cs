@@ -1,9 +1,4 @@
 ﻿using Application.Shared.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Users.Application.Constants;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;

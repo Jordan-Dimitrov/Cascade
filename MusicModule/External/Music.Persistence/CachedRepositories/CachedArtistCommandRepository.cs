@@ -2,11 +2,6 @@
 using Music.Application.Constants;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.ArtistAggregate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Persistence.CachedRepositories
 {

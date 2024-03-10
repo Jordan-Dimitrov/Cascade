@@ -1,12 +1,6 @@
-﻿using Music.Domain.ValueObjects;
-using Domain.Shared.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Domain.Shared.Primitives;
+using Music.Domain.ValueObjects;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using Music.Domain.Aggregates.AlbumAggregate;
 
 namespace Music.Domain.DomainEntities
 {

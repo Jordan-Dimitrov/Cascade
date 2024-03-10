@@ -1,15 +1,9 @@
-﻿using MediatR;
-using Domain.Shared.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Shared.CustomExceptions;
+using MediatR;
+using System.Net;
+using Users.Application.Abstractions;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
-using Users.Application.Abstractions;
-using Application.Shared.CustomExceptions;
-using System.Net;
 
 namespace Users.Application.Users.Commands
 {

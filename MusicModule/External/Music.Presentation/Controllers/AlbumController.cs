@@ -1,21 +1,20 @@
-﻿using Application.Shared;
+﻿using Application.Shared.Abstractions;
+using Application.Shared.Constants;
+using Domain.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Music.Application.Albums.Commands;
-using Music.Application.Dtos;
-using Microsoft.AspNetCore.Routing;
-using Presentation.Shared;
 using Microsoft.AspNetCore.JsonPatch;
-using Presentation.Shared.ActionFilters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Music.Application.Albums.Commands;
 using Music.Application.Albums.Queries;
+using Music.Application.Dtos;
 using Music.Domain.RequestFeatures;
-using System.Text.Json;
-using Domain.Shared.Constants;
+using Presentation.Shared;
+using Presentation.Shared.ActionFilters;
 using Presentation.Shared.Constants;
-using Application.Shared.Constants;
-using Application.Shared.Abstractions;
+using System.Text.Json;
 
 namespace Music.Presentation.Controllers
 {
@@ -31,8 +30,8 @@ namespace Music.Presentation.Controllers
         [ValidateModelState]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateAlbum([FromForm]CreateAlbumDto createAlbumDto,
-            IFormFile formFile, 
+        public async Task<IActionResult> CreateAlbum([FromForm] CreateAlbumDto createAlbumDto,
+            IFormFile formFile,
             CancellationToken cancellationToken)
         {
             string? jwtToken = Request.Cookies[Tokens.JwtToken];

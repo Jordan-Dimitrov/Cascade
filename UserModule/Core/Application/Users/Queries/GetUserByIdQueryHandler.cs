@@ -1,19 +1,10 @@
-﻿using AutoMapper;
-using Dapper;
-using MediatR;
+﻿using Application.Shared.CustomExceptions;
+using AutoMapper;
 using Domain.Shared.Abstractions;
-using Domain.Shared.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
+using System.Net;
 using Users.Application.Dtos;
 using Users.Domain.Abstractions;
-using Users.Domain.Aggregates.UserAggregate;
-using Application.Shared.CustomExceptions;
-using System.Net;
 
 namespace Users.Application.Users.Queries
 {

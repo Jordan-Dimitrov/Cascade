@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq.Dynamic.Core;
-using Users.Domain.ValueObjects;
-using Users.Domain.Aggregates.UserAggregate;
+﻿using Domain.Shared.Constants;
 using Persistence.Shared;
-using Domain.Shared.Constants;
+using System.Linq.Dynamic.Core;
+using Users.Domain.Aggregates.UserAggregate;
+using Users.Domain.ValueObjects;
 namespace Persistence.Repositories
 {
     internal static class UserQueryRepositoryExtensions

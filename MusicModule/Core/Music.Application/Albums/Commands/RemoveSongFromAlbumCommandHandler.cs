@@ -1,18 +1,11 @@
-﻿using Application.Shared;
-using Application.Shared.Abstractions;
+﻿using Application.Shared.Abstractions;
 using Application.Shared.CustomExceptions;
 using MediatR;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
-using Music.Domain.DomainEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Application.Albums.Commands
 {

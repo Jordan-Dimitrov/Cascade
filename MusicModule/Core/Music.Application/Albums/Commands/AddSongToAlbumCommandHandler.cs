@@ -18,14 +18,14 @@ namespace Music.Application.Albums.Commands
         private readonly IMusicUnitOfWork _MusicUnitOfWork;
         private readonly IFileConversionService _FileConversionService;
         private readonly IUserInfoService _UserInfoService;
-        private readonly IFtpServer _FtpServer;
+        private readonly IFtpClient _FtpServer;
         public AddSongToAlbumCommandHandler(IAlbumCommandRepository albumCommandRepository,
             IAlbumQueryRepository albumQueryRepository,
             IArtistQueryRepository artistQueryRepository,
             IMusicUnitOfWork musicUnitOfWork,
             IUserInfoService userInfoService,
             IFileConversionService fileConversionService,
-            IFtpServer ftpServer)
+            IFtpClient ftpServer)
         {
             _AlbumCommandRepository = albumCommandRepository;
             _AlbumQueryRepository = albumQueryRepository;

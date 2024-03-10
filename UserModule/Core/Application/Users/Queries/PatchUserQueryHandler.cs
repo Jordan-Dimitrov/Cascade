@@ -1,13 +1,7 @@
 ﻿using Application.Shared.CustomExceptions;
 using AutoMapper;
-using Domain.Shared.Exceptions;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Users.Application.Dtos;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;

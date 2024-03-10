@@ -1,10 +1,5 @@
-﻿using Music.Domain.Aggregates.ArtistAggregate;
-using Domain.Shared.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Shared.Primitives;
+using Music.Domain.Aggregates.ArtistAggregate;
 
 namespace Music.Domain.Abstractions
 {
