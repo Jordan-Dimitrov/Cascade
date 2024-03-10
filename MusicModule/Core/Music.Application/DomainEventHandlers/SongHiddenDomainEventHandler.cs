@@ -13,7 +13,7 @@ namespace Music.Application.DomainEventHandlers
     internal sealed class SongHiddenDomainEventHandler : INotificationHandler<SongHiddenDomainEvent>
     {
         private readonly IEventBus _EventBus;
-        public SongHiddenDomainEventHandler(IEventBus eventBus)
+        public SongHiddenDomainEventHandler(IEventBus eventBus, IFtpServer ftpServer)
         {
             _EventBus = eventBus;
         }

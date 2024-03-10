@@ -1,5 +1,8 @@
-﻿using Application.Shared.CustomExceptions;
+﻿using Application.Shared.Abstractions;
+using Application.Shared.Constants;
+using Application.Shared.CustomExceptions;
 using ATL;
+using Domain.Shared.Constants;
 using FFMpegCore;
 using FFMpegCore.Enums;
 using Streaming.Application.Abstractions;
@@ -17,15 +20,18 @@ namespace Streaming.Infrastructure.Services
     internal sealed class FileProccesingService : IFileProcessingService
     {
         private readonly string _UploadsDirectory = Path
-            .Combine(AppDomain.CurrentDomain.BaseDirectory, "Media");
+            .Combine(AppDomain.CurrentDomain.BaseDirectory, Directories.Media);
 
         private readonly IBackgroundQueue _BackgroundQueue;
         private readonly FFMpegConfig _FFMpegConfig;
-
-        public FileProccesingService(IBackgroundQueue backgroundQueue, FFMpegConfig fFMpegConfig)
+        private readonly IFtpServer _FtpServer;
+        public FileProccesingService(IBackgroundQueue backgroundQueue,
+            FFMpegConfig fFMpegConfig,
+            IFtpServer ftpServer)
         {
             _BackgroundQueue = backgroundQueue;
             _FFMpegConfig = fFMpegConfig;
+            _FtpServer = ftpServer;
 
             if (!Directory.Exists(_UploadsDirectory))
             {
@@ -35,7 +41,7 @@ namespace Streaming.Infrastructure.Services
 
         private string GetContentType(string fileName)
         {
-            if (fileName.EndsWith(".ogg", StringComparison.OrdinalIgnoreCase))
+            if (fileName.EndsWith(SupportedAudioMimeTypes.Ogg, StringComparison.OrdinalIgnoreCase))
             {
                 return "audio/ogg";
             }
@@ -45,22 +51,28 @@ namespace Streaming.Infrastructure.Services
             }
         }
 
-        public async Task<(FileStream, string)> GetSong(string fileName)
+        public async Task<(MemoryStream, string)> GetSong(string fileName)
         {
-            string filePath = Path.Combine(_UploadsDirectory, fileName);
+            byte[] file = await _FtpServer.GetAsync(fileName);
 
-            if (!File.Exists(filePath))
+            if (file == null)
             {
                 throw new AppException("File not found", HttpStatusCode.NotFound);
             }
 
-            FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            MemoryStream memoryStream = new MemoryStream(file);
+
             string contentType = GetContentType(fileName);
-            byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
-            return (stream, contentType);
+
+            return (memoryStream, contentType);
         }
 
         public async Task RemoveFile(string fileName)
+        {
+            await _FtpServer.DeleteAsync(fileName);
+        }
+
+        private async Task RemoveFileLocally(string fileName)
         {
             string filePath = Path.Combine(_UploadsDirectory, fileName);
 
@@ -72,23 +84,25 @@ namespace Streaming.Infrastructure.Services
             await Task.Run(() => File.Delete(filePath));
         }
 
-        public async Task<string> UploadSongAsync(byte[] file, string filename, string[] lyrics)
+        public async Task<string> UploadSongAsync(string filename, string[] lyrics)
         {
             string fileName = Path.GetFileName(filename);
             string fileExtension = Path.GetExtension(fileName).ToLowerInvariant();
 
-            string oggFileName = Path.GetFileNameWithoutExtension(filename) + ".ogg";
+            string oggFileName = Path.GetFileNameWithoutExtension(filename) + SupportedAudioMimeTypes.Ogg;
             string filePath = Path.Combine(_UploadsDirectory, fileName);
             string oggPath = Path.Combine(_UploadsDirectory, oggFileName);
 
-            if (File.Exists(filePath) || File.Exists(oggPath))
+            if (await _FtpServer.Exists(oggPath))
             {
                 throw new AppException("File already exists", HttpStatusCode.BadRequest);
             }
 
+            byte[] file = await _FtpServer.GetAsync(fileName);
+
             await File.WriteAllBytesAsync(filePath, file);
 
-            if (fileExtension == ".ogg")
+            if (fileExtension == SupportedAudioMimeTypes.Ogg)
             {
                 return oggFileName;
             }
@@ -125,6 +139,13 @@ namespace Streaming.Infrastructure.Services
                .ProcessAsynchronously();
 
             await RemoveFile(inputPath);
+
+            await RemoveFileLocally(inputPath);
+
+            await _FtpServer.UploadAsync(Path.GetFileName(outputPath),
+                await File.ReadAllBytesAsync(outputPath));
+
+            await RemoveFileLocally(outputPath);
 
             _BackgroundQueue.AddStatus(taskId, "Finished");
         }

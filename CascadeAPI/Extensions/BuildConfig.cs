@@ -12,8 +12,6 @@ using Streaming.Application;
 using Streaming.Infrastructure;
 using Streaming.Presentation;
 using Users.Application;
-using Application.Shared.Abstractions;
-using Infrastructure.Shared.Services;
 using Users.Infrastructure;
 namespace CascadeAPI.Extensions
 {
@@ -26,6 +24,11 @@ namespace CascadeAPI.Extensions
             builder.Services.Configure<JwtTokenSettings>(builder.Configuration.GetSection("JwtTokenSettings"));
             builder.Services.Configure<RefreshTokenSettings>(builder.Configuration
                 .GetSection("RefreshTokenSettings"));
+
+            builder.Services.Configure<CacheSettings>(builder.Configuration
+                .GetSection("CacheSettings"));
+
+            builder.Services.Configure<FtpServerSettings>(builder.Configuration.GetSection("FtpServerSettings"));
 
             builder.Services.Configure<MessageBrokerSettings>(
                builder.Configuration.GetSection("MessageBroker"));

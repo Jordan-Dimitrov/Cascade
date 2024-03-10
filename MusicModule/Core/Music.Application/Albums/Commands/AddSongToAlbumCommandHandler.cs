@@ -1,5 +1,4 @@
-﻿using Application.Shared;
-using Application.Shared.Abstractions;
+﻿using Application.Shared.Abstractions;
 using Application.Shared.CustomExceptions;
 using MediatR;
 using Music.Application.Abstractions;
@@ -7,13 +6,7 @@ using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.DomainEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Application.Albums.Commands
 {
@@ -25,12 +18,14 @@ namespace Music.Application.Albums.Commands
         private readonly IMusicUnitOfWork _MusicUnitOfWork;
         private readonly IFileConversionService _FileConversionService;
         private readonly IUserInfoService _UserInfoService;
+        private readonly IFtpServer _FtpServer;
         public AddSongToAlbumCommandHandler(IAlbumCommandRepository albumCommandRepository,
             IAlbumQueryRepository albumQueryRepository,
             IArtistQueryRepository artistQueryRepository,
             IMusicUnitOfWork musicUnitOfWork,
             IUserInfoService userInfoService,
-            IFileConversionService fileConversionService)
+            IFileConversionService fileConversionService,
+            IFtpServer ftpServer)
         {
             _AlbumCommandRepository = albumCommandRepository;
             _AlbumQueryRepository = albumQueryRepository;
@@ -38,6 +33,7 @@ namespace Music.Application.Albums.Commands
             _MusicUnitOfWork = musicUnitOfWork;
             _UserInfoService = userInfoService;
             _FileConversionService = fileConversionService;
+            _FtpServer = ftpServer;
         }
 
         public async Task Handle(AddSongToAlbumCommand request, CancellationToken cancellationToken)
@@ -70,7 +66,9 @@ namespace Music.Application.Albums.Commands
 
             string fileName = _FileConversionService.OriginalFileName(request.FileName, generated);
 
-            album.AddSong(song, request.File, request.CreateSongDto.Lyrics, fileName);
+            string path = await _FtpServer.UploadAsync(fileName, request.File);
+
+            album.AddSong(song, request.CreateSongDto.Lyrics, path);
 
             await _AlbumCommandRepository.UpdateAsync(album);
 

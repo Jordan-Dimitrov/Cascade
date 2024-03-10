@@ -19,6 +19,8 @@ using Users.Application.Constants;
 using Users.Domain.Aggregates.UserAggregate;
 using Users.Domain.Wrappers;
 using System.Net;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Distributed;
 namespace Users.Infrastructure.Services
 {
     internal class AuthService : IAuthService
@@ -72,7 +74,12 @@ namespace Users.Infrastructure.Services
             RefreshToken token = new RefreshToken(Convert.ToHexString(RandomNumberGenerator.GetBytes(_Length)),
                  DateTime.UtcNow.AddDays(_RefreshTokenSettings.DaysExpiry), user.Id);
 
-            await _CacheService.SetAsync(CacheKeys.GetRefreshTokenKey(token.Value), token);
+            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.UtcNow.AddDays(_RefreshTokenSettings.DaysExpiry)
+            };
+
+            await _CacheService.SetAsync(CacheKeys.GetRefreshTokenKey(token.Value), token, options);
 
             return token;
         }

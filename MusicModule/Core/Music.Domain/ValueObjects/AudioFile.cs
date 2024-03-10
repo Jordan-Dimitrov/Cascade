@@ -53,7 +53,7 @@ namespace Music.Domain.ValueObjects
             }
 
             return $"{value
-                .Substring(0, value.Length - extension.Length)}_{generated}{SupportedAudioMimeTypes.Types[1]}";
+                .Substring(0, value.Length - extension.Length)}_{generated}{SupportedAudioMimeTypes.Ogg}";
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

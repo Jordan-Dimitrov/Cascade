@@ -1,23 +1,13 @@
-﻿using Application.Shared;
-using Application.Shared.Abstractions;
+﻿using Application.Shared.Abstractions;
 using Application.Shared.CustomExceptions;
-using Domain.Shared.Abstractions;
-using Domain.Shared.Constants;
 using MediatR;
 using Music.Application.Abstractions;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.DomainEntities;
-using Music.Domain.DomainServices;
 using Music.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Music.Application.Albums.Commands
 {
@@ -29,12 +19,14 @@ namespace Music.Application.Albums.Commands
         private readonly IAlbumQueryRepository _AlbumQueryRepository;
         private readonly IFileConversionService _FileConversionService;
         private readonly IUserInfoService _UserInfoService;
+        private readonly IFtpServer _FtpServer;
         public CreateAlbumCommandHandler(IArtistCommandRepository artistCommandRepository,
             IArtistQueryRepository artistQueryRepository,
             IMusicUnitOfWork musicUnitOfWork,
             IAlbumQueryRepository albumQueryRepository,
             IUserInfoService userInfoService,
-            IFileConversionService fileConversionService)
+            IFileConversionService fileConversionService,
+            IFtpServer ftpServer)
         {
             _ArtistCommandRepository = artistCommandRepository;
             _ArtistQueryRepository = artistQueryRepository;
@@ -42,6 +34,7 @@ namespace Music.Application.Albums.Commands
             _AlbumQueryRepository = albumQueryRepository;
             _UserInfoService = userInfoService;
             _FileConversionService = fileConversionService;
+            _FtpServer = ftpServer;
         }
 
         public async Task<Guid> Handle(CreateAlbumCommand request, CancellationToken cancellationToken)
@@ -62,6 +55,8 @@ namespace Music.Application.Albums.Commands
 
             string fileName = _FileConversionService.OriginalFileName(request.FileName, generated);
 
+            string path = await _FtpServer.UploadAsync(fileName, request.File);
+
             AlbumName name = new AlbumName(request.CreateAlbumDto.AlbumName);
 
             if (await _AlbumQueryRepository.ExistsAsync(x => x.AlbumName == name))
@@ -70,7 +65,7 @@ namespace Music.Application.Albums.Commands
             }
 
             Album album = Album.CreateAlbum(request.CreateAlbumDto.AlbumName,
-                artist.Id, song, request.File, request.Lyrics, fileName);
+                artist.Id, song, request.Lyrics, path);
 
             artist.AddAlbum(album);
 

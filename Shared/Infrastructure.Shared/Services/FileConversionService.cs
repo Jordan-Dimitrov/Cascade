@@ -1,4 +1,5 @@
 ﻿using Application.Shared.Abstractions;
+using Domain.Shared.Constants;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ namespace Infrastructure.Shared.Services
         private static int _ByteCount = 4;
         public async Task<byte[]> ConvertToByteArrayAsync(IFormFile file)
         {
-            if (file == null || Path.GetExtension(file.FileName).ToLowerInvariant() != ".mp3")
+            if (file == null || !SupportedAudioMimeTypes.Types.Contains(Path.GetExtension(file.FileName)
+                .ToLowerInvariant()))
             {
                 throw new ApplicationException("Invalid file");
             }

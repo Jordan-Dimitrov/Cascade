@@ -1,5 +1,6 @@
 ﻿using Application.Shared.Abstractions;
 using Domain.Shared.RequestFeatures;
+using Microsoft.EntityFrameworkCore;
 using Music.Application.Constants;
 using Music.Domain.Abstractions;
 using Music.Domain.Aggregates.AlbumAggregate;
@@ -16,11 +17,15 @@ namespace Music.Persistence.CachedRepositories
     internal sealed class CachedAlbumQueryRepository : IAlbumQueryRepository
     {
         private readonly IAlbumQueryRepository _Decorated;
+        private readonly ApplicationDbContext _Context;
         private readonly ICacheService _CacheService;
-        public CachedAlbumQueryRepository(IAlbumQueryRepository decorated, ICacheService cacheService)
+        public CachedAlbumQueryRepository(IAlbumQueryRepository decorated,
+            ICacheService cacheService,
+            ApplicationDbContext context)
         {
             _Decorated = decorated;
             _CacheService = cacheService;
+            _Context = context;
         }
 
         public async Task<bool> ExistsAsync(Expression<Func<Album, bool>> condition)
@@ -47,12 +52,19 @@ namespace Music.Persistence.CachedRepositories
 
         public async Task<Album?> GetByIdAsync(Guid id, bool trackChanges)
         {
-            return await _CacheService.GetAsync(CacheKeys.GetAlbumKey(id),
+            Album? album = await _CacheService.GetAsync(CacheKeys.GetAlbumKey(id),
                 async () =>
                 {
                     return await _Decorated
                     .GetByIdAsync(id, trackChanges);
                 });
+
+            if (album is not null)
+            {
+                _Context.Set<Album>().Attach(album);
+            }
+
+            return album;
         }
 
         public async Task<Album?> GetByNameAsync(string username)

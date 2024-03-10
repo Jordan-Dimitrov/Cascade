@@ -1,7 +1,9 @@
 ﻿using Application.Shared.Abstractions;
 using Domain.Shared.RequestFeatures;
+using Microsoft.EntityFrameworkCore;
 using Music.Application.Constants;
 using Music.Domain.Abstractions;
+using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.Aggregates.ArtistAggregate;
 using Music.Domain.RequestFeatures;
 using System;
@@ -16,11 +18,15 @@ namespace Music.Persistence.CachedRepositories
     internal sealed class CachedArtistQueryRepository : IArtistQueryRepository
     {
         private readonly IArtistQueryRepository _Decorated;
+        private readonly ApplicationDbContext _Context;
         private readonly ICacheService _CacheService;
-        public CachedArtistQueryRepository(IArtistQueryRepository decorated, ICacheService cacheService)
+        public CachedArtistQueryRepository(IArtistQueryRepository decorated,
+            ICacheService cacheService,
+            ApplicationDbContext context)
         {
             _Decorated = decorated;
             _CacheService = cacheService;
+            _Context = context;
         }
 
         public async Task<bool> ExistsAsync(Expression<Func<Artist, bool>> condition)
@@ -47,12 +53,19 @@ namespace Music.Persistence.CachedRepositories
 
         public async Task<Artist?> GetByIdAsync(Guid id, bool trackChanges)
         {
-            return await _CacheService.GetAsync(CacheKeys.GetArtistKey(id),
+            Artist? artist = await _CacheService.GetAsync(CacheKeys.GetArtistKey(id),
                 async () =>
                 {
                     return await _Decorated
                     .GetByIdAsync(id, trackChanges);
                 });
+
+            if (artist is not null)
+            {
+                _Context.Set<Artist>().Attach(artist);
+            }
+
+            return artist;
         }
 
         public async Task<Artist?> GetByNameAsync(string username)

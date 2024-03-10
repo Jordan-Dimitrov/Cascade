@@ -111,7 +111,6 @@ namespace Music.Presentation.Controllers
 
         [HttpGet, Authorize(Roles = AllowedRoles.All)]
         [HttpHead, Authorize(Roles = AllowedRoles.All)]
-        [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [ProducesResponseType(typeof(ICollection<AlbumDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAlbums([FromQuery] AlbumParameters requestParameters,

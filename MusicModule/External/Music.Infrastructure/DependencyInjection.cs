@@ -28,6 +28,7 @@ namespace Music.Infrastructure
             services.TryAddScoped<IFileConversionService, FileConversionService>();
             services.TryAddScoped<IUserInfoService, UserInfoService>();
             services.TryAddSingleton<ICacheService, CacheService>();
+            services.TryAddSingleton<IFtpServer, FtpServer>();
 
             return services;
         }

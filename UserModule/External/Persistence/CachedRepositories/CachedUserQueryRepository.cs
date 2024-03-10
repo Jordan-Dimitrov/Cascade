@@ -1,5 +1,8 @@
 ﻿using Application.Shared.Abstractions;
+using AutoMapper.Execution;
 using Domain.Shared.RequestFeatures;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +19,15 @@ namespace Users.Persistence.CachedRepositories
 {
     internal sealed class CachedUserQueryRepository : IUserQueryRepository
     {
+        private readonly ApplicationDbContext _Context;
         private readonly IUserQueryRepository _Decorated;
         private readonly ICacheService _CacheService;
-        public CachedUserQueryRepository(IUserQueryRepository decorated, ICacheService cacheService)
+        public CachedUserQueryRepository(IUserQueryRepository decorated,
+            ICacheService cacheService, ApplicationDbContext context)
         {
             _Decorated = decorated;
             _CacheService = cacheService;
+            _Context = context;
         }
 
         public async Task<bool> ExistsAsync(Expression<Func<User, bool>> condition)
@@ -41,12 +47,19 @@ namespace Users.Persistence.CachedRepositories
 
         public async Task<User?> GetByIdAsync(Guid id, bool trackChanges)
         {
-            return await _CacheService.GetAsync(CacheKeys.GetUserKey(id), 
+            User? user = await _CacheService.GetAsync(CacheKeys.GetUserKey(id), 
                 async() =>
                 {
                     return await _Decorated
                     .GetByIdAsync(id, trackChanges);
                 });
+
+            if (user is not null)
+            {
+                _Context.Set<User>().Attach(user);
+            }
+
+            return user;
         }
 
         public async Task<User?> GetByNameAsync(string username)

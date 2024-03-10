@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Streaming.Application.Songs
 {
-    internal sealed class GetSongQueryHandler : IRequestHandler<GetSongQuery, (FileStream, string)>
+    internal sealed class GetSongQueryHandler : IRequestHandler<GetSongQuery, (MemoryStream, string)>
     {
         private readonly IFileProcessingService _FileProcessingService;
         public GetSongQueryHandler(IFileProcessingService fileProcessingService)
         {
             _FileProcessingService = fileProcessingService;
         }
-        public async Task<(FileStream, string)> Handle(GetSongQuery request,
+        public async Task<(MemoryStream, string)> Handle(GetSongQuery request,
             CancellationToken cancellationToken)
         {
             var result = await _FileProcessingService.GetSong(request.FileName);

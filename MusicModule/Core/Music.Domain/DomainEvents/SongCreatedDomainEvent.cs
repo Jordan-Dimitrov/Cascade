@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace Music.Domain.DomainEvents
 {
-    public sealed record SongCreatedDomainEvent(string FileName, byte[] File, string[] Lyrics) : IDomainEvent;
+    public sealed record SongCreatedDomainEvent(string FileName, string[] Lyrics) : IDomainEvent;
 }
