@@ -79,6 +79,10 @@ namespace Music.Domain.Aggregates.ArtistAggregate
         {
             get
             {
+                if(_Albums is null)
+                {
+                    return null;
+                }
                 return _Albums.AsReadOnly().ToList();
             }
             private set

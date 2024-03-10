@@ -123,7 +123,7 @@ namespace Music.Domain.Aggregates.AlbumAggregate
             {
                 if(_Songs is null)
                 {
-                    _Songs = new List<Song>();
+                    return null;
                 }
                 return _Songs.AsReadOnly().ToList();
             }

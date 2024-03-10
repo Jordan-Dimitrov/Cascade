@@ -61,6 +61,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Streaming.Infrastructure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Streaming.Presentation", "StreamingService\Streaming.Presentation\Streaming.Presentation.csproj", "{E5849F35-DC98-4652-A60D-D756172BE1C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PtpDiscovery", "PtpDiscovery\PtpDiscovery.csproj", "{FE952065-9D3F-4BC5-B57D-4DCBCA88D582}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +153,10 @@ Global
 		{E5849F35-DC98-4652-A60D-D756172BE1C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5849F35-DC98-4652-A60D-D756172BE1C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5849F35-DC98-4652-A60D-D756172BE1C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE952065-9D3F-4BC5-B57D-4DCBCA88D582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE952065-9D3F-4BC5-B57D-4DCBCA88D582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE952065-9D3F-4BC5-B57D-4DCBCA88D582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE952065-9D3F-4BC5-B57D-4DCBCA88D582}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

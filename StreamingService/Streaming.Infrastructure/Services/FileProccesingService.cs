@@ -107,21 +107,13 @@ namespace Streaming.Infrastructure.Services
                 return oggFileName;
             }
 
-            await ConvertToOgg(filePath, Guid.NewGuid());
-
-            Track track = new Track(oggPath);
-
-            LyricsInfo lyricsInfo = new LyricsInfo();
-            lyricsInfo.ParseLRC(string.Join("\n", lyrics));
-
-            track.Lyrics = lyricsInfo;
-            track.Save();
+            await ConvertToOgg(filePath, Guid.NewGuid(), lyrics);
 
             return oggFileName;
         }
 
 
-        private async Task ConvertToOgg(string inputPath, Guid taskId)
+        private async Task ConvertToOgg(string inputPath, Guid taskId, string[] lyrics)
         {
             string outputPath = Path.Combine(_UploadsDirectory, Path.GetFileNameWithoutExtension(inputPath) + ".ogg");
 
@@ -141,6 +133,14 @@ namespace Streaming.Infrastructure.Services
             await RemoveFile(inputPath);
 
             await RemoveFileLocally(inputPath);
+
+            Track track = new Track(outputPath);
+
+            LyricsInfo lyricsInfo = new LyricsInfo();
+            lyricsInfo.ParseLRC(string.Join("\n", lyrics));
+
+            track.Lyrics = lyricsInfo;
+            track.Save();
 
             await _FtpServer.UploadAsync(Path.GetFileName(outputPath),
                 await File.ReadAllBytesAsync(outputPath));
