@@ -1,4 +1,5 @@
 ﻿using Domain.Shared.Constants;
+using Microsoft.EntityFrameworkCore;
 using Users.Application.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;
 using Users.Domain.Wrappers;
@@ -16,6 +17,8 @@ namespace Persistence
         }
         public void SeedApplicationContext()
         {
+            _Context.Database.Migrate();
+
             UserPassword pass = _AuthService.CreatePasswordHash("prototype");
 
             if (!_Context.Users.Any())
@@ -26,7 +29,7 @@ namespace Persistence
                     UserRole.Admin));
 
                 users.Add(User.CreateUser("KristiQn Enchev", pass.PasswordHash, pass.PasswordSalt,
-                    UserRole.User));
+                    UserRole.Artist));
 
                 _Context.Users.AddRange(users);
                 _Context.SaveChanges();

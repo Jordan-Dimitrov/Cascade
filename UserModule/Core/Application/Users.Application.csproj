@@ -1,24 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.0" />
-    <PackageReference Include="Dapper" Version="2.1.28" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
-    <PackageReference Include="MediatR" Version="12.2.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.0" />
+		<PackageReference Include="Dapper" Version="2.1.28" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+		<PackageReference Include="MediatR" Version="12.2.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\MusicModule\External\Music.IntegrationEvents\Music.IntegrationEvents.csproj" />
-    <ProjectReference Include="..\..\..\Shared\Application.Shared\Application.Shared.csproj" />
-    <ProjectReference Include="..\..\..\Shared\Domain.Shared\Domain.Shared.csproj" />
-    <ProjectReference Include="..\..\External\IntegrationEvents\Users.IntegrationEvents.csproj" />
-    <ProjectReference Include="..\Domain\Users.Domain.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\MusicModule\External\Music.IntegrationEvents\Music.IntegrationEvents.csproj" />
+		<ProjectReference Include="..\..\..\Shared\Application.Shared\Application.Shared.csproj" />
+		<ProjectReference Include="..\..\..\Shared\Domain.Shared\Domain.Shared.csproj" />
+		<ProjectReference Include="..\..\External\IntegrationEvents\Users.IntegrationEvents.csproj" />
+		<ProjectReference Include="..\Domain\Users.Domain.csproj" />
+	</ItemGroup>
 </Project>

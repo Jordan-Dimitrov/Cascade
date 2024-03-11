@@ -92,34 +92,6 @@ namespace Music.Persistence.Migrations
                     b.ToTable("Songs", "music");
                 });
 
-            modelBuilder.Entity("Persistence.Shared.Outbox.OutboxMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Error")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("OccuredOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ProcessedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OutboxMessage");
-                });
-
             modelBuilder.Entity("Music.Domain.Aggregates.AlbumAggregate.Album", b =>
                 {
                     b.HasOne("Music.Domain.Aggregates.ArtistAggregate.Artist", null)

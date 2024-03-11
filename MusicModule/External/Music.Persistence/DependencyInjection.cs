@@ -28,7 +28,7 @@ namespace Music.Persistence
             services.Decorate<IAlbumCommandRepository, CachedAlbumCommandRepository>();
             services.Decorate<IAlbumQueryRepository, CachedAlbumQueryRepository>();
 
-            services.AddSingleton<MusicSeed>();
+            services.AddTransient<MusicSeed>();
             services.AddScoped<IMusicUnitOfWork, MusicUnitOfWork>();
 
             DbContextConfig.ConfigureDbContext(services, connectionString);

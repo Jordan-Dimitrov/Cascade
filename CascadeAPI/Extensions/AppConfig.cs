@@ -1,5 +1,6 @@
 ﻿using AspNetCoreRateLimit;
 using CascadeAPI.Middlewares;
+using Music.Persistence;
 using Persistence;
 using Serilog;
 
@@ -9,10 +10,7 @@ namespace CascadeAPI.Extensions
     {
         public static void ConfigureAppPipeline(WebApplication app, string[] args)
         {
-            if (args.Length == 1 && args[0].ToLower() == "seeddata")
-            {
-                SeedData(app);
-            }
+            SeedData(app);
 
             void SeedData(IHost app)
             {
@@ -20,8 +18,11 @@ namespace CascadeAPI.Extensions
 
                 using (var scope = scopedFactory.CreateScope())
                 {
-                    var service = scope.ServiceProvider.GetService<UserSeed>();
-                    service.SeedApplicationContext();
+                    var usersSeedService = scope.ServiceProvider.GetService<UserSeed>();
+                    usersSeedService.SeedApplicationContext();
+
+                    var musicSeedService = scope.ServiceProvider.GetService<MusicSeed>();
+                    musicSeedService.SeedApplicationContext();
                 }
             }
 
