@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Music.Domain.Aggregates.AlbumAggregate;
 using Music.Domain.ValueObjects;
+using System.Reflection.Emit;
+using System;
+using System.Reflection.Metadata;
 
 namespace Music.Persistence.Configurations
 {
@@ -18,6 +21,13 @@ namespace Music.Persistence.Configurations
             builder.Property(x => x.AlbumName).HasConversion(
                 albumName => albumName.Value,
                 value => new AlbumName(value)).HasMaxLength(16);
+
+            builder
+                .Property<byte[]>("Version");
+
+            builder.
+                Property("Version")
+                .IsRowVersion();
         }
     }
 }

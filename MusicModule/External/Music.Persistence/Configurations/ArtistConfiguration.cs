@@ -18,6 +18,13 @@ namespace Music.Persistence.Configurations
             builder.Property(x => x.Username).HasConversion(
                 username => username.Value,
                 value => new Username(value)).HasMaxLength(50);
+
+            builder
+                .Property<byte[]>("Version");
+
+            builder.
+                Property("Version")
+                .IsRowVersion();
         }
     }
 }

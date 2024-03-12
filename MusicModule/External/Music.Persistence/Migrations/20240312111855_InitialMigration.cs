@@ -20,7 +20,8 @@ namespace Music.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -35,7 +36,8 @@ namespace Music.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AlbumName = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ArtistId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ArtistId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,7 +61,8 @@ namespace Music.Persistence.Migrations
                     SongName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     AudioFile = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SongCategory = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {

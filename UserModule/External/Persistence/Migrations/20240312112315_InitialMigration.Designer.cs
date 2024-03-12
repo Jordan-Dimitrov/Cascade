@@ -9,11 +9,11 @@ using Persistence;
 
 #nullable disable
 
-namespace Persistence.Migrations
+namespace Users.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240208112913_MinorFixes")]
-    partial class MinorFixes
+    [Migration("20240312112315_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Persistence.Outbox.OutboxMessage", b =>
+            modelBuilder.Entity("Persistence.Shared.Outbox.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,6 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Users.Domain.Aggregates.UserAggregate.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("PasswordHash")
@@ -70,71 +69,19 @@ namespace Persistence.Migrations
                     b.Property<int>("PermissionType")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("RefreshTokenId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
-                    b.HasIndex("RefreshTokenId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users", "users");
-                });
-
-            modelBuilder.Entity("Users.Domain.DomainEntities.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RefreshToken", "users");
-                });
-
-            modelBuilder.Entity("Users.Domain.Aggregates.UserAggregate.User", b =>
-                {
-                    b.HasOne("Users.Domain.DomainEntities.RefreshToken", "RefreshToken")
-                        .WithMany()
-                        .HasForeignKey("RefreshTokenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RefreshToken");
-                });
-
-            modelBuilder.Entity("Users.Domain.DomainEntities.RefreshToken", b =>
-                {
-                    b.OwnsOne("Users.Domain.ValueObjects.TokenDates", "TokenDates", b1 =>
-                        {
-                            b1.Property<Guid>("RefreshTokenId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<DateTime>("TokenCreated")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime>("TokenExpires")
-                                .HasColumnType("datetime2");
-
-                            b1.HasKey("RefreshTokenId");
-
-                            b1.ToTable("RefreshToken", "users");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RefreshTokenId");
-                        });
-
-                    b.Navigation("TokenDates")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -27,6 +27,13 @@ namespace Music.Persistence.Configurations
                 category => category.Value,
                 value => new SongCategory(value)).HasMaxLength(16);
 
+            builder
+                .Property<byte[]>("Version");
+
+            builder.
+                Property("Version")
+                .IsRowVersion();
+
         }
     }
 }
