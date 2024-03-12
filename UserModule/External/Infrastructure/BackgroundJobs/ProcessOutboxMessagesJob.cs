@@ -13,6 +13,7 @@ namespace Users.Infrastructure.BackgroundJobs
     [DisallowConcurrentExecution]
     public class ProcessOutboxMessagesJob : IJob
     {
+        private const int _Count = 20;
         private readonly ApplicationDbContext _DbContext;
         private readonly IPublisher _Publisher;
         public ProcessOutboxMessagesJob(ApplicationDbContext dbContext, IPublisher publisher)
@@ -25,7 +26,7 @@ namespace Users.Infrastructure.BackgroundJobs
         {
             var messages = await _DbContext.Set<OutboxMessage>()
                 .Where(x => x.ProcessedOnUtc == null)
-                .Take(20)
+                .Take(_Count)
                 .ToListAsync(context.CancellationToken);
 
             foreach (var message in messages)
