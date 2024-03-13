@@ -40,7 +40,7 @@ Below is a comprehensive list of technologies, frameworks, and libraries utilize
 
 ## Getting Started
 ### Prerequisites
-Before you begin, ensure you have the following installed:
+Before you begin, ensure you have the following:
 
 1. [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
@@ -52,6 +52,7 @@ Before you begin, ensure you have the following installed:
 
 5. [RabbitMQ](https://www.rabbitmq.com/)
 
+6. FTP Server
 ### Installation
 1. Fill out the appsettings.Development.json in the CascadeAPI Project
 2. Run the project:
