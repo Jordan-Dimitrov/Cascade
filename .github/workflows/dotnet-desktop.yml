@@ -57,7 +57,7 @@ jobs:
 
     env:
       Solution_Name: Cascade                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: C:\Users\danid\Desktop\Projects\Cascade\Tests\Architecture.Tests\Architecture.Tests.csproj # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Test_Project_Path: Cascade.Tests.csproj # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
       
 
     steps:
