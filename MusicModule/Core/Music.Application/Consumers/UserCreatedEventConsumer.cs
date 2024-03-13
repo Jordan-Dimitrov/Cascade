@@ -28,7 +28,7 @@ namespace Music.Application.Consumers
             Artist artist = Artist.CreateArtist(context.Message.Username, context.Message.UserId);
             await _ArtistCommandRepository.InsertAsync(artist);
 
-            if (await _UnitOfWork.SaveChangesAsync() <= 0)
+            if (!await _UnitOfWork.SaveChangesAsync())
             {
                 throw new ApplicationException("Unexpected error");
             }

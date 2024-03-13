@@ -41,7 +41,7 @@ namespace Users.Application.Users.Commands
 
             await _UserRepository.InsertAsync(user);
 
-            if (await _UnitOfWork.SaveChangesAsync() <= 0)
+            if (!await _UnitOfWork.SaveChangesAsync())
             {
                 throw new ApplicationException("Unexpected error");
             }

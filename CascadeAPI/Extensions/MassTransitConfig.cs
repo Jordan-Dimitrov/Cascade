@@ -7,6 +7,7 @@ namespace CascadeAPI.Extensions
 {
     public static class MassTransitConfig
     {
+        private const int _RetryLimit = 5;
         public static void ConfigureMassTransit(this IServiceCollection services)
         {
             services.AddMassTransit(busConfigurator =>
@@ -26,6 +27,7 @@ namespace CascadeAPI.Extensions
                         h.Password(settings.Username);
                     });
 
+                    configurator.UseMessageRetry(x => x.Immediate(_RetryLimit));
                     configurator.ConfigureEndpoints(context);
                 });
             });

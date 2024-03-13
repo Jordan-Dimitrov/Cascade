@@ -17,7 +17,7 @@ namespace Music.Application.Albums.Commands
         {
             _Mapper.Map(request.AlbumToPatch, request.Album);
 
-            if (await _UnitOfWork.SaveChangesAsync() <= 0)
+            if (!await _UnitOfWork.SaveChangesAsync())
             {
                 throw new ApplicationException("Unexpected error");
             }

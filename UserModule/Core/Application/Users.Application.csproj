@@ -20,4 +20,10 @@
 		<ProjectReference Include="..\..\External\IntegrationEvents\Users.IntegrationEvents.csproj" />
 		<ProjectReference Include="..\Domain\Users.Domain.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>Cascade.Tests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
 </Project>

@@ -10,9 +10,9 @@ namespace Persistence
             _DbContext = dbContext;
         }
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return await _DbContext.SaveChangesAsync();
+            return await _DbContext.SaveChangesAsync() > 0;
         }
     }
 }

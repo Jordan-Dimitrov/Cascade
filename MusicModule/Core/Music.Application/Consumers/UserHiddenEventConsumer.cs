@@ -40,7 +40,7 @@ namespace Music.Application.Consumers
 
             await _ArtistService.HideArtist(artist);
 
-            if (await _UnitOfWork.SaveChangesAsync() <= 0)
+            if (!await _UnitOfWork.SaveChangesAsync())
             {
                 throw new ApplicationException("Unexpected error");
             }

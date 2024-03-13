@@ -71,7 +71,7 @@ namespace Music.Application.Albums.Commands
 
             await _ArtistCommandRepository.UpdateAsync(artist);
 
-            if (await _MusicUnitOfWork.SaveChangesAsync() <= 0)
+            if (!await _MusicUnitOfWork.SaveChangesAsync())
             {
                 throw new ApplicationException("Unexpected error");
             }

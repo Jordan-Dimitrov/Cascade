@@ -33,7 +33,7 @@ namespace Users.Application.Users.Commands
 
             await _UserCommandRepository.UpdateAsync(user);
 
-            if (await _UnitOfWork.SaveChangesAsync() <= 0)
+            if (!await _UnitOfWork.SaveChangesAsync())
             {
                 throw new ApplicationException("Unexpected error");
             }

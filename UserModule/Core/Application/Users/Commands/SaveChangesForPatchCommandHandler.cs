@@ -17,7 +17,7 @@ namespace Users.Application.Users.Commands
         {
             _Mapper.Map(request.UserToPatch, request.User);
 
-            if (await _UnitOfWork.SaveChangesAsync() <= 0)
+            if (!await _UnitOfWork.SaveChangesAsync())
             {
                 throw new ApplicationException("Unexpected error");
             }

@@ -1,6 +1,8 @@
 ﻿using Application.Shared.CustomExceptions;
 using Domain.Shared.Exceptions;
+using MassTransit;
 using Newtonsoft.Json;
+using System.Data;
 using System.Net;
 
 namespace CascadeAPI.Middlewares
@@ -18,14 +20,6 @@ namespace CascadeAPI.Middlewares
             try
             {
                 await _Next(context);
-            }
-            catch (AppException ex)
-            {
-                await HandleExceptionAsync(context, ex);
-            }
-            catch (DomainValidationException ex)
-            {
-                await HandleExceptionAsync(context, ex);
             }
             catch (Exception ex)
             {
@@ -47,6 +41,11 @@ namespace CascadeAPI.Middlewares
             if (exception is DomainValidationException domainValidationException)
             {
                 response = new { error = domainValidationException.Message };
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+            if(exception is DBConcurrencyException)
+            {
+                response = new { error = "Out of date data" };
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
 
