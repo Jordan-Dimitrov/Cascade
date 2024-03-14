@@ -7,7 +7,7 @@ A robust and flexible music player designed to provide an immersive listening ex
 Cascade is a Domain-Driven Modular Monolith. These foundational concepts ensure a robust, scalable, and maintainable music playback solution. 
 Below you can find an accompanying UML diagram illustrating its architecture and components:
 
-![Cascade](https://github.com/Jordan-Dimitrov/Cascade/assets/91904012/afcf2861-23a7-4f75-ab55-7eb96512d7bc)
+![312240646-afcf2861-23a7-4f75-ab55-7eb96512d7bc](https://github.com/Jordan-Dimitrov/Cascade/assets/91904012/5f21d4a4-3f6f-419d-9af9-6e36ed73377d)
 
 ## Patterns
 It uses the following patterns:
