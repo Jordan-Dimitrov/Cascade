@@ -14,10 +14,10 @@ jobs:
       matrix:
         configuration: [Debug, Release]
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     env:
-      Solution_Name: Cascade.sln # Change this to your solution file name
+      Solution_Name: Cascade.sln
       Test_Project_Path: Cascade.Tests\Cascade.Tests.csproj
 
     steps:
