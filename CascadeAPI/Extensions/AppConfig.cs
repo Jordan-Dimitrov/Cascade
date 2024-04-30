@@ -38,6 +38,10 @@ namespace CascadeAPI.Extensions
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
+            app.UseCors("AllowOrigin");
+
             app.MapHealthChecks("/health");
 
             app.UseResponseCaching();
