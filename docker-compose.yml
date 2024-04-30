@@ -5,7 +5,11 @@ services:
     image: ${DOCKER_REGISTRY-}cascadeapi
     container_name: CascadeAPI
     ports:
-      - 8001:80
+      - 8081:443
+    environment:
+      ASPNETCORE_URLS: https://+
+      ASPNETCORE_HTTPS_PORT: 8081
+      ASPNETCORE_ENVIRONMENT: "Development"
     build:
       context: .
       dockerfile: CascadeAPI/Dockerfile

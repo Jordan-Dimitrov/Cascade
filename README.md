@@ -38,18 +38,5 @@ Below is a comprehensive list of technologies, frameworks, and libraries utilize
 - [FFmpeg](https://ffmpeg.org/) (Multimedia framework)
 - [ATL](https://github.com/Zeugma440/atldotnet.git) (Audio Library)
 
-## Getting Started
-### Prerequisites
-Before you begin, ensure you have [Docker](https://www.docker.com) installed on your system
-### Installation
-To run the application in a containerized environment:
-1. Build the Docker image:
-```bash
-docker-compose build
-```
-2. Start the containers:
-```bash
-docker-compose up -d
-```
 ## Contribution
 This project is still under analysis and development. I would appreciate your contribution to it. Please let me know by creating an Issue or Pull Request.
