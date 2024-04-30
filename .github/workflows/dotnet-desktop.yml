@@ -18,7 +18,7 @@ jobs:
 
     env:
       Solution_Name: Cascade.sln
-      Test_Project_Path: Cascade.Tests\Cascade.Tests.csproj
+      Test_Project_Path: Cascade.Tests/Cascade.Tests.csproj
 
     steps:
     - name: Checkout
@@ -31,8 +31,5 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
-
-    - name: Execute unit tests
+    - name: Run tests
       run: dotnet test ${{ env.Test_Project_Path }} --configuration ${{ matrix.configuration }} --logger trx --results-directory ./TestResults
