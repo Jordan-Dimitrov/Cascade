@@ -13,6 +13,7 @@ services:
       - sqlserverdb
       - redis
       - rabbitmq
+      - ftpserver
 
   sqlserverdb:
     container_name: SqlServerContainer
@@ -21,7 +22,7 @@ services:
       - 8002:1433
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=myStong_Password123#
+      - MSSQL_SA_PASSWORD=z@malo_Dap0g1nem#
 
   redis:
     container_name: RedisContainer
@@ -37,3 +38,20 @@ services:
       - 5672:5672
       - 15672:15672
 
+  ftpserver:
+    image: bogem/ftp
+    container_name: FTPServerContainer
+    ports:
+      - "20:20"
+      - "21:21"
+      - "47400-47470:47400-47470"
+    environment:
+      - FTP_USER=testov3
+      - FTP_PASS=prototype
+      - PASV_ADDRESS=127.0.0.1
+    volumes:
+      - /host/folder:/home/vsftpd
+    restart: always
+
+volumes:
+  ftp_data:

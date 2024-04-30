@@ -55,14 +55,14 @@ namespace Music.Application.Albums.Commands
 
             string fileName = _FileConversionService.OriginalFileName(request.FileName, generated);
 
-            string path = await _FtpServer.UploadAsync(fileName, request.File);
-
             AlbumName name = new AlbumName(request.CreateAlbumDto.AlbumName);
 
             if (await _AlbumQueryRepository.ExistsAsync(x => x.AlbumName == name))
             {
                 throw new AppException("Such album name already exists!", HttpStatusCode.BadRequest);
             }
+
+            string path = await _FtpServer.UploadAsync(fileName, request.File);
 
             Album album = Album.CreateAlbum(request.CreateAlbumDto.AlbumName,
                 artist.Id, song, request.Lyrics, path);

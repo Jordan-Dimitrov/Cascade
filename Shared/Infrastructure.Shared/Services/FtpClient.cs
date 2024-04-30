@@ -13,7 +13,7 @@ namespace Infrastructure.Shared.Services
         public FtpClient(IOptions<FtpServerSettings> ftpServerSettings)
         {
             _FtpServerSettings = ftpServerSettings.Value;
-            _Uri = _FtpServerSettings.Host + $"/{Directories.Media}/";
+            _Uri = _FtpServerSettings.Host + $"/";
         }
         public async Task DeleteAsync(string filePath)
         {
@@ -36,6 +36,7 @@ namespace Infrastructure.Shared.Services
         public async Task<bool> Exists(string filePath)
         {
             string path = _Uri + Path.GetFileName(filePath);
+
             FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest
                 .Create(new Uri(path));
 
