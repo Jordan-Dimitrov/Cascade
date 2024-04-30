@@ -1,15 +1,7 @@
-﻿using Domain.Shared.Abstractions;
-using Domain.Shared.Constants;
+﻿using Domain.Shared.Constants;
 using FakeItEasy;
-using Music.Domain.ValueObjects;
-using NetArchTest.Rules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Users.Application.Abstractions;
-using Users.Application.Dtos;
 using Users.Application.Users.Commands;
 using Users.Domain.Abstractions;
 using Users.Domain.Aggregates.UserAggregate;

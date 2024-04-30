@@ -38,7 +38,6 @@ namespace Music.Persistence.Repositories
             return await (trackChanges ? query.FirstOrDefaultAsync() : query.AsNoTracking().FirstOrDefaultAsync());
         }
 
-
         public async Task<Artist?> GetByNameAsync(string username)
         {
             Username name = new Username(username);

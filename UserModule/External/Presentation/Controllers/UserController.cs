@@ -169,8 +169,6 @@ namespace Presentation.Controllers
             [FromBody] JsonPatchDocument<UserPatchDto> patchDoc,
             CancellationToken cancellationToken)
         {
-            string? jwtToken = Request.Cookies[Tokens.JwtToken];
-
             PatchUserQuery query = new PatchUserQuery(userId);
             var result = await _Sender.Send(query, cancellationToken);
 

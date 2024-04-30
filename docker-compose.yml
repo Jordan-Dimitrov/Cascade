@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  cascadeapi:
+    image: ${DOCKER_REGISTRY-}cascadeapi
+    container_name: CascadeAPI
+    ports:
+      - 8001:80
+    build:
+      context: .
+      dockerfile: CascadeAPI/Dockerfile
+    depends_on:
+      - sqlserverdb
+      - redis
+      - rabbitmq
+
+  sqlserverdb:
+    container_name: SqlServerContainer
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 8002:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=myStong_Password123#
+
+  redis:
+    container_name: RedisContainer
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+
+  rabbitmq:
+    container_name: RabbitMQContainer
+    image: rabbitmq:latest
+    ports:
+      - 5672:5672
+      - 15672:15672
+

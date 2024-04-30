@@ -99,7 +99,7 @@ namespace Music.Presentation.Controllers
         [ResponseCache(CacheProfileName = CacheProfiles.Default)]
         [ProducesResponseType(typeof(AlbumWithSongsDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetUser(Guid albumId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAlbum(Guid albumId, CancellationToken cancellationToken)
         {
             GetAlbumQuery query = new GetAlbumQuery(albumId);
 

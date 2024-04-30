@@ -11,7 +11,7 @@ namespace CascadeAPI.Extensions
             {
                 configuration
                     .MinimumLevel.Debug()
-                    .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Verbose)
                     .Enrich.FromLogContext()
                     .WriteTo.Console()
                     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day);
