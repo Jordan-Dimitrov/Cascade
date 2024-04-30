@@ -2,7 +2,7 @@
 ## Overview
 A robust and flexible music player designed to provide an immersive listening experience for users.
 ## Build Status
-[![.NET Core Desktop](https://github.com/Jordan-Dimitrov/Cascade/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/Jordan-Dimitrov/Cascade/actions/workflows/dotnet-desktop.yml)
+[![CI](https://github.com/Jordan-Dimitrov/Cascade/actions/workflows/dotnet-desktop.yml/badge.svg?branch=main)](https://github.com/Jordan-Dimitrov/Cascade/actions/workflows/dotnet-desktop.yml)
 ## Architecture
 Cascade is a Domain-Driven Modular Monolith. These foundational concepts ensure a robust, scalable, and maintainable music playback solution. 
 Below you can find an accompanying UML diagram illustrating its architecture and components:
@@ -40,24 +40,16 @@ Below is a comprehensive list of technologies, frameworks, and libraries utilize
 
 ## Getting Started
 ### Prerequisites
-Before you begin, ensure you have the following:
-
-1. [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-
-2. [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
-
-3. [FFmpeg](https://www.ffmpeg.org/download.html)
-
-4. [Redis](https://redis.io/)
-
-5. [RabbitMQ](https://www.rabbitmq.com/)
-
-6. FTP Server
+Before you begin, ensure you have [Docker](https://www.docker.com) installed on your system
 ### Installation
-1. Fill out the appsettings.Development.json in the CascadeAPI Project
-2. Run the project:
+To run the application in a containerized environment:
+1. Build the Docker image:
 ```bash
-dotnet run --environment Development
+docker-compose build
+```
+2. Start the containers:
+```bash
+docker-compose up -d
 ```
 ## Contribution
 This project is still under analysis and development. I would appreciate your contribution to it. Please let me know by creating an Issue or Pull Request.
